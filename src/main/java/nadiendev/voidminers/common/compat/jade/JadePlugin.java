@@ -17,7 +17,6 @@ public class JadePlugin implements IWailaPlugin {
     
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        // Registrar para todos los bloques - Jade filtrará automáticamente por el BlockEntity
         registration.registerBlockComponent(VoidMinerProvider.INSTANCE, Block.class);
     }
 }

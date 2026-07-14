@@ -222,17 +222,25 @@ public class ControllerBaseBE extends BlockEntity {
         return itemHandler;
     }
 
-    // MÉTODO AGREGADO: Getter para progress
     public int getProgress() {
         return progress;
     }
 
+    private long lastProcessedGameTime = Long.MIN_VALUE;
+
     public void tick(Level pLevel, BlockPos pPos, BlockState pState, ResourceLocation structure, String name) {
+
+        if (level != null && !ConfigLoader.getInstance().ALLOW_TICK_ACCELERATION_MINERS) {
+            long gameTime = level.getGameTime();
+            if (this.lastProcessedGameTime == gameTime) return;
+            this.lastProcessedGameTime = gameTime;
+        }
+
         if(getStructure() == null) {
             setup(structure, name);
         }
 
-        checkStructure(pLevel, pPos);
+        checkStructure(level, pPos);
 
         active = foundStructure && hasViewOnBedrockOrVoid(pPos);
         if (foundStructure) {
@@ -257,7 +265,7 @@ public class ControllerBaseBE extends BlockEntity {
         progress++;
         energyHandler.removeEnergy(getRfTick());
 
-        pLevel.sendBlockUpdated(pPos, pState, pState, 3);
+        level.sendBlockUpdated(pPos, pState, pState, 3);
         sync();
 
         if (progress < getMaxProgress()) {

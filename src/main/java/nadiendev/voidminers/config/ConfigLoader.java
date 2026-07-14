@@ -1,10 +1,7 @@
 package nadiendev.voidminers.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.google.gson.annotations.Expose;
-import com.google.gson.stream.JsonReader;
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.util.MapUtil;
 import io.netty.buffer.ByteBuf;
@@ -18,6 +15,8 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
 
+import static java.nio.file.Files.readAllBytes;
+
 public class ConfigLoader {
     public static final String CONFIG_FILE = "voidminers.json5";
     private static ConfigLoader INSTANCE = new ConfigLoader();
@@ -30,6 +29,9 @@ public class ConfigLoader {
 
     @Expose
     public boolean ALLOW_NO_ENERGY_MINERS = false;
+
+    @Expose
+    public boolean ALLOW_TICK_ACCELERATION_MINERS = true;
 
     @Expose
     public Map<String, MinerConfig> MINER_CONFIGS = MapUtil.of(
@@ -112,14 +114,10 @@ public class ConfigLoader {
                 VoidMiners.LOGGER.info("Configuration file does not exist. Creating a new one.");
                 saveDefaultConfig(file, gson);
             } else {
-                try (JsonReader jsonReader = new JsonReader(new FileReader(file))) {
-                    INSTANCE = gson.fromJson(jsonReader, ConfigLoader.class);
-                    if (INSTANCE == null) {
-                        throw new JsonSyntaxException("Parsed configuration is null.");
-                    }
-                }
+                VoidMiners.LOGGER.info("Configuration file is missing keys. Merging the current file with a new one to preserve changed settings.");
+                mergeDefaultConfig(file, gson);
             }
-        } catch (JsonSyntaxException | IOException e) {
+        } catch (JsonSyntaxException e) {
             VoidMiners.LOGGER.error("Invalid configuration file. Regenerating default config.");
             saveDefaultConfig(file, gson);
         }
@@ -133,6 +131,60 @@ public class ConfigLoader {
             VoidMiners.LOGGER.info("Default configuration file created successfully.");
         } catch (IOException e) {
             throw new RuntimeException("Failed to create default configuration file.", e);
+        }
+    }
+
+    private void mergeDefaultConfig(File file, Gson gson) {
+        try {
+            String existingContent = new String(readAllBytes(file.toPath()));
+
+            JsonObject existingConfig = gson.fromJson(existingContent, JsonObject.class);
+
+            // Create default config JSON from a fresh ConfigLoader instance
+            StringWriter defaultConfigWriter = new StringWriter();
+            gson.toJson(new ConfigLoader(), defaultConfigWriter);
+            JsonObject defaultConfig = gson.fromJson(defaultConfigWriter.toString(), JsonObject.class);
+
+            // Merge default config into existing config, only adding missing keys
+            mergeJsonObjects(existingConfig, defaultConfig);
+
+            // Convert merged config back to JSON string
+            String mergedJson = gson.toJson(existingConfig);
+
+            INSTANCE = gson.fromJson(mergedJson, ConfigLoader.class);
+
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(mergedJson);
+            }
+
+            VoidMiners.LOGGER.info("Merged configuration file successfully.");
+        } catch (IOException | JsonSyntaxException e) {
+            VoidMiners.LOGGER.error("Failed to merge, regenerating default config.");
+            saveDefaultConfig(file, gson);
+        }
+    }
+
+    private void mergeJsonObjects(JsonObject target, JsonObject source) {
+        for (Map.Entry<String, JsonElement> entry : source.entrySet()) {
+            String key = entry.getKey();
+            JsonElement value = entry.getValue();
+
+            if (value.isJsonObject()) {
+                // If the value is a nested object, recursively merge
+                JsonObject nestedTarget = target.has(key) && target.get(key).isJsonObject()
+                        ? target.getAsJsonObject(key)
+                        : null;
+                if (nestedTarget == null) {
+                    nestedTarget = new JsonObject();
+                    target.add(key, nestedTarget);
+                }
+                mergeJsonObjects(nestedTarget, value.getAsJsonObject());
+            } else {
+                // For non-object values, only add the value if it's missing in the target
+                if (!target.has(key)) {
+                    target.add(key, value);
+                }
+            }
         }
     }
 
