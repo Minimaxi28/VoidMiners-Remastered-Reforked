@@ -231,10 +231,11 @@ public class ModRecipeProvider extends RecipeProvider {
                         CrystalSet.ULTIMATE.FRAME.get(),
                         1
                 )
-                .pattern("O O")
-                .pattern(" N ")
+                .pattern("BOB")
                 .pattern("OFO")
-                .define('O', CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get())
+                .pattern("BNB")
+                .define('B', CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get())
+                .define('O', Blocks.OBSIDIAN)
                 .define('N', Items.NETHER_STAR)
                 .define('F', CrystalSet.ROSARIUM.FRAME.get())
                 .unlockedBy("hasItem", has(CrystalSet.ROSARIUM.FRAME.get()))

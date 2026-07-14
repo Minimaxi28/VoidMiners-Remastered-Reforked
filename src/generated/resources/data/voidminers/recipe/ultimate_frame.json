@@ -2,6 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
+    "B": {
+      "item": "voidminers:ultimate_block"
+    },
     "F": {
       "item": "voidminers:rosarium_frame"
     },
@@ -9,13 +12,13 @@
       "item": "minecraft:nether_star"
     },
     "O": {
-      "item": "voidminers:ultimate_block"
+      "item": "minecraft:obsidian"
     }
   },
   "pattern": [
-    "O O",
-    " N ",
-    "OFO"
+    "BOB",
+    "OFO",
+    "BNB"
   ],
   "result": {
     "count": 1,

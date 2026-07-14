@@ -1,8 +1,13 @@
 package nadiendev.voidminers.init;
 
 import nadiendev.voidminers.VoidMiners;
+import nadiendev.voidminers.world.block.ColoredBlock;
+import nadiendev.voidminers.world.block.ColoredControllerBaseBlock;
+import nadiendev.voidminers.world.block.ColoredModifierBlock;
 import nadiendev.voidminers.world.block.ControllerBaseBlock;
 import nadiendev.voidminers.world.block.ModifierBlock;
+import nadiendev.voidminers.util.CustomColorUtil;
+import nadiendev.voidminers.world.item.ColoredItem;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -32,11 +37,12 @@ public class CrystalSet {
     public final DeferredHolder<Block, ? extends Block> SPEED_MOD;
     public final DeferredHolder<Block, ? extends Block> ENERGY_MOD;
     public final DeferredHolder<Block, ? extends Block> ITEM_MOD;
+    public final CustomColorUtil color;
 
-    CrystalSet(String name, DeferredHolder<Item, Item> crystal, DeferredHolder<Block, Block> crystalBlock, 
-               DeferredHolder<Block, ? extends Block> minerController, DeferredHolder<Block, Block> frame, 
-               DeferredHolder<Block, ? extends Block> energyMod, DeferredHolder<Block, ? extends Block> speedMod, 
-               DeferredHolder<Block, ? extends Block> itemMod) {
+    CrystalSet(String name, DeferredHolder<Item, Item> crystal, DeferredHolder<Block, Block> crystalBlock,
+               DeferredHolder<Block, ? extends Block> minerController, DeferredHolder<Block, Block> frame,
+               DeferredHolder<Block, ? extends Block> energyMod, DeferredHolder<Block, ? extends Block> speedMod,
+               DeferredHolder<Block, ? extends Block> itemMod, CustomColorUtil color) {
         this.name = name;
         CRYSTAL = crystal;
         CRYSTAL_BLOCK = crystalBlock;
@@ -45,70 +51,80 @@ public class CrystalSet {
         SPEED_MOD = speedMod;
         ENERGY_MOD = energyMod;
         ITEM_MOD = itemMod;
+        this.color = color;
     }
 
-    public static DeferredHolder<Item, Item> fastCreateItem(String name, Rarity rarity) {
-        return ModItems.ITEMS.register(name, () -> new Item(new Item.Properties().rarity(rarity)));
+    public static DeferredHolder<Item, Item> fastCreateItem(String name, Rarity rarity, CustomColorUtil color) {
+        return ModItems.ITEMS.register(name, () -> new ColoredItem(
+                new Item.Properties().rarity(rarity), color
+        ));
     }
 
-    public static DeferredHolder<Block, Block> fastCreateBlock(String name, float hardness, float resistance, Rarity rarity) {
-        return ModBlocks.registerBlock(name,
-                () -> new Block(
-                        BlockBehaviour.Properties.of()
-                                .strength(hardness, resistance)
-                                .requiresCorrectToolForDrops()
-                ),
-                rarity
-        );
-    }
-
-    public static DeferredHolder<Block, ModifierBlock> fastCreateModifier(String name, float hardness, float resistance, Rarity rarity, ModifierType type) {
-        return ModBlocks.registerBlock(name + "_" + type.type + "_modifier",
-                () -> new ModifierBlock(
+    public static DeferredHolder<Block, Block> fastCreateBlock(String name, float hardness, float resistance, Rarity rarity, CustomColorUtil color) {
+        return ModBlocks.registerColoredBlock(name,
+                () -> new ColoredBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
                                 .requiresCorrectToolForDrops(),
-                        name
+                        color
                 ),
-                rarity
+                rarity,
+                color
         );
     }
 
-    public static DeferredHolder<Block, ControllerBaseBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure) {
-        return ModBlocks.registerBlock(name + "_miner",
-                () -> new ControllerBaseBlock(
+    public static DeferredHolder<Block, ModifierBlock> fastCreateModifier(String name, float hardness, float resistance, Rarity rarity, ModifierType type, CustomColorUtil color) {
+        return ModBlocks.registerColoredBlock(name + "_" + type.type + "_modifier",
+                () -> new ColoredModifierBlock(
+                        BlockBehaviour.Properties.of()
+                                .strength(hardness, resistance)
+                                .requiresCorrectToolForDrops(),
+                        name,
+                        color
+                ),
+                rarity,
+                color
+        );
+    }
+
+    public static DeferredHolder<Block, ControllerBaseBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure, CustomColorUtil color) {
+        return ModBlocks.registerColoredBlock(name + "_miner",
+                () -> new ColoredControllerBaseBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
                                 .requiresCorrectToolForDrops(),
                         structure,
-                        name
+                        name,
+                        color
                 ),
-                rarity
+                rarity,
+                color
         );
     }
 
     public static void initSets() {
-        RUBETINE = createSet("rubetine", ModRarities.RUBETINE);
-        AURANTIUM = createSet("aurantium", ModRarities.AURANTIUM);
-        CITRINETINE = createSet("citrinetine", ModRarities.CITRINETINE);
-        VERDIUM = createSet("verdium", ModRarities.VERDIUM);
-        AZURINE = createSet("azurine", ModRarities.AZURINE);
-        CAERIUM = createSet("caerium", ModRarities.CAERIUM);
-        AMETHYSTINE = createSet("amethystine", ModRarities.AMETHYSTINE);
-        ROSARIUM = createSet("rosarium", ModRarities.ROSARIUM);
-        ULTIMATE = createSet("ultimate", ModRarities.ULTIMATE);
+        RUBETINE = createSet("rubetine", ModRarities.RUBETINE, ModRarities.RUBETINE_COLOR);
+        AURANTIUM = createSet("aurantium", ModRarities.AURANTIUM, ModRarities.AURANTIUM_COLOR);
+        CITRINETINE = createSet("citrinetine", ModRarities.CITRINETINE, ModRarities.CITRINETINE_COLOR);
+        VERDIUM = createSet("verdium", ModRarities.VERDIUM, ModRarities.VERDIUM_COLOR);
+        AZURINE = createSet("azurine", ModRarities.AZURINE, ModRarities.AZURINE_COLOR);
+        CAERIUM = createSet("caerium", ModRarities.CAERIUM, ModRarities.CAERIUM_COLOR);
+        AMETHYSTINE = createSet("amethystine", ModRarities.AMETHYSTINE, ModRarities.AMETHYSTINE_COLOR);
+        ROSARIUM = createSet("rosarium", ModRarities.ROSARIUM, ModRarities.ROSARIUM_COLOR);
+        ULTIMATE = createSet("ultimate", ModRarities.ULTIMATE, ModRarities.ULTIMATE_COLOR);
     }
 
-    public static CrystalSet createSet(String name, Rarity rarity) {
+    public static CrystalSet createSet(String name, Rarity rarity, CustomColorUtil color) {
         return new CrystalSet(
                 name,
-                name.equals("ultimate") ? null : fastCreateItem(name, rarity),
-                fastCreateBlock(name + "_block", 10, 5, rarity),
-                fastCreateController(name, 10, 50, rarity, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, name)),
-                fastCreateBlock(name + "_frame", 10, 50, rarity),
-                fastCreateModifier(name, 10, 50, rarity, ModifierType.ENERGY),
-                fastCreateModifier(name, 10, 50, rarity, ModifierType.SPEED),
-                fastCreateModifier(name, 10, 50, rarity, ModifierType.ITEM)
+                name.equals("ultimate") ? null : fastCreateItem(name, rarity, color),
+                fastCreateBlock(name + "_block", 10, 5, rarity, color),
+                fastCreateController(name, 10, 50, rarity, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, name), color),
+                fastCreateBlock(name + "_frame", 10, 50, rarity, color),
+                fastCreateModifier(name, 10, 50, rarity, ModifierType.ENERGY, color),
+                fastCreateModifier(name, 10, 50, rarity, ModifierType.SPEED, color),
+                fastCreateModifier(name, 10, 50, rarity, ModifierType.ITEM, color),
+                color
         );
     }
 

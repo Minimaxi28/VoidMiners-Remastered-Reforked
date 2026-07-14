@@ -23,7 +23,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
     public static final DeferredItem<Item> MAX_STORAGE_UPGRADE_T1 = ITEMS.register("max_storage_upgrade_t1",
-            () -> new Item(new Item.Properties().rarity(Rarity.EPIC)) {
+            () -> new Item(new Item.Properties().rarity(Rarity.UNCOMMON)) {
                 @Override
                 public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
                     tooltipComponents.add(Component.translatable("tooltip.voidminers.max_storage_upgrades"));
@@ -31,7 +31,7 @@ public class ModItems {
                 }
             });
     public static final DeferredItem<Item> MAX_STORAGE_UPGRADE_T2 = ITEMS.register("max_storage_upgrade_t2",
-            () -> new Item(new Item.Properties().rarity(Rarity.EPIC)) {
+            () -> new Item(new Item.Properties().rarity(Rarity.RARE)) {
                 @Override
                 public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
                     tooltipComponents.add(Component.translatable("tooltip.voidminers.max_storage_upgrades"));
