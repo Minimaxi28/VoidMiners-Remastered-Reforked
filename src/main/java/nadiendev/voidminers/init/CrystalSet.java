@@ -80,7 +80,8 @@ public class CrystalSet {
                                 .strength(hardness, resistance)
                                 .requiresCorrectToolForDrops(),
                         name,
-                        color
+                        color,
+                        type
                 ),
                 rarity,
                 color

@@ -87,11 +87,12 @@
   "tooltip.voidminers.controller.not_active": "Miner is assembled correctly, but is not active.\nMake sure that the miner can see the void / bedrock!\nThe distance between bedrock and miner does NOT matter, only that the center block can see bedrock!",
   "tooltip.voidminers.controller.not_working": "Miner is not working correctly!\nCheck if the miner has at least 1 empty slot, and that the required energy is smaller than the total energy storage",
   "tooltip.voidminers.controller.working": "Miner is working correctly.",
-  "tooltip.voidminers.energy": "Energy Modifier: %dx",
-  "tooltip.voidminers.item": "Item Amount Modifier: %dx",
+  "tooltip.voidminers.energy": "Energy Consumption: %s%%",
+  "tooltip.voidminers.item": "Item Multiplier: %s%%",
   "tooltip.voidminers.max_storage_upgrades": "Right-click a miner with this upgrade to apply it.\nIncreases the miner's output inventory by +%s slots.\nOnly the highest installed tier is applied\nNon-cumulative.\nConsumed on use.",
-  "tooltip.voidminers.speed": "Duration Modifier: %dx",
+  "tooltip.voidminers.speed": "Mining Speed: %s%%",
   "tooltip.voidminers.structure.weight": "Weight: %d",
-  "tooltip.voidminerscreative_only": "Creative Only",
+  "tooltip.voidminers.structure_helper.creative_only": "Creative Only",
+  "tooltip.voidminers.structure_helper.instructions": "Sneak + right-click on a Miner to complete it.\nBlocks in the way will be voided",
   "voidminers.itemGroup.items": "Items"
 }
