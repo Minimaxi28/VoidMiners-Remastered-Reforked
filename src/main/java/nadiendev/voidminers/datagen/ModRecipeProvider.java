@@ -94,6 +94,11 @@ public class ModRecipeProvider extends RecipeProvider {
         for (int i = 0; i < allSets.size(); i++) {
             CrystalSet set = allSets.get(i);
 
+            // Skip sets without crystals (like ultimate set)
+            if (set.CRYSTAL == null) {
+                continue;
+            }
+
             ShapedRecipeBuilder.shaped(
                     RecipeCategory.MISC,
                     set.MINER_CONTROLLER.get(),
@@ -191,6 +196,91 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(set.CRYSTAL_BLOCK.get()))
                 .save(pWriter, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, set.name + "_crystal_from_block"));
         }
+
+        // Custom ultimate recipes (no standalone crystal item available)
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        CrystalSet.ULTIMATE.MINER_CONTROLLER.get(),
+                        1
+                )
+                .pattern("GGG")
+                .pattern("GCG")
+                .pattern("BOB")
+                .define('G', Items.GLASS)
+                .define('B', CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get())
+                .define('O', Blocks.OBSIDIAN)
+                .define('C', CrystalSet.ROSARIUM.MINER_CONTROLLER.get())
+                .unlockedBy("hasItem", has(CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get(),
+                        1
+                )
+                .pattern("RRR")
+                .pattern("RNR")
+                .pattern("RRR")
+                .define('R', CrystalSet.ROSARIUM.CRYSTAL_BLOCK.get())
+                .define('N', Items.NETHER_STAR)
+                .unlockedBy("hasItem", has(CrystalSet.ROSARIUM.CRYSTAL_BLOCK.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        CrystalSet.ULTIMATE.FRAME.get(),
+                        1
+                )
+                .pattern("O O")
+                .pattern(" N ")
+                .pattern("OFO")
+                .define('O', CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get())
+                .define('N', Items.NETHER_STAR)
+                .define('F', CrystalSet.ROSARIUM.FRAME.get())
+                .unlockedBy("hasItem", has(CrystalSet.ROSARIUM.FRAME.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        CrystalSet.ULTIMATE.SPEED_MOD.get(),
+                        1
+                )
+                .pattern("CcC")
+                .pattern("cMc")
+                .pattern("CcC")
+                .define('C', CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get())
+                .define('c', Items.SUGAR)
+                .define('M', CrystalSet.ROSARIUM.SPEED_MOD.get())
+                .unlockedBy("hasItem", has(CrystalSet.ROSARIUM.SPEED_MOD.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        CrystalSet.ULTIMATE.ENERGY_MOD.get(),
+                        1
+                )
+                .pattern("CcC")
+                .pattern("cMc")
+                .pattern("CcC")
+                .define('C', CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get())
+                .define('c', Items.REDSTONE)
+                .define('M', CrystalSet.ROSARIUM.ENERGY_MOD.get())
+                .unlockedBy("hasItem", has(CrystalSet.ROSARIUM.ENERGY_MOD.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        CrystalSet.ULTIMATE.ITEM_MOD.get(),
+                        1
+                )
+                .pattern("CcC")
+                .pattern("cMc")
+                .pattern("CcC")
+                .define('C', CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get())
+                .define('c', Items.DIAMOND)
+                .define('M', CrystalSet.ROSARIUM.ITEM_MOD.get())
+                .unlockedBy("hasItem", has(CrystalSet.ROSARIUM.ITEM_MOD.get()))
+                .save(pWriter);
 
         List<WeightedStack> OVERWORLD = List.of(
             new WeightedStack(

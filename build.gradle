@@ -69,14 +69,15 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-    
-   maven {
-        url = "https://maven.latvian.dev/releases"
-        content {
-            includeGroup "dev.latvian.mods"
-            includeGroup "dev.latvian.apps"
-        }
-    } 
+
+    maven {
+        name = "latviandevReleases"
+        url = uri("https://maven.latvian.dev/releases")
+    }
+
+    maven {
+        url 'https://jitpack.io'
+    }
 }  
 
 dependencies {

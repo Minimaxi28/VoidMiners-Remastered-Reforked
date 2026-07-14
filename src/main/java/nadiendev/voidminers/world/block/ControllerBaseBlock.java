@@ -59,7 +59,7 @@ public class ControllerBaseBlock extends BaseTransparentBlock implements EntityB
         }
 
         if (pPlayer.isCrouching()) {
-            if (blockEntity != null) {
+            if (blockEntity != null && !blockEntity.foundStructure) {
                 blockEntity.updateShowStructure();
             }
             return InteractionResult.CONSUME;

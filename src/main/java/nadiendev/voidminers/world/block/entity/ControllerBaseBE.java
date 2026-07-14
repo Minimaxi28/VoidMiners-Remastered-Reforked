@@ -235,6 +235,10 @@ public class ControllerBaseBE extends BlockEntity {
         checkStructure(pLevel, pPos);
 
         active = foundStructure && hasViewOnBedrockOrVoid(pPos);
+        if (foundStructure) {
+            updateShowStructure();
+        }
+
         if (level != null) {
             level.sendBlockUpdated(pPos, getBlockState(), getBlockState(), 3);
         }

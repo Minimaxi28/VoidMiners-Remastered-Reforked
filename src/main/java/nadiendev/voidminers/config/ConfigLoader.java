@@ -19,7 +19,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 public class ConfigLoader {
-    public static final String CONFIG_FILE = "void-miners.json5";
+    public static final String CONFIG_FILE = "voidminers.json5";
     private static ConfigLoader INSTANCE = new ConfigLoader();
 
     private ConfigLoader() {}
@@ -33,62 +33,69 @@ public class ConfigLoader {
 
     @Expose
     public Map<String, MinerConfig> MINER_CONFIGS = MapUtil.of(
-        MapUtil.createEntry("rubetine", new MinerConfig(1000000, 1000, 300,
-            MapUtil.of(
-                MapUtil.createEntry("energy", new ModifierConfig(0.9f, 1, 1)),
-                MapUtil.createEntry("speed", new ModifierConfig(1.1f, 0.95f, 1)),
-                MapUtil.createEntry("item", new ModifierConfig(1.2f, 1, 1.75f))
-            )
-        )),
-        MapUtil.createEntry("aurantium", new MinerConfig(2000000, 900, 350,
-            MapUtil.of(
-                MapUtil.createEntry("energy", new ModifierConfig(0.9f, 1, 1)),
-                MapUtil.createEntry("speed", new ModifierConfig(1.1f, 0.95f, 1)),
-                MapUtil.createEntry("item", new ModifierConfig(1.2f, 1, 1.75f))
-            )
-        )),
-        MapUtil.createEntry("citrinetine", new MinerConfig(3000000,800, 400,
-            MapUtil.of(
-                MapUtil.createEntry("energy", new ModifierConfig(0.9f, 1, 1)),
-                MapUtil.createEntry("speed", new ModifierConfig(1.1f, 0.95f, 1)),
-                MapUtil.createEntry("item", new ModifierConfig(1.2f, 1, 1.75f))
-            )
-        )),
-        MapUtil.createEntry("verdium", new MinerConfig(4000000,700, 450,
-            MapUtil.of(
-                MapUtil.createEntry("energy", new ModifierConfig(0.9f, 1, 1)),
-                MapUtil.createEntry("speed", new ModifierConfig(1.1f, 0.95f, 1)),
-                MapUtil.createEntry("item", new ModifierConfig(1.2f, 1, 1.75f))
-            )
-        )),
-        MapUtil.createEntry("azurine", new MinerConfig(5000000,600, 500,
-            MapUtil.of(
-                MapUtil.createEntry("energy", new ModifierConfig(0.9f, 1, 1)),
-                MapUtil.createEntry("speed", new ModifierConfig(1.1f, 0.95f, 1)),
-                MapUtil.createEntry("item", new ModifierConfig(1.2f, 1, 1.75f))
-            )
-        )),
-        MapUtil.createEntry("caerium", new MinerConfig(6000000,500, 550,
-            MapUtil.of(
-                MapUtil.createEntry("energy", new ModifierConfig(0.9f, 1, 1)),
-                MapUtil.createEntry("speed", new ModifierConfig(1.1f, 0.95f, 1)),
-                MapUtil.createEntry("item", new ModifierConfig(1.2f, 1, 1.75f))
-            )
-        )),
-        MapUtil.createEntry("amethystine", new MinerConfig(7000000,400, 600,
-            MapUtil.of(
-                MapUtil.createEntry("energy", new ModifierConfig(0.9f, 1, 1)),
-                MapUtil.createEntry("speed", new ModifierConfig(1.1f, 0.95f, 1)),
-                MapUtil.createEntry("item", new ModifierConfig(1.2f, 1, 1.75f))
-            )
-        )),
-        MapUtil.createEntry("rosarium", new MinerConfig(8000000,300, 650,
-            MapUtil.of(
-                MapUtil.createEntry("energy", new ModifierConfig(0.9f, 1, 1)),
-                MapUtil.createEntry("speed", new ModifierConfig(1.1f, 0.95f, 1)),
-                MapUtil.createEntry("item", new ModifierConfig(1.2f, 1, 1.75f))
-            )
-        ))
+            MapUtil.createEntry("rubetine", new MinerConfig(10000000, 1000, 300,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.85f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.10f, 0.9f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(1.50f, 1.00f, 1.50f))
+                    )
+            )),
+            MapUtil.createEntry("aurantium", new MinerConfig(25000000, 900, 350,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.83f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.12f, 0.88f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(1.55f, 1.00f, 1.60f))
+                    )
+            )),
+            MapUtil.createEntry("citrinetine", new MinerConfig(50000000,800, 400,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.81f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.14f, 0.86f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(1.60f, 1.00f, 1.70f))
+                    )
+            )),
+            MapUtil.createEntry("verdium", new MinerConfig(100000000,700, 450,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.79f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.16f, 0.84f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(1.65f, 1.00f, 1.80f))
+                    )
+            )),
+            MapUtil.createEntry("azurine", new MinerConfig(250000000,600, 500,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.77f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.18f, 0.82f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(1.70f, 1.00f, 1.90f))
+                    )
+            )),
+            MapUtil.createEntry("caerium", new MinerConfig(500000000,500, 550,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.75f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.20f, 0.8f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(1.75f, 1.00f, 2.00f))
+                    )
+            )),
+            MapUtil.createEntry("amethystine", new MinerConfig(750000000,400, 600,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.73f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.22f, 0.78f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(1.80f, 1.00f, 2.10f))
+                    )
+            )),
+            MapUtil.createEntry("rosarium", new MinerConfig(1000000000,300, 650,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.71f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.24f, 0.76f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(1.85f, 1.00f, 2.20f))
+                    )
+            )),
+            MapUtil.createEntry("ultimate", new MinerConfig(2147483647,200, 700,
+                    MapUtil.of(
+                            MapUtil.createEntry("energy", new ModifierConfig(0.65f, 1.00f, 1.00f)),
+                            MapUtil.createEntry("speed", new ModifierConfig(1.30f, 0.7f, 1.00f)),
+                            MapUtil.createEntry("item", new ModifierConfig(2.00f, 1.00f, 2.50f))
+                    )
+            ))
     );
 
     public void load() {

@@ -64,6 +64,11 @@ public class MiscUtil {
             "rosarium",
             0xFFFF00FF
         );
+
+        colorMap.put(
+                "ultimate",
+                0xFFD700FF
+        );
     }
 
 

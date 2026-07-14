@@ -22,6 +22,7 @@ public class CrystalSet {
     public static CrystalSet CAERIUM;
     public static CrystalSet AMETHYSTINE;
     public static CrystalSet ROSARIUM;
+    public static CrystalSet ULTIMATE;
 
     public final String name;
     public final DeferredHolder<Item, Item> CRYSTAL;
@@ -52,37 +53,37 @@ public class CrystalSet {
 
     public static DeferredHolder<Block, Block> fastCreateBlock(String name, float hardness, float resistance, Rarity rarity) {
         return ModBlocks.registerBlock(name,
-            () -> new Block(
-                BlockBehaviour.Properties.of()
-                    .strength(hardness, resistance)
-                    .requiresCorrectToolForDrops()
-            ),
-            rarity
+                () -> new Block(
+                        BlockBehaviour.Properties.of()
+                                .strength(hardness, resistance)
+                                .requiresCorrectToolForDrops()
+                ),
+                rarity
         );
     }
 
     public static DeferredHolder<Block, ModifierBlock> fastCreateModifier(String name, float hardness, float resistance, Rarity rarity, ModifierType type) {
         return ModBlocks.registerBlock(name + "_" + type.type + "_modifier",
-            () -> new ModifierBlock(
-                BlockBehaviour.Properties.of()
-                    .strength(hardness, resistance)
-                    .requiresCorrectToolForDrops(),
-                name
-            ),
-            rarity
+                () -> new ModifierBlock(
+                        BlockBehaviour.Properties.of()
+                                .strength(hardness, resistance)
+                                .requiresCorrectToolForDrops(),
+                        name
+                ),
+                rarity
         );
     }
 
     public static DeferredHolder<Block, ControllerBaseBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure) {
         return ModBlocks.registerBlock(name + "_miner",
-            () -> new ControllerBaseBlock(
-                BlockBehaviour.Properties.of()
-                    .strength(hardness, resistance)
-                    .requiresCorrectToolForDrops(),
-                structure,
-                name
-            ),
-            rarity
+                () -> new ControllerBaseBlock(
+                        BlockBehaviour.Properties.of()
+                                .strength(hardness, resistance)
+                                .requiresCorrectToolForDrops(),
+                        structure,
+                        name
+                ),
+                rarity
         );
     }
 
@@ -95,18 +96,19 @@ public class CrystalSet {
         CAERIUM = createSet("caerium", ModRarities.CAERIUM);
         AMETHYSTINE = createSet("amethystine", ModRarities.AMETHYSTINE);
         ROSARIUM = createSet("rosarium", ModRarities.ROSARIUM);
+        ULTIMATE = createSet("ultimate", ModRarities.ULTIMATE);
     }
 
     public static CrystalSet createSet(String name, Rarity rarity) {
         return new CrystalSet(
-            name,
-            fastCreateItem(name, rarity),
-            fastCreateBlock(name + "_block", 10, 5, rarity),
-            fastCreateController(name, 10, 50, rarity, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, name)),
-            fastCreateBlock(name + "_frame", 10, 50, rarity),
-            fastCreateModifier(name, 10, 50, rarity, ModifierType.ENERGY),
-            fastCreateModifier(name, 10, 50, rarity, ModifierType.SPEED),
-            fastCreateModifier(name, 10, 50, rarity, ModifierType.ITEM)
+                name,
+                name.equals("ultimate") ? null : fastCreateItem(name, rarity),
+                fastCreateBlock(name + "_block", 10, 5, rarity),
+                fastCreateController(name, 10, 50, rarity, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, name)),
+                fastCreateBlock(name + "_frame", 10, 50, rarity),
+                fastCreateModifier(name, 10, 50, rarity, ModifierType.ENERGY),
+                fastCreateModifier(name, 10, 50, rarity, ModifierType.SPEED),
+                fastCreateModifier(name, 10, 50, rarity, ModifierType.ITEM)
         );
     }
 
@@ -120,6 +122,7 @@ public class CrystalSet {
         sets.add(CAERIUM);
         sets.add(AMETHYSTINE);
         sets.add(ROSARIUM);
+        sets.add(ULTIMATE);
         return sets;
     }
 

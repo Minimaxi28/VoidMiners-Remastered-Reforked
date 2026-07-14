@@ -643,6 +643,140 @@ public class MinerMultiblocks {
         )
     );
 
+    public static final SimpleMultiBlockAislePatternBuilder ULTIMATE = createAccessiblePattern(
+        VoidMiners.MODID + ":ultimate",
+        List.of(
+            List.of(
+            "           ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "     *     ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "           "
+            ),
+            List.of(
+                "           ",
+                "           ",
+                "           ",
+                "     F     ",
+                "     F     ",
+                "   FF FF   ",
+                "     F     ",
+                "     F     ",
+                "           ",
+                "           ",
+                "           "
+            ),
+            List.of(
+                "           ",
+                "           ",
+                "     F     ",
+                "           ",
+                "           ",
+                "  F     F  ",
+                "           ",
+                "           ",
+                "     F     ",
+                "           ",
+                "           "
+            ),
+            List.of(
+                "           ",
+                "     F     ",
+                "           ",
+                "           ",
+                "           ",
+                " F       F ",
+                "           ",
+                "           ",
+                "           ",
+                "     F     ",
+                "           "
+            ),
+            List.of(
+                "     F     ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "F         F",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "     F     "
+            ),
+            List.of(
+                "     F     ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "F         F",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "     F     "
+            ),
+            List.of(
+                "     F     ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "F         F",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "     F     "
+            ),
+            List.of(
+                "   FFFFF   ",
+                "  FMMMMMF  ",
+                " FMPPPPPMF ",
+                "FMPPPPPPPMF",
+                "FMPPPPPPPMF",
+                "FMPPPPPPPMF",
+                "FMPPPPPPPMF",
+                "FMPPPPPPPMF",
+                " FMPPPPPMF ",
+                "  FMMMMMF  ",
+                "   FFFFF   "
+            ),
+            List.of(
+                " F       F ",
+                "F         F",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "           ",
+                "F         F",
+                " F       F "
+            )
+        ),
+        Map.of(
+            '*', a -> a.getState().is(CrystalSet.ULTIMATE.MINER_CONTROLLER.get()),
+            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_9),
+            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+        ),
+        Map.of(
+            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+            'F', CrystalSet.ULTIMATE.FRAME.get()::defaultBlockState,
+            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+        )
+    );
+
     public static SimpleMultiBlockAislePatternBuilder createAccessiblePattern(String structure, List<List<String>> stringPattern, Map<Character, Predicate<BlockInWorld>> lookup, Map<Character, Supplier<BlockState>> blockProvider) {
         SimpleMultiBlockAislePatternBuilder pattern = SimpleMultiBlockAislePatternBuilder.start();
         List<List<List<BlockState>>> blocks = new ArrayList<>();
@@ -711,6 +845,7 @@ public class MinerMultiblocks {
         MANAGER.register("caerium", CAERIUM.build());
         MANAGER.register("amethystine", AMETHYSTINE.build());
         MANAGER.register("rosarium", ROSARIUM.build());
+        MANAGER.register("ultimate", ULTIMATE.build());
         
         INITIALIZED = true;
         VoidMiners.LOGGER.info("MinerMultiblocks initialized successfully!");

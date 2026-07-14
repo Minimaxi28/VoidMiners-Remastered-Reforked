@@ -18,6 +18,13 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add(VoidMiners.MODID + ".itemGroup.items", "Items");
 
         this.add(ModItems.STRUCTURE_HELPER.get(), "Structure Helper");
+        this.add(ModItems.ULTIMATE_STELLAR_CORE.get(), "Ultimate Stellar Core");
+
+        this.add(ModItems.MAX_STORAGE_UPGRADE_T1.get(), "Storage Upgrade T1");
+        this.add(ModItems.MAX_STORAGE_UPGRADE_T2.get(), "Storage Upgrade T2");
+        this.add(ModItems.MAX_STORAGE_UPGRADE_T3.get(), "Storage Upgrade T3");
+
+        this.add("tooltip.voidminers.max_storage_upgrades", "Right-click a miner with this upgrade to apply it.\nIncreases the miner's output inventory by +%s slots.\nOnly the highest installed tier is applied\nNon-cumulative.\nConsumed on use.");
 
         this.add("gui." + VoidMiners.MODID + ".miner", "Tier %d Miner");
         this.add("gui." + VoidMiners.MODID + ".miners", "Miners");
@@ -45,19 +52,33 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add(ModBlocks.NULL_MOD.get(), "Null Modifier");
 
         for (CrystalSet set : CrystalSet.sets()) {
-            this.add(set.CRYSTAL.get(), cFL(set.name));
+            if (set.CRYSTAL != null) {
+                this.add(set.CRYSTAL.get(), cFL(set.name));
 
-            this.add(set.CRYSTAL_BLOCK.get(), cFL(set.name) + " Block");
+                this.add(set.CRYSTAL_BLOCK.get(), cFL(set.name) + " Block");
 
-            this.add(set.MINER_CONTROLLER.get(), cFL(set.name) + " Miner");
+                this.add(set.MINER_CONTROLLER.get(), cFL(set.name) + " Miner");
 
-            this.add(set.FRAME.get(), cFL(set.name) + " Frame");
+                this.add(set.FRAME.get(), cFL(set.name) + " Frame");
 
-            this.add(set.ENERGY_MOD.get(), cFL(set.name) + " Energy Modifier");
+                this.add(set.ENERGY_MOD.get(), cFL(set.name) + " Energy Modifier");
 
-            this.add(set.SPEED_MOD.get(), cFL(set.name) + " Speed Modifier");
+                this.add(set.SPEED_MOD.get(), cFL(set.name) + " Speed Modifier");
 
-            this.add(set.ITEM_MOD.get(), cFL(set.name) + " Item Modifier");
+                this.add(set.ITEM_MOD.get(), cFL(set.name) + " Item Modifier");
+            } else {
+                this.add(CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get(), cFL(CrystalSet.ULTIMATE.name) + " Block");
+
+                this.add(CrystalSet.ULTIMATE.MINER_CONTROLLER.get(), cFL(CrystalSet.ULTIMATE.name) + " Miner");
+
+                this.add(CrystalSet.ULTIMATE.FRAME.get(), cFL(CrystalSet.ULTIMATE.name) + " Frame");
+
+                this.add(CrystalSet.ULTIMATE.ENERGY_MOD.get(), cFL(CrystalSet.ULTIMATE.name) + " Energy Modifier");
+
+                this.add(CrystalSet.ULTIMATE.SPEED_MOD.get(), cFL(CrystalSet.ULTIMATE.name) + " Speed Modifier");
+
+                this.add(CrystalSet.ULTIMATE.ITEM_MOD.get(), cFL(CrystalSet.ULTIMATE.name) + " Item Modifier");
+            }
         }
 
         this.add("tooltip." + VoidMiners.MODID + ".energy", "Energy Modifier: %dx");
@@ -71,6 +92,13 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("minecraft.overworld", "Overworld");
         this.add("minecraft.the_nether", "The Nether");
         this.add("minecraft.the_end", "The End");
+
+        this.add("config.jade.plugin_voidminers.void_miner", "VoidMiners");
+        this.add("jade.voidminers.tier", "Tier: %s");
+        this.add("jade.voidminers.energy", "Energy: %s / %s FE");
+        this.add("jade.voidminers.status.working", "Status: Working");
+        this.add("jade.voidminers.status.idle", "Status: Idle");
+        this.add("jade.voidminers.progress", "Progress: %s%%");
     }
 
 

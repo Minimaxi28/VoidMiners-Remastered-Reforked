@@ -18,11 +18,16 @@ public class ModItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         simpleItem(ModItems.STRUCTURE_HELPER);
+        simpleItem(ModItems.ULTIMATE_STELLAR_CORE);
+
+        simpleItem(ModItems.MAX_STORAGE_UPGRADE_T1);
+        simpleItem(ModItems.MAX_STORAGE_UPGRADE_T2);
+        simpleItem(ModItems.MAX_STORAGE_UPGRADE_T3);
 
         for (CrystalSet set : CrystalSet.sets()) {
-            simpleItem(
-                set.CRYSTAL
-            );
+            if (set.CRYSTAL != null) {  // Add this check
+                simpleItem(set.CRYSTAL);
+            }
         }
     }
 
