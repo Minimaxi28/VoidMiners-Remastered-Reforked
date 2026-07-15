@@ -20,9 +20,9 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add(ModItems.STRUCTURE_HELPER.get(), "Structure Helper");
         this.add(ModItems.ULTIMATE_STELLAR_CORE.get(), "Ultimate Stellar Core");
 
-        this.add(ModItems.MAX_STORAGE_UPGRADE_T1.get(), "Storage Upgrade T1");
-        this.add(ModItems.MAX_STORAGE_UPGRADE_T2.get(), "Storage Upgrade T2");
-        this.add(ModItems.MAX_STORAGE_UPGRADE_T3.get(), "Storage Upgrade T3");
+        this.add(ModItems.MAX_STORAGE_UPGRADE_T1.get(), "Max Storage Upgrade T1");
+        this.add(ModItems.MAX_STORAGE_UPGRADE_T2.get(), "Max Storage Upgrade T2");
+        this.add(ModItems.MAX_STORAGE_UPGRADE_T3.get(), "Max Storage Upgrade T3");
 
         this.add("tooltip." + VoidMiners.MODID + ".max_storage_upgrades", "Right-click a miner with this upgrade to apply it.\nIncreases the miner's output inventory by +%s slots.\nOnly the highest installed tier is applied\nNon-cumulative.\nConsumed on use.");
 
@@ -90,7 +90,7 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip." + VoidMiners.MODID + ".item", "Item Multiplier: %s%%");
 
         this.add("tooltip." + VoidMiners.MODID + ".structure_helper.creative_only", "Creative Only");
-        this.add("tooltip." + VoidMiners.MODID + ".structure_helper.instructions", "Sneak + right-click on a Miner to complete it. Blocks in the way will be voided");
+        this.add("tooltip." + VoidMiners.MODID + ".structure_helper.instructions", "Sneak + right-click on a Miner to complete it.\nBlocks in the way will be voided");
 
         this.add("minecraft.overworld", "Overworld");
         this.add("minecraft.the_nether", "The Nether");

@@ -101,20 +101,20 @@ public class MinerRecipe implements Recipe<RecipeInput> {
                 ResourceKey.codec(Registries.DIMENSION).fieldOf("dimension").forGetter(recipe -> recipe.dimension)
             ).apply(instance, MinerRecipe::new)
         );
-        
+
         private static final MapCodec<MinerRecipe> KUBEJS_CODEC = RecordCodecBuilder.mapCodec(instance ->
-            instance.group(
-                ItemStack.CODEC.fieldOf("item").forGetter(recipe -> recipe.output.stack),
-                Codec.INT.optionalFieldOf("count", 1).forGetter(recipe -> recipe.output.stack.getCount()),
-                Codec.DOUBLE.optionalFieldOf("weight", 1.0).forGetter(recipe -> (double)recipe.output.weight),
-                Codec.INT.fieldOf("minTier").forGetter(recipe -> recipe.minTier),
-                Codec.BOOL.optionalFieldOf("allowHigherTiers", true).forGetter(recipe -> recipe.allowHigherTiers),
-                ResourceKey.codec(Registries.DIMENSION).optionalFieldOf("dimension", Level.OVERWORLD).forGetter(recipe -> recipe.dimension)
-            ).apply(instance, (item, count, weight, minTier, allowHigher, dim) -> {
-                ItemStack stack = item.copy();
-                stack.setCount(count);
-                return new MinerRecipe(new WeightedStack(stack, weight.floatValue()), minTier, allowHigher, dim);
-            })
+                instance.group(
+                        ItemStack.CODEC.fieldOf("item").forGetter(recipe -> recipe.output.stack),
+                        Codec.INT.optionalFieldOf("count", 1).forGetter(recipe -> recipe.output.stack.getCount()),
+                        Codec.STRING.optionalFieldOf("weight", "1.0").forGetter(recipe -> recipe.output.weight), // Now STRING
+                        Codec.INT.fieldOf("minTier").forGetter(recipe -> recipe.minTier),
+                        Codec.BOOL.optionalFieldOf("allowHigherTiers", true).forGetter(recipe -> recipe.allowHigherTiers),
+                        ResourceKey.codec(Registries.DIMENSION).optionalFieldOf("dimension", Level.OVERWORLD).forGetter(recipe -> recipe.dimension)
+                ).apply(instance, (item, count, weight, minTier, allowHigher, dim) -> {
+                    ItemStack stack = item.copy();
+                    stack.setCount(count);
+                    return new MinerRecipe(new WeightedStack(stack, weight), minTier, allowHigher, dim);
+                })
         );
         
         private static final MapCodec<MinerRecipe> COMBINED_CODEC = new MapCodec<MinerRecipe>() {
@@ -193,10 +193,18 @@ public class MinerRecipe implements Recipe<RecipeInput> {
         public static Builder builder(WeightedStack output, int minTier, boolean allowHigherTiers, ResourceKey<Level> dimension) {
             ResourceLocation itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(output.stack.getItem());
             ResourceLocation recipeId = ResourceLocation.fromNamespaceAndPath(
-                VoidMiners.MODID, 
-                dimension.location().getPath() + "/tier" + minTier + "_miner/" + itemId.getPath()
+                    VoidMiners.MODID,
+                    dimension.location().getPath() + "/tier" + minTier + "_miner/" + itemId.getPath()
             );
             return new Builder(output, minTier, allowHigherTiers, recipeId, dimension);
+        }
+
+        public static Builder builder(Item item, Number weight, int minTier, ResourceKey<Level> dimension) {
+            return builder(new WeightedStack(item, weight), minTier, dimension);
+        }
+
+        public static Builder builder(Item item, Number weight, int minTier, boolean allowHigherTiers, ResourceKey<Level> dimension) {
+            return builder(new WeightedStack(item, weight), minTier, allowHigherTiers, dimension);
         }
 
         @Override

@@ -10,7 +10,7 @@ public class ListUtil {
         float totalWeight = 0;
 
         for (WeightedStack item : items) {
-            totalWeight += item.weight;
+            totalWeight += item.getWeightAsFloat();
         }
 
         return totalWeight;

@@ -104,37 +104,24 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
             && mouseY <= y2;
     }
 
-    public static String customFormat(float number) {
-        String numberStr = Float.toString(number);
-        String[] parts = numberStr.split("\\.");
+    public static String customFormat(String weightStr) {
+        try {
+            double number = Double.parseDouble(weightStr);
 
-        String decimalPart = parts.length > 1 ? parts[1] : "";
-
-        int lastNumber = 0;
-        int checkNumber = 0;
-        boolean checkNext = true;
-        int zeroCount = 0;
-
-        for (int i = 0; i < decimalPart.length(); i++) {
-            if (decimalPart.charAt(i) != '0') {
-                int currentCheck = Integer.parseInt(String.valueOf(decimalPart.charAt(i)));
-                if (checkNext) {
-                    lastNumber = currentCheck;
-                    checkNext = false;
-                } else {
-                    checkNumber = currentCheck;
-                    break;
-                }
-            } else {
-                zeroCount++;
+            if (number == Math.floor(number)) {
+                return String.valueOf((int) number);
             }
-        }
 
-        if (checkNumber >= 6) {
-            lastNumber++;
-        }
+            String formatted = String.format("%.100f", number);
 
-        return parts[0] + "." + "0".repeat(Math.max(0, zeroCount)) + lastNumber;
+            formatted = formatted.replaceAll("0*$", "");
+
+            formatted = formatted.replaceAll("\\.$", "");
+
+            return formatted;
+        } catch (NumberFormatException e) {
+            return weightStr;
+        }
     }
 
     public static String getDimensionIcon(ResourceKey<Level> dimension) {

@@ -114,7 +114,7 @@ public class ConfigLoader {
                 VoidMiners.LOGGER.info("Configuration file does not exist. Creating a new one.");
                 saveDefaultConfig(file, gson);
             } else {
-                VoidMiners.LOGGER.info("Configuration file is missing keys. Merging the current file with a new one to preserve changed settings.");
+                VoidMiners.LOGGER.info("Configuration file exists. Merging the current file with a new one configurations exist to preserve changed configurations.");
                 mergeDefaultConfig(file, gson);
             }
         } catch (JsonSyntaxException e) {
