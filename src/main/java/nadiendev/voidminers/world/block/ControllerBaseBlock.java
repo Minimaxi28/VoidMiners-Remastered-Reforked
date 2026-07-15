@@ -3,8 +3,12 @@ package nadiendev.voidminers.world.block;
 import nadiendev.voidminers.world.block.entity.ControllerBaseBE;
 import nadiendev.voidminers.util.ShapeUtil;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -115,5 +119,40 @@ public class ControllerBaseBlock extends BaseTransparentBlock implements EntityB
             ShapeUtil.shapeFromDimension(1, 0f, 7, 6, 15f, 2),
             ShapeUtil.shapeFromDimension(9, 0f, 7, 6, 15f, 2)
         );
+    }
+
+    @Override
+    protected void spawnDestroyParticles(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState) {
+        if (pLevel.isClientSide) {
+            RandomSource random = pLevel.random;
+
+            pLevel.playLocalSound(
+                    (double)pPos.getX() + 0.5D,
+                    (double)pPos.getY() + 0.5D,
+                    (double)pPos.getZ() + 0.5D,
+                    pState.getSoundType().getBreakSound(),
+                    SoundSource.BLOCKS,
+                    (pState.getSoundType().getVolume() + 1.0F) / 2.0F,
+                    pState.getSoundType().getPitch() * 0.8F,
+                    false
+            );
+
+            int particleCount = 48;
+            for (int i = 0; i < particleCount; i++) {
+                double d0 = (double)pPos.getX() + random.nextDouble();
+                double d1 = (double)pPos.getY() + random.nextDouble();
+                double d2 = (double)pPos.getZ() + random.nextDouble();
+                pLevel.addParticle(
+                        new BlockParticleOption(
+                                ParticleTypes.BLOCK,
+                                pState
+                        ),
+                        d0, d1, d2,
+                        (random.nextDouble() - 0.5D) * 0.5D,
+                        (random.nextDouble() - 0.5D) * 0.5D,
+                        (random.nextDouble() - 0.5D) * 0.5D
+                );
+            }
+        }
     }
 }
