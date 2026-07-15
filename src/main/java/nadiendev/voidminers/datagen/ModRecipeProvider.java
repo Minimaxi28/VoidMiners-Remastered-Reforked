@@ -3,6 +3,7 @@ package nadiendev.voidminers.datagen;
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.init.ModBlocks;
 import nadiendev.voidminers.init.CrystalSet;
+import nadiendev.voidminers.init.ModItems;
 import nadiendev.voidminers.server.recipe.MinerRecipe;
 import nadiendev.voidminers.server.recipe.WeightedStack;
 import net.minecraft.core.HolderLookup;
@@ -472,5 +473,69 @@ public class ModRecipeProvider extends RecipeProvider {
             7,
             Level.NETHER
         ).save(pWriter);
+
+        // Ultimate Stellar Core as miner output for rosarium (8) and ultimate tier (9)
+        MinerRecipe.Builder.builder(
+                new WeightedStack(
+                        ModItems.ULTIMATE_STELLAR_CORE.get(),
+                        0.000005f
+                ),
+                8,
+                false,
+                Level.END
+        ).save(pWriter);
+
+        MinerRecipe.Builder.builder(
+                new WeightedStack(
+                        ModItems.ULTIMATE_STELLAR_CORE.get(),
+                        1.0f
+                ),
+                9,
+                false,
+                Level.END
+        ).save(pWriter);
+
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        ModItems.MAX_STORAGE_UPGRADE_T1.get(),
+                        1
+                )
+                .pattern("GGG")
+                .pattern("GDG")
+                .pattern("GGG")
+                .define('D', Items.DIAMOND_BLOCK)
+                .define('G', CrystalSet.CITRINETINE.CRYSTAL.get())
+                .unlockedBy("hasItem", has(CrystalSet.CITRINETINE.CRYSTAL.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        ModItems.MAX_STORAGE_UPGRADE_T2.get(),
+                        1
+                )
+                .pattern("CTC")
+                .pattern("TST")
+                .pattern("CCC")
+                .define('S', Items.NETHERITE_BLOCK)
+                .define('T', ModItems.MAX_STORAGE_UPGRADE_T2.get())
+                .define('C', CrystalSet.CAERIUM.CRYSTAL.get())
+                .unlockedBy("hasItem", has(ModItems.MAX_STORAGE_UPGRADE_T2.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        ModItems.MAX_STORAGE_UPGRADE_T3.get(),
+                        1
+                )
+                .pattern("CTC")
+                .pattern("TST")
+                .pattern("CCC")
+                .define('S', Items.NETHER_STAR)
+                .define('T', ModItems.MAX_STORAGE_UPGRADE_T3.get())
+                .define('C', ModItems.ULTIMATE_STELLAR_CORE.get())
+                .unlockedBy("hasItem", has(ModItems.MAX_STORAGE_UPGRADE_T3.get()))
+                .save(pWriter);
+
     }
 }

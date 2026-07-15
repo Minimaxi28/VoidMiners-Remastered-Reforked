@@ -39,7 +39,9 @@ public class ModLanguageProvider extends LanguageProvider {
 
         this.add("tooltip." + VoidMiners.MODID + ".controller.not_active", "Miner is assembled correctly, but is not active.\nMake sure that the miner can see the void / bedrock!\nThe distance between bedrock and miner does NOT matter, only that the center block can see bedrock!");
 
-        this.add("tooltip." + VoidMiners.MODID + ".controller.missing_structure", "Miner is not assembled correctly, shift r-click the block for a guide. Total needed blocks: ");
+        this.add("tooltip." + VoidMiners.MODID + ".controller.missing_structure", "Miner is not assembled correctly, shift right-click the block for a guide. Total needed blocks: ");
+
+        this.add("tooltip." + VoidMiners.MODID + ".controller.dimension_not_ok", "This Miner has no recipes in this dimension!");
 
         this.add("tooltip." + VoidMiners.MODID + ".structure.weight", "Weight: %d");
 

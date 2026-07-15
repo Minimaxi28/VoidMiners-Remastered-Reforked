@@ -9,6 +9,7 @@ import nadiendev.voidminers.server.recipe.MinerRecipe;
 import nadiendev.voidminers.server.recipe.WeightedStack;
 import nadiendev.voidminers.util.ListUtil;
 import nadiendev.voidminers.util.MiscUtil;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -66,8 +67,10 @@ public class ControllerBaseBE extends BlockEntity {
     private ResourceLocation structure;
     private String name;
 
-    public boolean active;
-    public boolean working;
+    public boolean active = false;
+    public boolean working = false;
+
+    public boolean recipeDimensionCheckOK = false;
 
     
     public ControllerBaseBE(BlockPos pPos, BlockState pBlockState) {
@@ -100,6 +103,12 @@ public class ControllerBaseBE extends BlockEntity {
 
     public List<Component> getInteractionTooltip() {
         List<Component> toRet = new ArrayList<>();
+
+        if(!recipeDimensionCheckOK) {
+            return List.of(
+                    Component.translatable("tooltip." + VoidMiners.MODID + ".controller.dimension_not_ok").withStyle(ChatFormatting.RED)
+            );
+        }
 
         if(working) {
             return List.of(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.working"),
@@ -230,6 +239,11 @@ public class ControllerBaseBE extends BlockEntity {
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState, ResourceLocation structure, String name) {
 
+        // TODO check if this is laggy
+        recipeDimensionCheckOK = !allRecipes().isEmpty();
+
+        if (!recipeDimensionCheckOK) return;
+
         if (level != null && !ConfigLoader.getInstance().ALLOW_TICK_ACCELERATION_MINERS) {
             long gameTime = level.getGameTime();
             if (this.lastProcessedGameTime == gameTime) return;
@@ -243,7 +257,7 @@ public class ControllerBaseBE extends BlockEntity {
         checkStructure(level, pPos);
 
         active = foundStructure && hasViewOnBedrockOrVoid(pPos);
-        if (foundStructure) {
+        if (foundStructure && showStructure) {
             updateShowStructure();
         }
 
