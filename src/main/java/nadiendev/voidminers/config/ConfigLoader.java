@@ -34,6 +34,15 @@ public class ConfigLoader {
     public boolean ALLOW_TICK_ACCELERATION_MINERS = true;
 
     @Expose
+    public int UPGRADE_T1_SLOTS = 3;
+
+    @Expose
+    public int UPGRADE_T2_SLOTS = 9;
+
+    @Expose
+    public int UPGRADE_T3_SLOTS = 27;
+
+    @Expose
     public Map<String, MinerConfig> MINER_CONFIGS = MapUtil.of(
             MapUtil.createEntry("rubetine", new MinerConfig(10000000, 1000, 300,
                     MapUtil.of(

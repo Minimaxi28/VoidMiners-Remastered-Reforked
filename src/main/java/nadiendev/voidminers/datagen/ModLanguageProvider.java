@@ -102,6 +102,10 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("jade.voidminers.status.working", "Status: Working");
         this.add("jade.voidminers.status.idle", "Status: Idle");
         this.add("jade.voidminers.progress", "Progress: %s%%");
+
+        this.add("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_already_applied", "Same Upgrade already applied");
+        this.add("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_already_applied_is_higher_tier", "Cannot apply lower-tier upgrade while a higher-tier upgrade is installed");
+        this.add("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_applied", "Upgrade applied, Tier : %d");
     }
 
 

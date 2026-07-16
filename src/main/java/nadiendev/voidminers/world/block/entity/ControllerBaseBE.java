@@ -45,17 +45,71 @@ public class ControllerBaseBE extends BlockEntity {
 
     public static final int ENERGY_CAPACITY = 1000000;
 
+    private static final int BASE_OUTPUT_SLOTS = 9;
+
+    private int currentUpgradeTier = 0;
+
     private ModEnergyStorage energyHandler = new ModEnergyStorage(ENERGY_CAPACITY, ENERGY_CAPACITY, 0, 0);
 
-    private final ItemStackHandler itemHandler = new ItemStackHandler(9) {
+    private ItemStackHandler itemHandler = createItemHandler();
+
+    private static ItemStackHandler createItemHandler() {
+        return new ItemStackHandler(BASE_OUTPUT_SLOTS) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+            }
+        };
+    }
+
+    private final ItemStackHandler upgradeHandler = new ItemStackHandler(3) {
         @Override
         protected void onContentsChanged(int slot) {
             super.onContentsChanged(slot);
-            if (ControllerBaseBE.this.level != null) {
-                ControllerBaseBE.this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            ControllerBaseBE.this.recalculateStorageFromUpgrades();
+            if (level != null) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
             }
         }
     };
+
+    private void recalculateStorageFromUpgrades() {
+        int tier = this.currentUpgradeTier;
+        ConfigLoader cfg = ConfigLoader.getInstance();
+        int extraSlots = 0;
+        if (tier == 3) {
+            extraSlots = cfg.UPGRADE_T3_SLOTS;
+        } else if (tier == 2) {
+            extraSlots = cfg.UPGRADE_T2_SLOTS;
+        } else if (tier == 1) {
+            extraSlots = cfg.UPGRADE_T1_SLOTS;
+        }
+
+        int desiredSlots = BASE_OUTPUT_SLOTS + extraSlots;
+        if (desiredSlots != itemHandler.getSlots()) {
+            replaceItemHandler(desiredSlots);
+        }
+    }
+
+    private void replaceItemHandler(int newSlots) {
+        ItemStackHandler newHandler = new ItemStackHandler(newSlots) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                super.onContentsChanged(slot);
+                if (ControllerBaseBE.this.level != null) {
+                    ControllerBaseBE.this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+                }
+            }
+        };
+
+        // Copy existing stacks into new handler
+        int copySlots = Math.min(itemHandler.getSlots(), newHandler.getSlots());
+        for (int i = 0; i < copySlots; i++) {
+            newHandler.setStackInSlot(i, itemHandler.getStackInSlot(i));
+        }
+
+        this.itemHandler = newHandler;
+    }
 
     public boolean foundStructure = false;
     private int progress = 0;
@@ -154,6 +208,7 @@ public class ControllerBaseBE extends BlockEntity {
         CompoundTag data = new CompoundTag();
         if (energyHandler != null) data.put("energy", energyHandler.serializeNBT(pRegistries));
         data.put("items", itemHandler.serializeNBT(pRegistries));
+        data.put("upgrades", upgradeHandler.serializeNBT(pRegistries));
         data.putInt("progress", this.progress);
         if (name != null) data.putString("name", this.name);
         data.putBoolean("active", active);
@@ -175,6 +230,10 @@ public class ControllerBaseBE extends BlockEntity {
 
         if (data.contains("items")) {
             itemHandler.deserializeNBT(pRegistries, data.getCompound("items"));
+        }
+
+        if (data.contains("upgrades")) {
+            upgradeHandler.deserializeNBT(pRegistries, data.getCompound("upgrades"));
         }
 
         if (data.contains("progress")) {
@@ -455,5 +514,15 @@ public class ControllerBaseBE extends BlockEntity {
 
     public ResourceLocation getStructure() {
         return structure;
+    }
+
+    public void setAppliedUpgradeTier(int tier) {
+        this.currentUpgradeTier = tier;
+        recalculateStorageFromUpgrades();
+        setChanged();
+    }
+
+    public int getCurrentUpgradeTier() {
+        return currentUpgradeTier;
     }
 }
