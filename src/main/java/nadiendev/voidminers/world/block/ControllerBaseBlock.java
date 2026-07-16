@@ -113,7 +113,7 @@ public class ControllerBaseBlock extends BaseTransparentBlock implements EntityB
     }
 
     private ItemInteractionResult handleUpgrade(int tier, ControllerBaseBE blockEntity, Player pPlayer,  ItemStack held, InteractionHand pHand, Level pLevel, BlockState pState, BlockPos pPos) {
-        int current = blockEntity.getCurrentUpgradeTier();
+        int current = blockEntity.getUpgradeTier();
         if (current == tier) {
             pPlayer.displayClientMessage(Component.translatable("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_already_applied"), true);
             return ItemInteractionResult.CONSUME;

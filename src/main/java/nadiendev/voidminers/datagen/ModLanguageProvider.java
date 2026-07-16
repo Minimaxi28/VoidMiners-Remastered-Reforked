@@ -98,6 +98,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
         this.add("config.jade.plugin_voidminers.void_miner", "VoidMiners");
         this.add("jade.voidminers.tier", "Tier: %s");
+        this.add("jade.voidminers.max_storage_upgrade_tier", "Max Storage Upgrade Tier: %s");
         this.add("jade.voidminers.energy", "Energy: %s / %s FE");
         this.add("jade.voidminers.status.working", "Status: Working");
         this.add("jade.voidminers.status.idle", "Status: Idle");

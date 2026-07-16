@@ -1,6 +1,7 @@
 package nadiendev.voidminers.world.block.entity;
 
 import nadiendev.voidminers.VoidMiners;
+import nadiendev.voidminers.init.ModItems;
 import nadiendev.voidminers.world.block.ModifierBlock;
 import nadiendev.voidminers.config.ConfigLoader;
 import nadiendev.voidminers.common.energy.ModEnergyStorage;
@@ -47,7 +48,7 @@ public class ControllerBaseBE extends BlockEntity {
 
     private static final int BASE_OUTPUT_SLOTS = 9;
 
-    private int currentUpgradeTier = 0;
+    private int upgradeTier = 0;
 
     private ModEnergyStorage energyHandler = new ModEnergyStorage(ENERGY_CAPACITY, ENERGY_CAPACITY, 0, 0);
 
@@ -62,19 +63,8 @@ public class ControllerBaseBE extends BlockEntity {
         };
     }
 
-    private final ItemStackHandler upgradeHandler = new ItemStackHandler(3) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            super.onContentsChanged(slot);
-            ControllerBaseBE.this.recalculateStorageFromUpgrades();
-            if (level != null) {
-                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-            }
-        }
-    };
-
     private void recalculateStorageFromUpgrades() {
-        int tier = this.currentUpgradeTier;
+        int tier = this.upgradeTier;
         ConfigLoader cfg = ConfigLoader.getInstance();
         int extraSlots = 0;
         if (tier == 3) {
@@ -208,7 +198,7 @@ public class ControllerBaseBE extends BlockEntity {
         CompoundTag data = new CompoundTag();
         if (energyHandler != null) data.put("energy", energyHandler.serializeNBT(pRegistries));
         data.put("items", itemHandler.serializeNBT(pRegistries));
-        data.put("upgrades", upgradeHandler.serializeNBT(pRegistries));
+        data.putInt("upgradeTier", this.upgradeTier);
         data.putInt("progress", this.progress);
         if (name != null) data.putString("name", this.name);
         data.putBoolean("active", active);
@@ -232,8 +222,8 @@ public class ControllerBaseBE extends BlockEntity {
             itemHandler.deserializeNBT(pRegistries, data.getCompound("items"));
         }
 
-        if (data.contains("upgrades")) {
-            upgradeHandler.deserializeNBT(pRegistries, data.getCompound("upgrades"));
+        if (data.contains("upgradeTier")) {
+            this.upgradeTier = data.getInt("upgradeTier");
         }
 
         if (data.contains("progress")) {
@@ -338,6 +328,7 @@ public class ControllerBaseBE extends BlockEntity {
         progress++;
         energyHandler.removeEnergy(getRfTick());
 
+        assert level != null;
         level.sendBlockUpdated(pPos, pState, pState, 3);
         sync();
 
@@ -366,6 +357,7 @@ public class ControllerBaseBE extends BlockEntity {
     }
 
     private void sync() {
+        assert getLevel() != null;
         setChanged(getLevel(), getBlockPos(), getBlockState());
 
         if(level == null || level.isClientSide) return;
@@ -408,6 +400,7 @@ public class ControllerBaseBE extends BlockEntity {
         for (int i = 0; i < 320; i++) {
             BlockPos check = pos.below(i);
 
+            assert level != null;
             if(level.getBlockState(check).is(Blocks.BEDROCK)) return true;
 
             if (level.getBlockState(check).propagatesSkylightDown(level, check) || level.isFluidAtPosition(check, (fluidState -> !fluidState.isEmpty()))) continue;
@@ -462,7 +455,19 @@ public class ControllerBaseBE extends BlockEntity {
             container.addItem(itemHandler.getStackInSlot(i));
         }
 
+        container.addItem(getUpgradeStackFromTier(upgradeTier));
+
+        assert level != null;
         Containers.dropContents(level, worldPosition, container);
+    }
+
+    public ItemStack getUpgradeStackFromTier(int tier) {
+        return switch (tier) {
+            case 1 -> ModItems.MAX_STORAGE_UPGRADE_T1.toStack();
+            case 2 -> ModItems.MAX_STORAGE_UPGRADE_T2.toStack();
+            case 3 -> ModItems.MAX_STORAGE_UPGRADE_T3.toStack();
+            default -> ItemStack.EMPTY;
+        };
     }
 
     public ItemStack getWeightedItem(List<WeightedStack> items, RandomSource random) {
@@ -517,12 +522,12 @@ public class ControllerBaseBE extends BlockEntity {
     }
 
     public void setAppliedUpgradeTier(int tier) {
-        this.currentUpgradeTier = tier;
+        this.upgradeTier = tier;
         recalculateStorageFromUpgrades();
         setChanged();
     }
 
-    public int getCurrentUpgradeTier() {
-        return currentUpgradeTier;
+    public int getUpgradeTier() {
+        return upgradeTier;
     }
 }

@@ -23,13 +23,11 @@ public enum VoidMinerProvider implements IBlockComponentProvider, IServerDataPro
 
         CompoundTag serverData = accessor.getServerData();
         
-        // Mostrar tier
         if (serverData.contains("Tier")) {
             int tier = serverData.getInt("Tier");
             tooltip.add(Component.translatable("jade.voidminers.tier", tier));
         }
 
-        // Mostrar energía
         if (serverData.contains("Energy") && serverData.contains("MaxEnergy")) {
             int energy = serverData.getInt("Energy");
             int maxEnergy = serverData.getInt("MaxEnergy");
@@ -38,7 +36,11 @@ public enum VoidMinerProvider implements IBlockComponentProvider, IServerDataPro
                 String.format("%,d", maxEnergy)));
         }
 
-        // Mostrar estado (trabajando/inactivo)
+        if (serverData.contains("MaxStorageUpgradeTier")) {
+            int maxStorageUpgradeTier = serverData.getInt("MaxStorageUpgradeTier");
+            tooltip.add(Component.translatable("jade.voidminers.max_storage_upgrade_tier", maxStorageUpgradeTier));
+        }
+
         if (serverData.contains("Working")) {
             boolean working = serverData.getBoolean("Working");
             Component status = working ? 
@@ -47,7 +49,6 @@ public enum VoidMinerProvider implements IBlockComponentProvider, IServerDataPro
             tooltip.add(status);
         }
 
-        // Mostrar progreso de trabajo
         if (serverData.contains("Progress") && serverData.contains("MaxProgress")) {
             int progress = serverData.getInt("Progress");
             int maxProgress = serverData.getInt("MaxProgress");
@@ -65,7 +66,6 @@ public enum VoidMinerProvider implements IBlockComponentProvider, IServerDataPro
             return;
         }
 
-        // Obtener tier desde la estructura
         if (miner.getStructure() != null) {
             Integer tier = MiscUtil.tierMap.get(miner.getStructure().getPath());
             if (tier != null) {
@@ -73,14 +73,13 @@ public enum VoidMinerProvider implements IBlockComponentProvider, IServerDataPro
             }
         }
 
-        // Obtener energía
         tag.putInt("Energy", miner.getEnergyStorage().getEnergyStored());
         tag.putInt("MaxEnergy", miner.getEnergyStorage().getMaxEnergyStored());
 
-        // Estado de trabajo
+        tag.putInt("MaxStorageUpgradeTier", miner.getUpgradeTier());
+
         tag.putBoolean("Working", miner.working);
 
-        // Progreso de trabajo
         tag.putInt("Progress", miner.getProgress());
         tag.putInt("MaxProgress", miner.getMaxProgress());
     }

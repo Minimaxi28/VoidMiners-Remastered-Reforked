@@ -77,6 +77,7 @@
   "item.voidminers.ultimate_stellar_core": "Ultimate Stellar Core",
   "item.voidminers.verdium": "Verdium",
   "jade.voidminers.energy": "Energy: %s / %s FE",
+  "jade.voidminers.max_storage_upgrade_tier": "Max Storage Upgrade Tier: %s",
   "jade.voidminers.progress": "Progress: %s%%",
   "jade.voidminers.status.idle": "Status: Idle",
   "jade.voidminers.status.working": "Status: Working",
