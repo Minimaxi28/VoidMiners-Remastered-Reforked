@@ -43,6 +43,9 @@ public class ConfigLoader {
     public int UPGRADE_T3_SLOTS = 27;
 
     @Expose
+    public boolean MINERS_FILL_ALL_SLOTS = false;
+
+    @Expose
     public Map<String, MinerConfig> MINER_CONFIGS = MapUtil.of(
             MapUtil.createEntry("rubetine", new MinerConfig(10000000, 1000, 300,
                     MapUtil.of(

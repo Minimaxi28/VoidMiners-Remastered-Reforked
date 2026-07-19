@@ -15,7 +15,7 @@ public class ModLanguageProvider extends LanguageProvider {
 
     @Override
     protected void addTranslations() {
-        this.add(VoidMiners.MODID + ".itemGroup.items", "Items");
+        this.add("creativetab." + VoidMiners.MODID + ".title", "VoidMiners");
 
         this.add(ModItems.STRUCTURE_HELPER.get(), "Structure Helper");
         this.add(ModItems.ULTIMATE_STELLAR_CORE.get(), "Ultimate Stellar Core");
@@ -29,19 +29,20 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("gui." + VoidMiners.MODID + ".miner", "Tier %d Miner");
         this.add("gui." + VoidMiners.MODID + ".miners", "Miners");
 
-        this.add("tooltip." + VoidMiners.MODID + ".controller.working", "Miner is working correctly.");
+        this.add("tooltip." + VoidMiners.MODID + ".controller.enoughRF", "Miner is enoughRF correctly.");
 
         this.add("tooltip." + VoidMiners.MODID + ".controller.energy", "Energy: %d rf/t");
 
         this.add("tooltip." + VoidMiners.MODID + ".controller.duration", "Duration: %d ticks");
 
-        this.add("tooltip." + VoidMiners.MODID + ".controller.not_working", "Miner is not working correctly!\nCheck if the miner has at least 1 empty slot, and that the required energy is smaller than the total energy storage");
-
-        this.add("tooltip." + VoidMiners.MODID + ".controller.not_active", "Miner is assembled correctly, but is not active.\nMake sure that the miner can see the void / bedrock!\nThe distance between bedrock and miner does NOT matter, only that the center block can see bedrock!");
-
-        this.add("tooltip." + VoidMiners.MODID + ".controller.missing_structure", "Miner is not assembled correctly, shift right-click the block for a guide. Total needed blocks: ");
-
-        this.add("tooltip." + VoidMiners.MODID + ".controller.dimension_not_ok", "This Miner has no recipes in this dimension!");
+        this.add("tooltip." + VoidMiners.MODID + ".controller.halt_reason.dimension_not_ok", "This Miner has no recipes in this dimension.");
+        this.add("tooltip." + VoidMiners.MODID + ".controller.halt_reason.structure_not_found_1", "Miner structure is not correct, sneak + right-click the Miner for a guide.");
+        this.add("tooltip." + VoidMiners.MODID + ".controller.halt_reason.structure_not_found_2", "Total needed blocks: ");
+        this.add("tooltip." + VoidMiners.MODID + ".controller.halt_reason.too_much_item_multiplier", "Item Multiplier too high, the miner doesn't have enough slots.\nAdd a Max Storage Upgrade or remove some blocks that add Item Multiplier.");
+        this.add("tooltip." + VoidMiners.MODID + ".controller.halt_reason.not_enough_empty_slots", "All slots are full, the miner can't mine until it has been emptied.");
+        this.add("tooltip." + VoidMiners.MODID + ".controller.halt_reason.no_bedrock_or_void_view", "Make sure that the miner can see the void / bedrock!\nThe distance does NOT matter, only that the center block can see void / bedrock.");
+        this.add("jade." + VoidMiners.MODID + ".halt_reason.halt_reason_not_found", "Reason not found");
+        this.add("jade." + VoidMiners.MODID + ".halt_reason.not_enough_power", "Not enough power");
 
         this.add("tooltip." + VoidMiners.MODID + ".structure.weight", "Weight: %d");
 
@@ -97,12 +98,18 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("minecraft.the_end", "The End");
 
         this.add("config.jade.plugin_voidminers.void_miner", "VoidMiners");
-        this.add("jade.voidminers.tier", "Tier: %s");
-        this.add("jade.voidminers.max_storage_upgrade_tier", "Max Storage Upgrade Tier: %s");
-        this.add("jade.voidminers.energy", "Energy: %s / %s FE");
-        this.add("jade.voidminers.status.working", "Status: Working");
-        this.add("jade.voidminers.status.idle", "Status: Idle");
-        this.add("jade.voidminers.progress", "Progress: %s%%");
+        this.add("jade." + VoidMiners.MODID + ".tier", "Tier: %s");
+        this.add("jade." + VoidMiners.MODID + ".max_storage_upgrade_tier", "Max Storage Upgrade Tier: %s");
+        this.add("jade." + VoidMiners.MODID + ".energy", "Energy: %s / %s FE");
+        this.add("jade." + VoidMiners.MODID + ".status.working", "Status: Working");
+        this.add("jade." + VoidMiners.MODID + ".status.idle", "Status: Idle");
+        this.add("jade." + VoidMiners.MODID + ".halt_reason.no_recipes_in_dimension", "Reason: No recipes in dimension");
+        this.add("jade." + VoidMiners.MODID + ".halt_reason.structure_not_found", "Reason: Structure not found");
+        this.add("jade." + VoidMiners.MODID + ".halt_reason.too_much_item_multiplier", "Reason: Item Multiplier too high");
+        this.add("jade." + VoidMiners.MODID + ".halt_reason.not_enough_empty_slots", "Reason: Not enough empty slots");
+        this.add("jade." + VoidMiners.MODID + ".halt_reason.no_bedrock_or_void_view", "Reason: Can't see Bedrock or Void");
+
+        this.add("jade." + VoidMiners.MODID + ".progress", "Progress: %s%%");
 
         this.add("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_already_applied", "Same Upgrade already applied");
         this.add("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_already_applied_is_higher_tier", "Cannot apply lower-tier upgrade while a higher-tier upgrade is installed");

@@ -3,6 +3,7 @@ package nadiendev.voidminers.common.compat.jade;
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.util.MiscUtil;
 import nadiendev.voidminers.world.block.entity.ControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.HaltReason;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -25,28 +26,44 @@ public enum VoidMinerProvider implements IBlockComponentProvider, IServerDataPro
         
         if (serverData.contains("Tier")) {
             int tier = serverData.getInt("Tier");
-            tooltip.add(Component.translatable("jade.voidminers.tier", tier));
+            tooltip.add(Component.translatable("jade." + VoidMiners.MODID + ".tier", tier));
         }
 
         if (serverData.contains("Energy") && serverData.contains("MaxEnergy")) {
             int energy = serverData.getInt("Energy");
             int maxEnergy = serverData.getInt("MaxEnergy");
-            tooltip.add(Component.translatable("jade.voidminers.energy", 
+            tooltip.add(Component.translatable("jade." + VoidMiners.MODID + ".energy",
                 String.format("%,d", energy), 
                 String.format("%,d", maxEnergy)));
         }
 
         if (serverData.contains("MaxStorageUpgradeTier")) {
             int maxStorageUpgradeTier = serverData.getInt("MaxStorageUpgradeTier");
-            tooltip.add(Component.translatable("jade.voidminers.max_storage_upgrade_tier", maxStorageUpgradeTier));
+            tooltip.add(Component.translatable("jade." + VoidMiners.MODID + ".max_storage_upgrade_tier", maxStorageUpgradeTier));
         }
 
-        if (serverData.contains("Working")) {
-            boolean working = serverData.getBoolean("Working");
-            Component status = working ? 
-                Component.translatable("jade.voidminers.status.working") :
-                Component.translatable("jade.voidminers.status.idle");
-            tooltip.add(status);
+        if (serverData.contains("HaltReason")) {
+            int haltReasonInt = serverData.getInt("HaltReason");
+            HaltReason haltReason = HaltReason.getHaltReasonFromInt(haltReasonInt);
+            Component reason;
+
+            if (haltReason != HaltReason.NONE) {
+                tooltip.add(Component.translatable("jade." + VoidMiners.MODID + ".status.idle"));
+
+                switch (haltReason) {
+                    case NO_RECIPES_IN_DIMENSION -> reason = Component.translatable("jade." + VoidMiners.MODID + ".halt_reason.no_recipes_in_dimension");
+                    case STRUCTURE_NOT_FOUND -> reason = Component.translatable("jade." + VoidMiners.MODID + ".halt_reason.structure_not_found");
+                    case TOO_MUCH_ITEM_MULTIPLIER -> reason = Component.translatable("jade." + VoidMiners.MODID + ".halt_reason.too_much_item_multiplier");
+                    case NOT_ENOUGH_EMPTY_SLOTS -> reason = Component.translatable("jade." + VoidMiners.MODID + ".halt_reason.not_enough_empty_slots");
+                    case NO_BEDROCK_OR_VOID_VIEW -> reason = Component.translatable("jade." + VoidMiners.MODID + ".halt_reason.no_bedrock_or_void_view");
+                    case NOT_ENOUGH_POWER -> reason = Component.translatable("jade." + VoidMiners.MODID + ".halt_reason.not_enough_power");
+                    default -> reason = Component.translatable("jade." + VoidMiners.MODID + ".halt_reason.halt_reason_not_found");
+                }
+            } else {
+                reason = Component.translatable("jade." + VoidMiners.MODID + ".status.working");
+            }
+
+            tooltip.add(reason);
         }
 
         if (serverData.contains("Progress") && serverData.contains("MaxProgress")) {
@@ -55,7 +72,7 @@ public enum VoidMinerProvider implements IBlockComponentProvider, IServerDataPro
             
             if (maxProgress > 0) {
                 int percentage = (int) ((progress / (float) maxProgress) * 100);
-                tooltip.add(Component.translatable("jade.voidminers.progress", percentage));
+                tooltip.add(Component.translatable("jade." + VoidMiners.MODID + ".progress", percentage));
             }
         }
     }
@@ -78,7 +95,7 @@ public enum VoidMinerProvider implements IBlockComponentProvider, IServerDataPro
 
         tag.putInt("MaxStorageUpgradeTier", miner.getUpgradeTier());
 
-        tag.putBoolean("Working", miner.working);
+        tag.putInt("HaltReason", HaltReason.getIntFromHaltReason(miner.getHaltReason()));
 
         tag.putInt("Progress", miner.getProgress());
         tag.putInt("MaxProgress", miner.getMaxProgress());

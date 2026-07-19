@@ -28,7 +28,7 @@ public class ControllerBER implements BlockEntityRenderer<ControllerBaseBE> {
 
     @Override
     public void render(ControllerBaseBE pBlockEntity, float pPartialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        if (pBlockEntity.active) {
+        if (pBlockEntity.canSeeBedrockOrVoid && pBlockEntity.foundStructure) {
             long gameTime = pBlockEntity.getLevel().getGameTime();
             float f = (float) Math.floorMod(gameTime, 40) + pPartialTick;
 
@@ -50,15 +50,16 @@ public class ControllerBER implements BlockEntityRenderer<ControllerBaseBE> {
 
         if (!MiscUtil.structureMap.containsKey(structure)) return;
 
-        int offset = MiscUtil.structureMap.get(structure).get(0).size() / 2;
+        int offset = MiscUtil.structureMap.get(structure).getFirst().size() / 2;
 
         pose.pushPose();
         pose.translate(-offset, 1, -offset);
         pose.pushPose();
         pose.mulPose(Axis.ZN.rotationDegrees(90));
 
-        
         List<List<List<BlockState>>> blocks = MiscUtil.structureMap.get(structure);
+
+        float blockScale = 0.5f;
 
         for (int x = 0; x < blocks.size(); x++) {
             List<List<BlockState>> b2 = blocks.get(x);
@@ -71,6 +72,9 @@ public class ControllerBER implements BlockEntityRenderer<ControllerBaseBE> {
 
                     pose.pushPose();
                     pose.translate(x, y, z);
+                    pose.translate(0.5f, 0.5f, 0.5f);
+                    pose.scale(blockScale, blockScale, blockScale);
+                    pose.translate(-0.5f, -0.5f, -0.5f);
 
                     renderBlock(
                         block,
@@ -92,6 +96,7 @@ public class ControllerBER implements BlockEntityRenderer<ControllerBaseBE> {
 
         BlockRenderDispatcher blockRenderer = minecraft.getBlockRenderer();
 
+        assert minecraft.level != null;
         blockRenderer.renderSingleBlock(
             state,
             pose,

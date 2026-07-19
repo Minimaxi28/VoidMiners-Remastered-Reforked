@@ -12,17 +12,16 @@ public class ModCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = 
         DeferredRegister.create(Registries.CREATIVE_MODE_TAB, VoidMiners.MODID);
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ITEMS = 
-        CREATIVE_MODE_TABS.register("items", () ->
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> VOIDMINERS =
+        CREATIVE_MODE_TABS.register("voidminers", () ->
             CreativeModeTab.builder()
-                .title(Component.translatable(VoidMiners.MODID + ".itemGroup.items"))
-                .icon(() -> new ItemStack(ModItems.STRUCTURE_HELPER.get()))
+                .title(Component.translatable("creativetab." + VoidMiners.MODID + ".title"))
+                .icon(() -> new ItemStack(ModBlocks.FRAME_BASE.get()))
                 .displayItems((parameters, output) -> {
          
                     ModItems.ITEMS.getEntries().forEach(entry -> {
                         output.accept(entry.get());
                     });
-
             
                     ModBlocks.BLOCKS.getEntries().forEach(entry -> {
                         output.accept(entry.get());

@@ -1,11 +1,11 @@
 Config for making the voidminers always output up to max slots (what it's currently doing) / make it only output if item modifiers <= maxslot
 (need to look into this more)
-
+//done
 Make the miner not consume power when it can't output because it's full
-
+//done
 Add the slot number to the tooltip of the Upgrades
-
+//done
 Make the miner drop the upgrade when broken
-
-Sneak + right click takes out the upgrade ? (need to empty the miner first (need to check quantity of items / max storage after having removed the upgrade) (check tick consistency with /tick)
-
+//done
+add warning when MINERS_FILL_ALL_SLOTS is true when too much item multipliers
+//done

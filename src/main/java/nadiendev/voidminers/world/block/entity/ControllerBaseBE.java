@@ -23,6 +23,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -45,14 +46,29 @@ import java.util.Map;
 public class ControllerBaseBE extends BlockEntity {
 
     public static final int ENERGY_CAPACITY = 1000000;
-
     private static final int BASE_OUTPUT_SLOTS = 9;
-
     private int upgradeTier = 0;
 
     private ModEnergyStorage energyHandler = new ModEnergyStorage(ENERGY_CAPACITY, ENERGY_CAPACITY, 0, 0);
-
     private ItemStackHandler itemHandler = createItemHandler();
+
+    private final ConfigLoader cfg =  ConfigLoader.getInstance();
+
+    public boolean foundStructure = false;
+    private int progress = 0;
+
+    public boolean showStructure = false;
+
+    private final Map<BlockInWorld, ConfigLoader.ModifierConfig> modifierMap = new HashMap<>();
+
+    private ResourceLocation structure;
+    private String name;
+
+    public boolean canSeeBedrockOrVoid = false;
+    public boolean enoughPower = false;
+    public int missingPower = 0; // TODO use this
+
+    private HaltReason haltReason = HaltReason.NONE;
 
     private static ItemStackHandler createItemHandler() {
         return new ItemStackHandler(BASE_OUTPUT_SLOTS) {
@@ -65,7 +81,7 @@ public class ControllerBaseBE extends BlockEntity {
 
     private void recalculateStorageFromUpgrades() {
         int tier = this.upgradeTier;
-        ConfigLoader cfg = ConfigLoader.getInstance();
+
         int extraSlots = 0;
         if (tier == 3) {
             extraSlots = cfg.UPGRADE_T3_SLOTS;
@@ -100,27 +116,10 @@ public class ControllerBaseBE extends BlockEntity {
 
         this.itemHandler = newHandler;
     }
-
-    public boolean foundStructure = false;
-    private int progress = 0;
-
-    public boolean showStructure = false;
-
-    private final Map<BlockInWorld, ConfigLoader.ModifierConfig> modifierMap = new HashMap<>();
-
-    private ResourceLocation structure;
-    private String name;
-
-    public boolean active = false;
-    public boolean working = false;
-
-    public boolean recipeDimensionCheckOK = false;
-
     
     public ControllerBaseBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.CONTROLLER_BASE_BE.get(), pPos, pBlockState);
     }
-    
     
     public ControllerBaseBE(BlockEntityType<?> type, BlockPos pPos, BlockState pBlockState) {
         super(type, pPos, pBlockState);
@@ -133,9 +132,9 @@ public class ControllerBaseBE extends BlockEntity {
     }
 
     public void setupEnergyStorage() {
-        int storage = ConfigLoader.getInstance().getMinerConfig(name).energyStorage();
+        int storage = cfg.getMinerConfig(name).energyStorage();
 
-        if (!ConfigLoader.getInstance().ALLOW_NO_ENERGY_MINERS && storage <= 0) storage = ENERGY_CAPACITY;
+        if (!cfg.ALLOW_NO_ENERGY_MINERS && storage <= 0) storage = ENERGY_CAPACITY;
         
         int currentEnergy = energyHandler != null ? energyHandler.getEnergyStored() : 0;
         energyHandler = new ModEnergyStorage(storage, storage, 0, currentEnergy);
@@ -146,42 +145,44 @@ public class ControllerBaseBE extends BlockEntity {
     }
 
     public List<Component> getInteractionTooltip() {
-        List<Component> toRet = new ArrayList<>();
+        List<Component> toReturn = new ArrayList<>();
 
-        if(!recipeDimensionCheckOK) {
-            return List.of(
-                    Component.translatable("tooltip." + VoidMiners.MODID + ".controller.dimension_not_ok").withStyle(ChatFormatting.RED)
-            );
+        switch (haltReason) {
+            case NONE:
+                // TODO add chat message builder
+                return List.of(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.enoughRF"),
+                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.energy", getRfTick()),
+                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.duration", getMaxProgress()));
+            case NO_RECIPES_IN_DIMENSION:
+                return List.of(
+                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.dimension_not_ok").withStyle(ChatFormatting.YELLOW)
+                );
+            case STRUCTURE_NOT_FOUND: {
+                toReturn.add(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.structure_not_found_1").withStyle(ChatFormatting.YELLOW));
+
+                if (structure != null && MiscUtil.structureMap.containsKey(structure.toString())) {
+                    toReturn.add(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.structure_not_found_2").withStyle(ChatFormatting.YELLOW));
+                    MiscUtil.getNeededBlocks(MiscUtil.structureMap.get(structure.toString())).forEach((string, integer) -> {
+                        toReturn.add(Component.literal(string + ": " + integer));
+                    });
+                }
+                break;
+            }
+            case TOO_MUCH_ITEM_MULTIPLIER:
+                return List.of(
+                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.too_much_item_multiplier").withStyle(ChatFormatting.YELLOW)
+                );
+            case NOT_ENOUGH_EMPTY_SLOTS:
+                return List.of(
+                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.not_enough_empty_slots").withStyle(ChatFormatting.YELLOW)
+                );
+            case NO_BEDROCK_OR_VOID_VIEW:
+                return List.of(
+                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.no_bedrock_or_void_view").withStyle(ChatFormatting.YELLOW)
+                );
         }
 
-        if(working) {
-            return List.of(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.working"),
-                Component.translatable("tooltip." + VoidMiners.MODID + ".controller.energy", getRfTick()),
-                Component.translatable("tooltip." + VoidMiners.MODID + ".controller.duration", getMaxProgress()));
-        }
-
-        if (active) {
-            return List.of(
-                Component.translatable("tooltip." + VoidMiners.MODID + ".controller.not_working"),
-                Component.translatable("tooltip." + VoidMiners.MODID + ".controller.energy", getRfTick())
-            );
-        }
-
-        if (foundStructure) {
-            return List.of(
-                Component.translatable("tooltip." + VoidMiners.MODID + ".controller.not_active")
-            );
-        }
-
-        toRet.add(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.missing_structure") );
-
-        if (structure != null && MiscUtil.structureMap.containsKey(structure.toString())) {
-            MiscUtil.getNeededBlocks(MiscUtil.structureMap.get(structure.toString())).forEach((string, integer) -> {
-                toRet.add(Component.literal(string + ": " + integer));
-            });
-        }
-
-        return toRet;
+        return toReturn;
     }
 
     public void updateShowStructure() {
@@ -201,9 +202,11 @@ public class ControllerBaseBE extends BlockEntity {
         data.putInt("upgradeTier", this.upgradeTier);
         data.putInt("progress", this.progress);
         if (name != null) data.putString("name", this.name);
-        data.putBoolean("active", active);
         if (structure != null) data.putString("structure", structure.toString());
         data.putBoolean("showStructure", showStructure);
+        data.putBoolean("canSeeBedrockOrVoid", canSeeBedrockOrVoid);
+        data.putBoolean("foundStructure", foundStructure);
+        data.putBoolean("enoughPower", enoughPower);
         pTag.put(VoidMiners.MODID, data);
     }
 
@@ -234,10 +237,6 @@ public class ControllerBaseBE extends BlockEntity {
             name = data.getString("name");
         }
 
-        if (data.contains("active")) {
-            active = data.getBoolean("active");
-        }
-
         if (data.contains("structure")) {
             structure = ResourceLocation.parse(data.getString("structure"));
         }
@@ -245,6 +244,20 @@ public class ControllerBaseBE extends BlockEntity {
         if (data.contains("showStructure")) {
             showStructure = data.getBoolean("showStructure");
         }
+
+        if (data.contains("canSeeBedrockOrVoid")) {
+            canSeeBedrockOrVoid = data.getBoolean("canSeeBedrockOrVoid");
+        }
+
+        if (data.contains("foundStructure")) {
+            foundStructure = data.getBoolean("foundStructure");
+        }
+
+        if (data.contains("enoughRF")) {
+            enoughPower = data.getBoolean("enoughRF");
+        }
+
+        recalculateStorageFromUpgrades();
     }
 
     @Override
@@ -287,16 +300,19 @@ public class ControllerBaseBE extends BlockEntity {
     private long lastProcessedGameTime = Long.MIN_VALUE;
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState, ResourceLocation structure, String name) {
+        if (level == null || level.isClientSide) return;
 
-        // TODO check if this is laggy
-        recipeDimensionCheckOK = !allRecipes().isEmpty();
-
-        if (!recipeDimensionCheckOK) return;
-
-        if (level != null && !ConfigLoader.getInstance().ALLOW_TICK_ACCELERATION_MINERS) {
+        if (!cfg.ALLOW_TICK_ACCELERATION_MINERS) {
             long gameTime = level.getGameTime();
             if (this.lastProcessedGameTime == gameTime) return;
             this.lastProcessedGameTime = gameTime;
+        }
+
+        // TODO check if this is laggy
+        // Check that a recipe exists for the dimension
+        if (allRecipes().isEmpty()) {
+            haltReason = HaltReason.NO_RECIPES_IN_DIMENSION;
+            return;
         }
 
         if(getStructure() == null) {
@@ -304,32 +320,58 @@ public class ControllerBaseBE extends BlockEntity {
         }
 
         checkStructure(level, pPos);
+        sync();
 
-        active = foundStructure && hasViewOnBedrockOrVoid(pPos);
-        if (foundStructure && showStructure) {
-            updateShowStructure();
-        }
-
-        if (level != null) {
-            level.sendBlockUpdated(pPos, getBlockState(), getBlockState(), 3);
-        }
-
-        if(!active) return;
-
-        working = !isItemHandlerFull() && getRfTick() <= energyHandler.getEnergyStored();
-        if (level != null) {
-            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-        }
-
-        if (!working) {
+        if (!foundStructure) {
+            haltReason = HaltReason.STRUCTURE_NOT_FOUND;
             return;
         }
 
-        progress++;
-        energyHandler.removeEnergy(getRfTick());
+        if (showStructure) {
+            updateShowStructure();
+        }
 
-        assert level != null;
-        level.sendBlockUpdated(pPos, pState, pState, 3);
+        int itemModMultMultiplier = getItemModifierMultiplier();
+
+        if (!cfg.MINERS_FILL_ALL_SLOTS) {
+            if (itemModMultMultiplier > itemHandler.getSlots() * 64) {
+                haltReason = HaltReason.TOO_MUCH_ITEM_MULTIPLIER;
+                return;
+            }
+            if(itemModMultMultiplier > getNumberOfEmptySlots() * 64) {
+                haltReason = HaltReason.NOT_ENOUGH_EMPTY_SLOTS;
+                return;
+            }
+        }
+
+        if(isItemHandlerFull()) {
+            haltReason = HaltReason.NOT_ENOUGH_EMPTY_SLOTS;
+            return;
+        }
+
+        canSeeBedrockOrVoid = hasViewOnBedrockOrVoid(pPos);
+        sync();
+
+        if(!canSeeBedrockOrVoid) {
+            haltReason = HaltReason.NO_BEDROCK_OR_VOID_VIEW;
+            return;
+        }
+
+        int rfPerTick = getRfTick();
+
+        enoughPower = rfPerTick <= energyHandler.getEnergyStored();
+
+        sync();
+
+        if (!enoughPower) {
+            haltReason = HaltReason.NOT_ENOUGH_POWER;
+            return;
+        }
+
+        haltReason = HaltReason.NONE;
+
+        progress++;
+        energyHandler.removeEnergy(rfPerTick);
         sync();
 
         if (progress < getMaxProgress()) {
@@ -356,12 +398,19 @@ public class ControllerBaseBE extends BlockEntity {
         sync();
     }
 
+    private int getNumberOfEmptySlots() {
+        int numberOfEmptySlots = 0;
+        for (int i = 0; i < itemHandler.getSlots(); i++) {
+            if (itemHandler.getStackInSlot(i).isEmpty()) {
+                numberOfEmptySlots++;
+            }
+        }
+        return numberOfEmptySlots;
+    }
+
     private void sync() {
-        assert getLevel() != null;
-        setChanged(getLevel(), getBlockPos(), getBlockState());
-
-        if(level == null || level.isClientSide) return;
-
+        assert level != null;
+        setChanged(level, getBlockPos(), getBlockState());
         level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
 
@@ -372,7 +421,7 @@ public class ControllerBaseBE extends BlockEntity {
             mod *= entry.getValue().energy();
         }
 
-        return (int) (ConfigLoader.getInstance().getMinerConfig(name).energyTick() * mod);
+        return (int) (cfg.getMinerConfig(name).energyTick() * mod);
     }
 
     public int getMaxProgress() {
@@ -382,17 +431,19 @@ public class ControllerBaseBE extends BlockEntity {
             mod *= entry.getValue().speed();
         }
 
-        return (int) (ConfigLoader.getInstance().getMinerConfig(name).duration() * mod);
+        return (int) (cfg.getMinerConfig(name).duration() / mod);
     }
 
-    public ItemStack getBoostedStack(ItemStack base) {
+    public int getItemModifierMultiplier() {
         float mod = 1;
-
         for (Map.Entry<BlockInWorld, ConfigLoader.ModifierConfig> entry : modifierMap.entrySet()) {
             mod *= entry.getValue().item();
         }
+        return (int) mod;
+    }
 
-        int count = (int) (base.getCount() * mod);
+    public ItemStack getBoostedStack(ItemStack base) {
+        int count = (base.getCount() * getItemModifierMultiplier());
         return base.copyWithCount(count);
     }
 
@@ -432,7 +483,7 @@ public class ControllerBaseBE extends BlockEntity {
 
         return level.getRecipeManager().getAllRecipesFor(MinerRecipe.Type.INSTANCE)
             .stream()
-            .map(net.minecraft.world.item.crafting.RecipeHolder::value)
+            .map(RecipeHolder::value)
             .filter(recipe -> {
                 if (recipe.allowHigherTiers()) {
                     return recipe.minTier() <= MiscUtil.tierMap.get(structure.getPath());
@@ -510,7 +561,7 @@ public class ControllerBaseBE extends BlockEntity {
         result.blocks().stream()
             .filter(block -> block.getState().getBlock() instanceof ModifierBlock)
             .forEach(block -> {
-                ConfigLoader.ModifierConfig modifier = ConfigLoader.getInstance().getModifierConfig(block.getState().getBlock());
+                ConfigLoader.ModifierConfig modifier = cfg.getModifierConfig(block.getState().getBlock());
                 if (!modifierMap.containsKey(block)) {
                     modifierMap.put(block, modifier);
                 }
@@ -529,5 +580,9 @@ public class ControllerBaseBE extends BlockEntity {
 
     public int getUpgradeTier() {
         return upgradeTier;
+    }
+
+    public HaltReason getHaltReason() {
+        return haltReason;
     }
 }
