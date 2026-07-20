@@ -1,6 +1,5 @@
 package nadiendev.voidminers.world.item;
 
-import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.world.block.entity.ControllerBaseBE;
 import nadiendev.voidminers.world.multiblock.MinerMultiblocks;
 import net.minecraft.ChatFormatting;
@@ -53,8 +52,8 @@ public class StructureHelperItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip." + VoidMiners.MODID + ".structure_helper.creative_only").withStyle(ChatFormatting.RED)
-                .append(Component.translatable("tooltip." + VoidMiners.MODID + ".structure_helper.instructions").withStyle(ChatFormatting.LIGHT_PURPLE)));
+        tooltipComponents.add(Component.translatable("tooltip.voidminers.structure_helper.creative_only").withStyle(ChatFormatting.RED)
+                .append(Component.translatable("tooltip.voidminers.structure_helper.instructions").withStyle(ChatFormatting.LIGHT_PURPLE)));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }

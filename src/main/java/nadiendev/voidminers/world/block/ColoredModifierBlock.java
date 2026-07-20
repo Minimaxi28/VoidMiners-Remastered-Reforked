@@ -1,6 +1,5 @@
 package nadiendev.voidminers.world.block;
 
-import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.config.ConfigLoader;
 import nadiendev.voidminers.init.CrystalSet;
 import nadiendev.voidminers.util.CustomColorUtil;
@@ -35,15 +34,15 @@ public class ColoredModifierBlock extends ModifierBlock {
 
 
         if(modConfig.speed() != 1f) {
-            tooltipComponents.add(Component.translatable("tooltip." + VoidMiners.MODID + ".speed",
+            tooltipComponents.add(Component.translatable("tooltip.voidminers.speed",
                     speed).withStyle(ChatFormatting.GREEN));
         }
         if(modConfig.item() != 1f) {
-            tooltipComponents.add(Component.translatable("tooltip." + VoidMiners.MODID + ".item",
+            tooltipComponents.add(Component.translatable("tooltip.voidminers.item",
                     item).withStyle(ChatFormatting.AQUA));
         }
         if(modConfig.energy() != 1f) {
-            tooltipComponents.add(Component.translatable("tooltip." + VoidMiners.MODID + ".energy",
+            tooltipComponents.add(Component.translatable("tooltip.voidminers.energy",
                     energy).withStyle(ChatFormatting.GOLD));
         }
 

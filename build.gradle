@@ -88,11 +88,11 @@ dependencies {
     
     implementation "curse.maven:mangos-multiblock-library-revived-1406189:7342473"
     
-    implementation "curse.maven:jei-238222:7270455"
-    implementation "curse.maven:athena-841890:6669522"
-    implementation "curse.maven:jade-324717:6853386"
-    implementation "curse.maven:pipez-443900:5609056"
-    implementation "curse.maven:mekanism-268560:7132168"
+    implementation "curse.maven:jei-238222:8470023"
+    implementation "curse.maven:athena-841890:8061947"
+    implementation "curse.maven:jade-324717:7545219"
+    implementation "curse.maven:pipez-443900:8351631"
+    implementation "curse.maven:mekanism-268560:7904058"
     implementation "curse.maven:ctm-267602:5587515"
     implementation "curse.maven:immersive-engineering-231951:6733669"
 }

@@ -1,6 +1,5 @@
 package nadiendev.voidminers.world.block;
 
-import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.init.ModItems;
 import nadiendev.voidminers.world.block.entity.ControllerBaseBE;
 import nadiendev.voidminers.util.ShapeUtil;
@@ -115,12 +114,12 @@ public class ControllerBaseBlock extends BaseTransparentBlock implements EntityB
     private ItemInteractionResult handleUpgrade(int tier, ControllerBaseBE blockEntity, Player pPlayer,  ItemStack held, InteractionHand pHand, Level pLevel, BlockState pState, BlockPos pPos) {
         int current = blockEntity.getUpgradeTier();
         if (current == tier) {
-            pPlayer.displayClientMessage(Component.translatable("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_already_applied"), true);
+            pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied"), true);
             return ItemInteractionResult.CONSUME;
         }
 
         if (current > tier) {
-            pPlayer.displayClientMessage(Component.translatable("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_already_applied_is_higher_tier"), true);
+            pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier"), true);
             return ItemInteractionResult.CONSUME;
         }
 
@@ -147,7 +146,7 @@ public class ControllerBaseBlock extends BaseTransparentBlock implements EntityB
             blockEntity.getLevel().sendBlockUpdated(pPos, pState, pState, 3);
         }
 
-        pPlayer.displayClientMessage(Component.translatable("client_message." + VoidMiners.MODID + ".max_storage_upgrades.upgrade_applied", tier), true);
+        pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_applied", tier), true);
         return ItemInteractionResult.CONSUME;
     }
 

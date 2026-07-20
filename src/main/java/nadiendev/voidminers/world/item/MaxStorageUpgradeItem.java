@@ -1,6 +1,5 @@
 package nadiendev.voidminers.world.item;
 
-import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.config.ConfigLoader;
 import nadiendev.voidminers.init.ModItems;
 import net.minecraft.network.chat.Component;
@@ -29,7 +28,7 @@ public class MaxStorageUpgradeItem extends Item {
             slots = cfg.UPGRADE_T3_SLOTS;
         }
 
-        tooltipComponents.add(Component.translatable("tooltip." + VoidMiners.MODID + ".max_storage_upgrades", slots));
+        tooltipComponents.add(Component.translatable("tooltip.voidminers.max_storage_upgrades", slots));
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }

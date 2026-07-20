@@ -47,7 +47,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("gui." + VoidMiners.MODID + ".miner", tier);
+        return Component.translatable("gui.voidminers.miner", tier);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
     @Override
     public void draw(MinerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Component weight = Component.translatable("tooltip." + VoidMiners.MODID + ".structure.weight", customFormat(recipe.output().weight));
+        Component weight = Component.translatable("tooltip.voidminers.structure.weight", customFormat(recipe.output().weight));
         String dimensionName = recipe.dimension().location().toLanguageKey();
 
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "textures/gui/icon/" + getDimensionIcon(recipe.dimension()) + ".png");
