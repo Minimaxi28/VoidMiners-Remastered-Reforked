@@ -135,9 +135,17 @@ public class ControllerBaseBE extends BlockEntity {
         int storage = cfg.getMinerConfig(name).energyStorage();
 
         if (!cfg.ALLOW_NO_ENERGY_MINERS && storage <= 0) storage = ENERGY_CAPACITY;
-        
+
         int currentEnergy = energyHandler != null ? energyHandler.getEnergyStored() : 0;
-        energyHandler = new ModEnergyStorage(storage, storage, 0, currentEnergy);
+
+        if (energyHandler != null) {
+            energyHandler.setCapacity(storage);
+            if (currentEnergy > storage) {
+                energyHandler.setEnergy(storage);
+            }
+        } else {
+            energyHandler = new ModEnergyStorage(storage, storage, 0, currentEnergy);
+        }
     }
 
     public int getBeamColor() {

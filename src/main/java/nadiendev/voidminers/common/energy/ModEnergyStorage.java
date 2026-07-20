@@ -23,6 +23,10 @@ public class ModEnergyStorage extends EnergyStorage {
         this.energy = energy;
     }
 
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     public void removeEnergy(int remove) {
         this.energy = Math.max(0, this.energy - remove);
     }
