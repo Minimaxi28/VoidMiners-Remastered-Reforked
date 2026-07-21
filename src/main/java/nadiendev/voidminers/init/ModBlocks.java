@@ -11,6 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -37,7 +38,7 @@ public class ModBlocks {
             )
     );
 
-    public static final DeferredHolder<Block, BaseTransparentBlock> GLASS_PANEL = registerBlock("glass_panel",
+    public static final DeferredHolder<Block, TransparentBlock> GLASS_PANEL = registerBlock("glass_panel",
             () -> new BaseTransparentBlock(
                     BlockBehaviour.Properties.of()
                             .strength(10, 5)
