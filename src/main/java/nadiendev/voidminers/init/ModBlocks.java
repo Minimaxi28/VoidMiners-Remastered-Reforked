@@ -2,7 +2,6 @@ package nadiendev.voidminers.init;
 
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.util.CustomColorUtil;
-import nadiendev.voidminers.world.block.BaseTransparentBlock;
 import nadiendev.voidminers.world.block.ModifierBlock;
 import nadiendev.voidminers.world.item.ColoredBlockItem;
 import net.minecraft.core.registries.Registries;
@@ -39,7 +38,7 @@ public class ModBlocks {
     );
 
     public static final DeferredHolder<Block, TransparentBlock> GLASS_PANEL = registerBlock("glass_panel",
-            () -> new BaseTransparentBlock(
+            () -> new TransparentBlock(
                     BlockBehaviour.Properties.of()
                             .strength(10, 5)
                             .requiresCorrectToolForDrops()
