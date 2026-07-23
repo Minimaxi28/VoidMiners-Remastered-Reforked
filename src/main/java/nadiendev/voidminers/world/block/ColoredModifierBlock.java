@@ -28,10 +28,8 @@ public class ColoredModifierBlock extends ModifierBlock {
         ConfigLoader.ModifierConfig modConfig = ConfigLoader.getInstance().getModifierConfig(this);
 
         final String energy = String.format(modConfig.energy() >= 1 ? "+%.0f" : "%.0f", -(1 - modConfig.energy()) * 100);
-        final String speed = String.format(modConfig.speed() <= 1 ? "+%.0f" : "%.0f", (1 - modConfig.speed()) * 100);
+        final String speed = String.format(modConfig.speed() >= 1 ? "+%.0f" : "%.0f", -(1 - modConfig.speed()) * 100);
         final String item = String.format(modConfig.item() >= 1 ? "+%.0f" : "%.0f",  -(1 - modConfig.item()) * 100);
-
-
 
         if(modConfig.speed() != 1f) {
             tooltipComponents.add(Component.translatable("tooltip.voidminers.speed",

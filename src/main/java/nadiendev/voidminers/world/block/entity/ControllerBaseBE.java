@@ -2,6 +2,7 @@ package nadiendev.voidminers.world.block.entity;
 
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.init.ModItems;
+import nadiendev.voidminers.init.ModRarities;
 import nadiendev.voidminers.world.block.ModifierBlock;
 import nadiendev.voidminers.config.ConfigLoader;
 import nadiendev.voidminers.common.energy.ModEnergyStorage;
@@ -15,6 +16,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -45,14 +47,12 @@ import java.util.Map;
 
 public class ControllerBaseBE extends BlockEntity {
 
-    public static final int ENERGY_CAPACITY = 1000000;
+    public static final int ENERGY_CAPACITY = Integer.MAX_VALUE;
     private static final int BASE_OUTPUT_SLOTS = 9;
     private int upgradeTier = 0;
 
     private ModEnergyStorage energyHandler = new ModEnergyStorage(ENERGY_CAPACITY, ENERGY_CAPACITY, 0, 0);
     private ItemStackHandler itemHandler = createItemHandler();
-
-    private final ConfigLoader cfg =  ConfigLoader.getInstance();
 
     public boolean foundStructure = false;
     private int progress = 0;
@@ -66,7 +66,8 @@ public class ControllerBaseBE extends BlockEntity {
 
     public boolean canSeeBedrockOrVoid = false;
     public boolean enoughPower = false;
-    public int missingPower = 0; // TODO use this
+
+    public boolean enoughPowerForNextOperation = false;
 
     private HaltReason haltReason = HaltReason.NONE;
 
@@ -84,11 +85,11 @@ public class ControllerBaseBE extends BlockEntity {
 
         int extraSlots = 0;
         if (tier == 3) {
-            extraSlots = cfg.UPGRADE_T3_SLOTS;
+            extraSlots = ConfigLoader.getInstance().UPGRADE_T3_SLOTS;
         } else if (tier == 2) {
-            extraSlots = cfg.UPGRADE_T2_SLOTS;
+            extraSlots = ConfigLoader.getInstance().UPGRADE_T2_SLOTS;
         } else if (tier == 1) {
-            extraSlots = cfg.UPGRADE_T1_SLOTS;
+            extraSlots = ConfigLoader.getInstance().UPGRADE_T1_SLOTS;
         }
 
         int desiredSlots = BASE_OUTPUT_SLOTS + extraSlots;
@@ -132,9 +133,9 @@ public class ControllerBaseBE extends BlockEntity {
     }
 
     public void setupEnergyStorage() {
-        int storage = cfg.getMinerConfig(name).energyStorage();
+        int storage = ConfigLoader.getInstance().getMinerConfig(name).energyStorage();
 
-        if (!cfg.ALLOW_NO_ENERGY_MINERS && storage <= 0) storage = ENERGY_CAPACITY;
+        if (!ConfigLoader.getInstance().ALLOW_NO_ENERGY_MINERS && storage <= 0) storage = ENERGY_CAPACITY;
 
         int currentEnergy = energyHandler != null ? energyHandler.getEnergyStored() : 0;
 
@@ -144,7 +145,7 @@ public class ControllerBaseBE extends BlockEntity {
                 energyHandler.setEnergy(storage);
             }
         } else {
-            energyHandler = new ModEnergyStorage(storage, storage, 0, currentEnergy);
+            energyHandler = new ModEnergyStorage(storage, Integer.MAX_VALUE, 0, currentEnergy);
         }
     }
 
@@ -153,44 +154,165 @@ public class ControllerBaseBE extends BlockEntity {
     }
 
     public List<Component> getInteractionTooltip() {
-        List<Component> toReturn = new ArrayList<>();
+        List<Component> tooltip = new ArrayList<>();
+        tooltip.add(Component.literal("═══ ").withStyle(ChatFormatting.GRAY)
+                .append(Component.literal(name.toUpperCase() + " MINER").withColor(Integer.parseInt(ModRarities.getColorForCrystal(name).getHexColor().substring(1), 16))
+                        .append(Component.literal(" ═══").withStyle(ChatFormatting.GRAY))));
+
+        MutableComponent status = Component.translatable("tooltip.voidminers.controller.status.status").withStyle(ChatFormatting.GOLD);
 
         switch (haltReason) {
             case NONE:
-                // TODO add chat message builder
-                return List.of(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.enoughRF"),
-                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.energy", getRfTick()),
-                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.duration", getMaxProgress()));
-            case NO_RECIPES_IN_DIMENSION:
-                return List.of(
-                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.dimension_not_ok").withStyle(ChatFormatting.YELLOW)
-                );
-            case STRUCTURE_NOT_FOUND: {
-                toReturn.add(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.structure_not_found_1").withStyle(ChatFormatting.YELLOW));
-
-                if (structure != null && MiscUtil.structureMap.containsKey(structure.toString())) {
-                    toReturn.add(Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.structure_not_found_2").withStyle(ChatFormatting.YELLOW));
-                    MiscUtil.getNeededBlocks(MiscUtil.structureMap.get(structure.toString())).forEach((string, integer) -> {
-                        toReturn.add(Component.literal(string + ": " + integer));
-                    });
+                if(enoughPowerForNextOperation) {
+                    status.append(Component.translatable("tooltip.voidminers.controller.status.mining_active").withStyle(ChatFormatting.GREEN));
+                } else {
+                    status.append(Component.translatable("tooltip.voidminers.controller.status.mining_slow").withStyle(ChatFormatting.RED));
                 }
+                tooltip.add(status);
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.status.not_enough_power_for_next_operation").withStyle(ChatFormatting.YELLOW));
+
+                addMinerInfo(tooltip);
+                break;
+            case NO_RECIPES_IN_DIMENSION:
+                status.append(Component.translatable("tooltip.voidminers.controller.status.mining_impossible").withStyle(ChatFormatting.RED));
+                tooltip.add(status);
+
+                assert level != null;
+                String dimName = Component.translatable("dimension." +  level.dimension().location().toLanguageKey()).getString();
+
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.dimension_not_ok", dimName));
+                break;
+            case STRUCTURE_NOT_FOUND: {
+                status.append(Component.translatable("tooltip.voidminers.controller.status.structure_incomplete").withStyle(ChatFormatting.RED));
+                tooltip.add(status);
+
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.structure_not_found").withStyle(ChatFormatting.YELLOW));
+
+                MiscUtil.getNeededBlocks(MiscUtil.structureMap.get(structure.toString())).forEach((string, integer) -> {
+                    tooltip.add(Component.literal("• ").withStyle(ChatFormatting.GRAY)
+                            .append(Component.literal(string.contains("Null") ? "Modifiers" : string).withStyle(ChatFormatting.WHITE))
+                            .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
+                            .append(Component.literal(String.valueOf(integer)).withStyle(ChatFormatting.RED)));
+                });
                 break;
             }
             case TOO_MUCH_ITEM_MULTIPLIER:
-                return List.of(
-                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.too_much_item_multiplier").withStyle(ChatFormatting.YELLOW)
-                );
+                status.append(Component.translatable("tooltip.voidminers.controller.status.mining_stopped").withStyle(ChatFormatting.RED));
+                tooltip.add(status);
+
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.too_much_item_multiplier", itemHandler.getSlots() * 64).withStyle(ChatFormatting.YELLOW));
+
+                if (upgradeTier != 3) {
+                    tooltip.add(Component.translatable("tooltip.voidminers.controller.max_storage_upgrade_tip").withStyle(ChatFormatting.YELLOW));
+                }
+
+                addMinerInfo(tooltip);
+                break;
             case NOT_ENOUGH_EMPTY_SLOTS:
-                return List.of(
-                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.not_enough_empty_slots").withStyle(ChatFormatting.YELLOW)
-                );
+                status.append(Component.translatable("tooltip.voidminers.controller.status.mining_stopped").withStyle(ChatFormatting.RED));
+                tooltip.add(status);
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.not_enough_empty_slots").withStyle(ChatFormatting.YELLOW));
+
+                addMinerInfo(tooltip);
+                break;
             case NO_BEDROCK_OR_VOID_VIEW:
-                return List.of(
-                        Component.translatable("tooltip." + VoidMiners.MODID + ".controller.halt_reason.no_bedrock_or_void_view").withStyle(ChatFormatting.YELLOW)
-                );
+                status.append(Component.translatable("tooltip.voidminers.controller.status.mining_stopped").withStyle(ChatFormatting.RED));
+                tooltip.add(status);
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.no_bedrock_or_void_view").withStyle(ChatFormatting.YELLOW));
+
+                addMinerInfo(tooltip);
+                break;
+            case NOT_ENOUGH_POWER:
+                status.append(Component.translatable("tooltip.voidminers.controller.status.mining_stopped").withStyle(ChatFormatting.RED));
+                tooltip.add(status);
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.status.not_enough_power").withStyle(ChatFormatting.YELLOW));
+
+                addMinerInfo(tooltip);
+                break;
         }
 
-        return toReturn;
+        return tooltip;
+    }
+
+    private void addMinerInfo(List<Component> tooltip) {
+        String energyBar = getEnergyBar(energyHandler.getEnergyStored(), energyHandler.getMaxEnergyStored());
+        tooltip.add(Component.translatable("tooltip.voidminers.controller.energy")
+                .append(Component.literal(String.format(
+                        "%s §f%,d §7/ §f%,d RF", energyBar, energyHandler.getEnergyStored(), energyHandler.getMaxEnergyStored()))));
+
+        tooltip.add(Component.translatable("tooltip.voidminers.controller.consumption")
+                .append(Component.literal(String.format(
+                        "§f%,d RF/tick §b(%.2f×)", getRFPerTick(), getEnergyModifierMultiplier()))));
+
+        tooltip.add(Component.translatable("tooltip.voidminers.controller.duration")
+                .append(Component.literal(String.format(
+                        "§f%d ticks §b(%.2f×)", getRFPerTick(), getEnergyModifierMultiplier()))));
+
+        if (getItemModifierMultiplier() != 1.0f) {
+            tooltip.add(Component.translatable("tooltip.voidminers.controller.item_boost")
+                    .append(Component.literal(String.format(
+                            "§f%d×", (int) getItemModifierMultiplier()))));
+        }
+
+        float progressPercent = getMaxProgress() == 0 ? 0F : (float) getProgress() / getMaxProgress();
+        tooltip.add(Component.translatable("tooltip.voidminers.controller.progress")
+                .append(Component.literal(String.format(
+                        "§r%s §f%.2f%%", getProgressBar(progressPercent), progressPercent * 100))));
+
+        tooltip.add(getUpgradeInfoText(upgradeTier));
+    }
+
+    private String getEnergyBar(int current, int max) {
+        float percent = (float) current / max;
+        int bars = (int) (percent * 16);
+        StringBuilder bar = new StringBuilder("§a");
+
+        for (int i = 0; i < 16; i++) {
+            if (i < bars) {
+                bar.append("▌");
+            } else if (i == bars && (long) current + getRFPerTick() + 1 > max) {
+                bar.append("▌");
+            } else {
+                bar.append("§8▌");
+            }
+        }
+        return bar + "§r";
+    }
+
+    private String getProgressBar(float percent) {
+        int bars = (int) (percent * 16);
+        StringBuilder bar = new StringBuilder("§e");
+
+        for (int i = 0; i < 16; i++) {
+            if (i < bars) {
+                bar.append("▌");
+            } else if (i == bars && percent * 16 - bars > 0.5) {
+                bar.append("▌");
+            } else {
+                bar.append("§8▌");
+            }
+        }
+        return bar + "§r";
+    }
+
+    private Component getUpgradeInfoText(int upgradeTier) {
+        return switch (upgradeTier) {
+            case 0 -> Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
+                    .append(Component.literal("No upgrades applied.").withStyle(ChatFormatting.WHITE));
+
+            case 1 -> Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
+                    .append(Component.translatable(ModItems.MAX_STORAGE_UPGRADE_T1.get().getDescriptionId()).withStyle(ChatFormatting.WHITE))
+                    .append(Component.literal(" (+" + ConfigLoader.getInstance().UPGRADE_T1_SLOTS + " slots)").withStyle(ChatFormatting.GRAY));
+
+            case 2 -> Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
+                    .append(Component.translatable(ModItems.MAX_STORAGE_UPGRADE_T2.get().getDescriptionId()).withStyle(ChatFormatting.WHITE))
+                    .append(Component.literal(" (+" + ConfigLoader.getInstance().UPGRADE_T2_SLOTS + " slots)").withStyle(ChatFormatting.GRAY));
+
+            case 3 -> Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
+                    .append(Component.translatable(ModItems.MAX_STORAGE_UPGRADE_T3.get().getDescriptionId()).withStyle(ChatFormatting.WHITE))
+                    .append(Component.literal(" (+" + ConfigLoader.getInstance().UPGRADE_T3_SLOTS + " slots)").withStyle(ChatFormatting.GRAY));
+            default -> Component.empty();
+        };
     }
 
     public void updateShowStructure() {
@@ -310,7 +432,7 @@ public class ControllerBaseBE extends BlockEntity {
     public void tick(Level pLevel, BlockPos pPos, BlockState pState, ResourceLocation structure, String name) {
         if (level == null || level.isClientSide) return;
 
-        if (!cfg.ALLOW_TICK_ACCELERATION_MINERS) {
+        if (!ConfigLoader.getInstance().ALLOW_TICK_ACCELERATION_MINERS) {
             long gameTime = level.getGameTime();
             if (this.lastProcessedGameTime == gameTime) return;
             this.lastProcessedGameTime = gameTime;
@@ -339,9 +461,9 @@ public class ControllerBaseBE extends BlockEntity {
             updateShowStructure();
         }
 
-        int itemModMultMultiplier = getItemModifierMultiplier();
+        int itemModMultMultiplier = (int) getItemModifierMultiplier();
 
-        if (!cfg.MINERS_FILL_ALL_SLOTS) {
+        if (!ConfigLoader.getInstance().MINERS_FILL_ALL_SLOTS) {
             if (itemModMultMultiplier > itemHandler.getSlots() * 64) {
                 haltReason = HaltReason.TOO_MUCH_ITEM_MULTIPLIER;
                 return;
@@ -365,9 +487,11 @@ public class ControllerBaseBE extends BlockEntity {
             return;
         }
 
-        int rfPerTick = getRfTick();
+        int rfPerTick = getRFPerTick();
 
         enoughPower = rfPerTick <= energyHandler.getEnergyStored();
+
+        enoughPowerForNextOperation = rfPerTick * 2 <= energyHandler.getEnergyStored();
 
         sync();
 
@@ -422,14 +546,14 @@ public class ControllerBaseBE extends BlockEntity {
         level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
 
-    public int getRfTick() {
+    public int getRFPerTick() {
         float mod = 1;
 
         for (Map.Entry<BlockInWorld, ConfigLoader.ModifierConfig> entry : modifierMap.entrySet()) {
             mod *= entry.getValue().energy();
         }
 
-        return (int) (cfg.getMinerConfig(name).energyTick() * mod);
+        return (int) (ConfigLoader.getInstance().getMinerConfig(name).energyTick() * mod);
     }
 
     public int getMaxProgress() {
@@ -439,19 +563,35 @@ public class ControllerBaseBE extends BlockEntity {
             mod *= entry.getValue().speed();
         }
 
-        return (int) (cfg.getMinerConfig(name).duration() / mod);
+        return (int) (ConfigLoader.getInstance().getMinerConfig(name).duration() / mod);
     }
 
-    public int getItemModifierMultiplier() {
+    public float getItemModifierMultiplier() {
         float mod = 1;
         for (Map.Entry<BlockInWorld, ConfigLoader.ModifierConfig> entry : modifierMap.entrySet()) {
             mod *= entry.getValue().item();
         }
-        return (int) mod;
+        return mod;
+    }
+
+    public float getEnergyModifierMultiplier() {
+        float mod = 1;
+        for (Map.Entry<BlockInWorld, ConfigLoader.ModifierConfig> entry : modifierMap.entrySet()) {
+            mod *= entry.getValue().energy();
+        }
+        return mod;
+    }
+
+    public float getSpeedModifierMultiplier() {
+        float mod = 1;
+        for (Map.Entry<BlockInWorld, ConfigLoader.ModifierConfig> entry : modifierMap.entrySet()) {
+            mod *= entry.getValue().speed();
+        }
+        return mod;
     }
 
     public ItemStack getBoostedStack(ItemStack base) {
-        int count = (base.getCount() * getItemModifierMultiplier());
+        int count = (base.getCount() * (int) getItemModifierMultiplier());
         return base.copyWithCount(count);
     }
 
@@ -504,7 +644,7 @@ public class ControllerBaseBE extends BlockEntity {
     }
 
     private boolean isItemValid(ItemStack stack, ItemStack handler) {
-        return handler.isEmpty() || handler.is(stack.getItem()) && stack.getCount() + handler.getCount() <= handler.getMaxStackSize();
+        return handler.isEmpty() || handler.is(stack.getItem());
     }
 
     public void drops() {
@@ -569,7 +709,7 @@ public class ControllerBaseBE extends BlockEntity {
         result.blocks().stream()
             .filter(block -> block.getState().getBlock() instanceof ModifierBlock)
             .forEach(block -> {
-                ConfigLoader.ModifierConfig modifier = cfg.getModifierConfig(block.getState().getBlock());
+                ConfigLoader.ModifierConfig modifier = ConfigLoader.getInstance().getModifierConfig(block.getState().getBlock());
                 if (!modifierMap.containsKey(block)) {
                     modifierMap.put(block, modifier);
                 }

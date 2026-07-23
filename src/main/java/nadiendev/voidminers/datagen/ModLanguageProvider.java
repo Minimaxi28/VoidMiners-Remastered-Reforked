@@ -29,20 +29,28 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("gui.voidminers.miner", "Tier %d Miner");
         this.add("gui.voidminers.miners", "Miners");
 
-        this.add("tooltip.voidminers.controller.enoughRF", "Miner is enoughRF correctly.");
-
-        this.add("tooltip.voidminers.controller.energy", "Energy: %d rf/t");
-
-        this.add("tooltip.voidminers.controller.duration", "Duration: %d ticks");
-
-        this.add("tooltip.voidminers.controller.halt_reason.dimension_not_ok", "This Miner has no recipes in this dimension.");
-        this.add("tooltip.voidminers.controller.halt_reason.structure_not_found_1", "Miner structure is not correct, sneak + right-click the Miner for a guide.");
-        this.add("tooltip.voidminers.controller.halt_reason.structure_not_found_2", "Total needed blocks: ");
-        this.add("tooltip.voidminers.controller.halt_reason.too_much_item_multiplier", "Item Multiplier too high, the miner doesn't have enough slots.\nAdd a Max Storage Upgrade or remove some blocks that add Item Multiplier.");
+        this.add("tooltip.voidminers.controller.halt_reason.dimension_not_ok", "§eThis miner doesn't have any recipes available for this dimension : %s§d)§e.\nCheck JEI for available recipes / dimensions.");
+        this.add("tooltip.voidminers.controller.halt_reason.structure_not_found", "Miner structure is not correct, sneak + right-click the Miner for a guide.\nTotal needed blocks: ");
+        this.add("tooltip.voidminers.controller.halt_reason.too_much_item_multiplier", "§eItem Multiplier too high, remove some of the blocks that add Item Multiplier.\nMax Item Multiplier: %d×");
         this.add("tooltip.voidminers.controller.halt_reason.not_enough_empty_slots", "All slots are full, the miner can't mine until it has been emptied.");
         this.add("tooltip.voidminers.controller.halt_reason.no_bedrock_or_void_view", "Make sure that the miner can see the void / bedrock!\nThe distance does NOT matter, only that the center block can see void / bedrock.");
-        this.add("jade.voidminers.halt_reason.halt_reason_not_found", "Reason not found");
-        this.add("jade.voidminers.halt_reason.not_enough_power", "Not enough power");
+
+        this.add("tooltip.voidminers.controller.progress", "§e⏳ PROGRESS: ");
+        this.add("tooltip.voidminers.controller.item_boost", "§d📦 ITEM BOOST: ");
+        this.add("tooltip.voidminers.controller.duration", "§9⏱ DURATION: ");
+        this.add("tooltip.voidminers.controller.consumption", "§c⚡ CONSUMPTION: ");
+        this.add("tooltip.voidminers.controller.energy", "§e⚡ ENERGY: ");
+        this.add("tooltip.voidminers.controller.max_storage_upgrade_tip", "You can also add a better Max Storage Upgrade");
+
+        this.add("tooltip.voidminers.controller.status.status", "⚠ STATUS: ");
+        this.add("tooltip.voidminers.controller.status.mining_active", "MINING ACTIVE");
+        this.add("tooltip.voidminers.controller.status.mining_slow", "MINING SLOW");
+        this.add("tooltip.voidminers.controller.status.not_enough_power_for_next_operation", "Not enough power for next operation.");
+        this.add("tooltip.voidminers.controller.status.mining_impossible", "MINING IMPOSSIBLE");
+        this.add("tooltip.voidminers.controller.status.structure_incomplete", "STRUCTURE INCOMPLETE");
+        this.add("tooltip.voidminers.controller.status.mining_stopped", "MINING STOPPED");
+        this.add("tooltip.voidminers.controller.status.not_enough_power", "Not enough power.");
+        this.add("tooltip.voidminers.controller.status.not_enough_power_buffer", "Not enough power buffer.\nEither use less Modifiers or use Energy Modifiers.");
 
         this.add("tooltip.voidminers.structure.weight", "Weight: %d");
 
@@ -98,6 +106,9 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("minecraft.the_end", "The End");
 
         this.add("config.jade.plugin_voidminers.void_miner", "VoidMiners");
+        this.add("jade.voidminers.halt_reason.halt_reason_not_found", "Reason not found");
+        this.add("jade.voidminers.halt_reason.not_enough_power", "Reason: Not enough power");
+        this.add("jade.voidminers.halt_reason.not_enough_power_buffer", "Reason: Not enough power buffer");
         this.add("jade.voidminers.tier", "Tier: %s");
         this.add("jade.voidminers.max_storage_upgrade_tier", "Max Storage Upgrade Tier: %s");
         this.add("jade.voidminers.energy", "Energy: %s / %s FE");

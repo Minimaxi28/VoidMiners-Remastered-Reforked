@@ -94,7 +94,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
         if (!isHovering(mouseX, mouseY, 99, 0, 115, 16)) {
             return;
         }
-        guiGraphics.renderTooltip(font, Component.translatable(dimensionName), (int) mouseX, (int) mouseY - 10);
+        guiGraphics.renderTooltip(font, Component.translatable(dimensionName), (int) mouseX, (int) mouseY + 10);
     }
 
     public static boolean isHovering(double mouseX, double mouseY, int x1, int y1, int x2, int y2) {
