@@ -165,11 +165,12 @@ public class ControllerBaseBE extends BlockEntity {
             case NONE:
                 if(enoughPowerForNextOperation) {
                     status.append(Component.translatable("tooltip.voidminers.controller.status.mining_active").withStyle(ChatFormatting.GREEN));
+                    tooltip.add(status);
                 } else {
                     status.append(Component.translatable("tooltip.voidminers.controller.status.mining_slow").withStyle(ChatFormatting.RED));
+                    tooltip.add(status);
+                    tooltip.add(Component.translatable("tooltip.voidminers.controller.status.not_enough_power_for_next_operation").withStyle(ChatFormatting.YELLOW));
                 }
-                tooltip.add(status);
-                tooltip.add(Component.translatable("tooltip.voidminers.controller.status.not_enough_power_for_next_operation").withStyle(ChatFormatting.YELLOW));
 
                 addMinerInfo(tooltip);
                 break;

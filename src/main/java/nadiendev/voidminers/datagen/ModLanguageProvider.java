@@ -99,7 +99,8 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip.voidminers.item", "Item Multiplier: %s%%");
 
         this.add("tooltip.voidminers.structure_helper.creative_only", "Creative Only");
-        this.add("tooltip.voidminers.structure_helper.instructions", "Sneak + right-click on a Miner to complete it.\nBlocks in the way will be voided");
+        this.add("tooltip.voidminers.structure_helper.instructions", "Sneak + right-click on a Miner to complete it.");
+        this.add("tooltip.voidminers.structure_helper.warning", "Blocks in the way will be voided");
 
         this.add("minecraft.overworld", "Overworld");
         this.add("minecraft.the_nether", "The Nether");

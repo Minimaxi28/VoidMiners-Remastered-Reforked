@@ -52,8 +52,9 @@ public class StructureHelperItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        tooltipComponents.add(Component.translatable("tooltip.voidminers.structure_helper.creative_only").withStyle(ChatFormatting.RED)
-                .append(Component.translatable("tooltip.voidminers.structure_helper.instructions").withStyle(ChatFormatting.LIGHT_PURPLE)));
+        tooltipComponents.add(Component.translatable("tooltip.voidminers.structure_helper.creative_only").withStyle(ChatFormatting.RED));
+        tooltipComponents.add(Component.translatable("tooltip.voidminers.structure_helper.instructions").withStyle(ChatFormatting.LIGHT_PURPLE));
+        tooltipComponents.add(Component.translatable("tooltip.voidminers.structure_helper.warning").withStyle(ChatFormatting.LIGHT_PURPLE));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }
 }
