@@ -10,7 +10,7 @@ public class ListUtil {
         float totalWeight = 0;
 
         for (WeightedStack item : items) {
-            totalWeight += item.getWeightAsFloat();
+            totalWeight += item.weight;
         }
 
         return totalWeight;
@@ -22,7 +22,7 @@ public class ListUtil {
     @SafeVarargs
     public static <T> List<T> of(T... ts) {
         return new ArrayList<>(
-            List.of(ts)
+                List.of(ts)
         );
     }
 

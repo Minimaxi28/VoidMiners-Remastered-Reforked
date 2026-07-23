@@ -520,7 +520,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('S', Items.NETHERITE_BLOCK)
                 .define('T', ModItems.MAX_STORAGE_UPGRADE_T2.get())
                 .define('C', CrystalSet.CAERIUM.CRYSTAL.get())
-                .unlockedBy("hasItem", has(ModItems.MAX_STORAGE_UPGRADE_T2.get()))
+                .unlockedBy("hasItem", has(ModItems.MAX_STORAGE_UPGRADE_T1.get()))
                 .save(pWriter);
 
         ShapedRecipeBuilder.shaped(
@@ -534,7 +534,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('S', Items.NETHER_STAR)
                 .define('T', ModItems.MAX_STORAGE_UPGRADE_T3.get())
                 .define('C', ModItems.ULTIMATE_STELLAR_CORE.get())
-                .unlockedBy("hasItem", has(ModItems.MAX_STORAGE_UPGRADE_T3.get()))
+                .unlockedBy("hasItem", has(ModItems.MAX_STORAGE_UPGRADE_T2.get()))
                 .save(pWriter);
 
     }

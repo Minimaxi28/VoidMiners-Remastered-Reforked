@@ -47,7 +47,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("gui.voidminers.miner", tier);
+        return Component.translatable("gui." + VoidMiners.MODID + ".miner", tier);
     }
 
     @Override
@@ -63,15 +63,15 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, MinerRecipe minerRecipe, IFocusGroup iFocusGroup) {
         builder.addSlot(
-            RecipeIngredientRole.OUTPUT,
-            4,
-            -1
+                RecipeIngredientRole.OUTPUT,
+                4,
+                -1
         ).addItemStack(minerRecipe.output().stack);
     }
 
     @Override
     public void draw(MinerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Component weight = Component.translatable("tooltip.voidminers.structure.weight", customFormat(recipe.output().weight));
+        Component weight = Component.translatable("tooltip." + VoidMiners.MODID + ".structure.weight", customFormat(recipe.output().weight));
         String dimensionName = recipe.dimension().location().toLanguageKey();
 
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "textures/gui/icon/" + getDimensionIcon(recipe.dimension()) + ".png");
@@ -81,7 +81,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
         guiGraphics.drawString(font, weight, 24, 4, 0xFFFFFFFF);
         guiGraphics.blit(
             texture,
-            99,
+            105,
             -1,
             0,
             0,
@@ -91,7 +91,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
             16
         );
 
-        if (!isHovering(mouseX, mouseY, 99, 0, 115, 16)) {
+        if (!isHovering(mouseX, mouseY, 105, 0, 121, 16)) {
             return;
         }
         guiGraphics.renderTooltip(font, Component.translatable(dimensionName), (int) mouseX, (int) mouseY + 10);
@@ -99,29 +99,30 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
     public static boolean isHovering(double mouseX, double mouseY, int x1, int y1, int x2, int y2) {
         return mouseX >= x1
-            && mouseX <= x2
-            && mouseY >= y1
-            && mouseY <= y2;
+                && mouseX <= x2
+                && mouseY >= y1
+                && mouseY <= y2;
     }
 
-    public static String customFormat(String weightStr) {
-        try {
-            double number = Double.parseDouble(weightStr);
-
-            if (number == Math.floor(number)) {
-                return String.valueOf((int) number);
-            }
-
-            String formatted = String.format("%.100f", number);
-
-            formatted = formatted.replaceAll("0*$", "");
-
-            formatted = formatted.replaceAll("\\.$", "");
-
-            return formatted;
-        } catch (NumberFormatException e) {
-            return weightStr;
+    public static String customFormat(float number) {
+        if (number == 0.0) {
+            return "0";
         }
+
+        String formatted;
+
+        if (Math.abs(number) < 0.000001) {
+            // Use scientific notation for very small numbers
+            return String.format("%.1E", number);
+        } else {
+            formatted = String.format("%.6f", number);
+        }
+
+        // Remove trailing zeros and unnecessary decimal point/comma
+        formatted = formatted.replaceAll("0+$", "");
+        formatted = formatted.replaceAll("[.,]$", "");
+
+        return formatted;
     }
 
     public static String getDimensionIcon(ResourceKey<Level> dimension) {

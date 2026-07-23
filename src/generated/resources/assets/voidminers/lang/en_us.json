@@ -118,7 +118,7 @@
   "tooltip.voidminers.item": "Item Multiplier: %s%%",
   "tooltip.voidminers.max_storage_upgrades": "Right-click a miner with this upgrade to apply it.\nIncreases the miner's output inventory by +%s slots.\nOnly the highest installed tier is applied\nNon-cumulative.\nConsumed on use.",
   "tooltip.voidminers.speed": "Mining Speed: %s%%",
-  "tooltip.voidminers.structure.weight": "Weight: %d",
+  "tooltip.voidminers.structure.weight": "Weight: %s",
   "tooltip.voidminers.structure_helper.creative_only": "Creative Only",
   "tooltip.voidminers.structure_helper.instructions": "Sneak + right-click on a Miner to complete it.\nBlocks in the way will be voided"
 }

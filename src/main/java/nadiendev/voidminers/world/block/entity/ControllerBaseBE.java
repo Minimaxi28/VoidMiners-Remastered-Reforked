@@ -675,7 +675,7 @@ public class ControllerBaseBE extends BlockEntity {
         float randomValue = random.nextFloat() * totalWeight;
 
         for (WeightedStack item : items) {
-            randomValue -= item.getWeightAsFloat();
+            randomValue -= item.weight;
             if (randomValue <= 0) {
                 return item.stack;
             }

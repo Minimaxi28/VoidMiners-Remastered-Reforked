@@ -10,24 +10,14 @@ import net.minecraft.world.item.ItemStack;
 
 public class WeightedStack {
     public ItemStack stack;
-    public String weight;
+    public float weight;
 
-    public WeightedStack(ItemStack stack, Number weight) {
-        this.stack = stack;
-        this.weight = String.valueOf(weight);
-    }
-
-    public WeightedStack(Item item, Number weight) {
-        this.stack = item.getDefaultInstance();
-        this.weight = String.valueOf(weight);
-    }
-
-    public WeightedStack(ItemStack stack, String weight) {
+    public WeightedStack(ItemStack stack, float weight) {
         this.stack = stack;
         this.weight = weight;
     }
 
-    public WeightedStack(Item item, String weight) {
+    public WeightedStack(Item item, float weight) {
         this.stack = item.getDefaultInstance();
         this.weight = weight;
     }
@@ -36,33 +26,19 @@ public class WeightedStack {
         return new WeightedStack(stack.copy(), weight);
     }
 
-    public float getWeightAsFloat() {
-        try {
-            return Float.parseFloat(weight);
-        } catch (NumberFormatException e) {
-            return 0.0f;
-        }
-    }
-
-    public double getWeightAsDouble() {
-        try {
-            return Double.parseDouble(weight);
-        } catch (NumberFormatException e) {
-            return 0.0;
-        }
-    }
 
     public static final Codec<WeightedStack> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     ItemStack.CODEC.fieldOf("stack").forGetter(ws -> ws.stack),
-                    Codec.STRING.fieldOf("weight").forGetter(ws -> ws.weight)
-            ).apply(instance, (stack, weight) -> new WeightedStack(stack, weight))
+                    Codec.FLOAT.fieldOf("weight").forGetter(ws -> ws.weight)
+            ).apply(instance, WeightedStack::new)
     );
+
 
     public static final StreamCodec<RegistryFriendlyByteBuf, WeightedStack> STREAM_CODEC = StreamCodec.composite(
             ItemStack.STREAM_CODEC,
             ws -> ws.stack,
-            ByteBufCodecs.STRING_UTF8,
+            ByteBufCodecs.FLOAT,
             ws -> ws.weight,
             WeightedStack::new
     );
