@@ -3,6 +3,7 @@ package nadiendev.voidminers.datagen;
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.init.ModBlocks;
 import nadiendev.voidminers.init.CrystalSet;
+import nadiendev.voidminers.init.SolarSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -42,13 +43,30 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
             tripleLayerBlockWithItem(set.FRAME, "voidminers:block/" + set.name + "/frame", "voidminers:block/_core/frame", "voidminers:block/_core/cover");
 
-            simpleBlockWithItem(set.MINER_CONTROLLER);
+            simpleBlockWithItem(set.CONTROLLER.get(),
+                    new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + set.name + "/miner")));
 
             quadLayerBlockWithItem(set.ENERGY_MOD, "voidminers:block/_core/energy", "voidminers:block/_core/modifier", "voidminers:block/_core/cover", "voidminers:block/" + set.name + "/core");
 
             quadLayerBlockWithItem(set.SPEED_MOD, "voidminers:block/_core/speed", "voidminers:block/_core/modifier", "voidminers:block/_core/cover", "voidminers:block/" + set.name + "/core");
 
             quadLayerBlockWithItem(set.ITEM_MOD, "voidminers:block/_core/item", "voidminers:block/_core/modifier", "voidminers:block/_core/cover", "voidminers:block/" + set.name + "/core");
+        }
+
+        for (SolarSet set : SolarSet.sets()) {
+            simpleAllCubeWithItem(
+                    set.CRYSTAL_BLOCK,
+                    set.name
+            );
+
+            tripleLayerBlockWithItem(set.FRAME, "voidminers:block/" + set.name + "/frame", "voidminers:block/_core/frame", "voidminers:block/_core/cover");
+
+            simpleBlockWithItem(set.CONTROLLER.get(),
+                    new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + set.name + "/solar_panel")));
+
+            quadLayerBlockWithItem(set.EFFICIENCY_MOD, "voidminers:block/_core/energy", "voidminers:block/_core/modifier", "voidminers:block/_core/cover", "voidminers:block/" + set.name + "/core");
+
+            quadLayerBlockWithItem(set.WEATHER_MOD, "voidminers:block/_core/speed", "voidminers:block/_core/modifier", "voidminers:block/_core/cover", "voidminers:block/" + set.name + "/core");
         }
     }
 
@@ -101,7 +119,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void simpleAllCubeWithItem(DeferredHolder<Block, Block> block, String name) {
-        simpleBlockWithItem(block.get(), models().cubeAll(name(block.get()), stripSetName(block.getId()).withPrefix("block/" + name + "/")));
+        simpleBlockWithItem(block.get(), models().cubeAll(name(block.get()), ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + name + "/block")));
     }
 
     private String name(Block block) {
@@ -110,15 +128,5 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private ResourceLocation key(Block block) {
         return BuiltInRegistries.BLOCK.getKey(block);
-    }
-
-    private static ResourceLocation stripSetName(ResourceLocation name) {
-        int index = name.getPath().indexOf('_');
-
-        if (index == -1) {
-            return name;
-        }
-
-        return ResourceLocation.fromNamespaceAndPath(name.getNamespace(), name.getPath().substring(index + 1));
     }
 }

@@ -1,7 +1,7 @@
 package nadiendev.voidminers.common.network.packet;
 
 import nadiendev.voidminers.VoidMiners;
-import nadiendev.voidminers.config.ConfigLoader;
+import nadiendev.voidminers.config.MinerConfigLoader;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public record SyncConfigS2CPacket(Map<String, ConfigLoader.MinerConfig> minerConfigs) implements CustomPacketPayload {
+public record SyncConfigS2CPacket(Map<String, MinerConfigLoader.Config> minerConfigs) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<SyncConfigS2CPacket> TYPE = 
         new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "sync_config"));
@@ -22,7 +22,7 @@ public record SyncConfigS2CPacket(Map<String, ConfigLoader.MinerConfig> minerCon
         ByteBufCodecs.map(
             HashMap::new,
             ByteBufCodecs.STRING_UTF8,
-            ConfigLoader.MinerConfig.STREAM_CODEC
+            MinerConfigLoader.Config.STREAM_CODEC
         ),
         SyncConfigS2CPacket::minerConfigs,
         SyncConfigS2CPacket::new
@@ -35,7 +35,7 @@ public record SyncConfigS2CPacket(Map<String, ConfigLoader.MinerConfig> minerCon
 
     public static void handle(SyncConfigS2CPacket packet, IPayloadContext context) {
         context.enqueueWork(() -> {
-            ConfigLoader.getInstance().MINER_CONFIGS = packet.minerConfigs();
+            MinerConfigLoader.getInstance().MINER_CONFIGS = packet.minerConfigs();
         });
     }
 }

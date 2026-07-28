@@ -4,6 +4,7 @@ import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.init.ModBlocks;
 import nadiendev.voidminers.init.ModItems;
 import nadiendev.voidminers.init.CrystalSet;
+import nadiendev.voidminers.init.SolarSet;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
@@ -30,10 +31,12 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("gui.voidminers.miners", "Miners");
 
         this.add("tooltip.voidminers.controller.halt_reason.dimension_not_ok", "§eThis miner doesn't have any recipes available for this dimension : %s§d)§e.\nCheck JEI for available recipes / dimensions.");
-        this.add("tooltip.voidminers.controller.halt_reason.structure_not_found", "Miner structure is not correct, sneak + right-click the Miner for a guide.\nTotal needed blocks: ");
+        this.add("tooltip.voidminers.controller.halt_reason.structure_not_found", "Structure is not correct, sneak + right-click the Miner for a guide.\nTotal needed blocks: ");
         this.add("tooltip.voidminers.controller.halt_reason.too_much_item_multiplier", "§eItem Multiplier too high, remove some of the blocks that add Item Multiplier.\nMax Item Multiplier: %d×");
         this.add("tooltip.voidminers.controller.halt_reason.not_enough_empty_slots", "All slots are full, the miner can't mine until it has been emptied.");
         this.add("tooltip.voidminers.controller.halt_reason.no_bedrock_or_void_view", "Make sure that the miner can see the void / bedrock!\nThe distance does NOT matter, only that the center block can see void / bedrock.");
+
+        this.add("tooltip.voidminers.controller.halt_reason.no_sky_view", "Unable to see the sky, make sure there are no blocks above the Solar Panel\nDimension could also not have a \"day\" ie. The Nether / The End");
 
         this.add("tooltip.voidminers.controller.progress", "§e⏳ PROGRESS: ");
         this.add("tooltip.voidminers.controller.item_boost", "§d📦 ITEM BOOST: ");
@@ -42,15 +45,26 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip.voidminers.controller.energy", "§e⚡ ENERGY: ");
         this.add("tooltip.voidminers.controller.max_storage_upgrade_tip", "You can also add a better Max Storage Upgrade");
 
+        this.add("tooltip.voidminers.controller.generation", "⚡ GENERATION: ");
+        this.add("tooltip.voidminers.controller.efficiency", "☀ EFFICIENCY: ");
+
         this.add("tooltip.voidminers.controller.status.status", "⚠ STATUS: ");
-        this.add("tooltip.voidminers.controller.status.mining_active", "MINING ACTIVE");
+
         this.add("tooltip.voidminers.controller.status.mining_slow", "MINING SLOW");
         this.add("tooltip.voidminers.controller.status.not_enough_power_for_next_operation", "Not enough power for next operation.");
         this.add("tooltip.voidminers.controller.status.mining_impossible", "MINING IMPOSSIBLE");
-        this.add("tooltip.voidminers.controller.status.structure_incomplete", "STRUCTURE INCOMPLETE");
         this.add("tooltip.voidminers.controller.status.mining_stopped", "MINING STOPPED");
         this.add("tooltip.voidminers.controller.status.not_enough_power", "Not enough power.");
         this.add("tooltip.voidminers.controller.status.not_enough_power_buffer", "Not enough power buffer.\nEither use less Modifiers or use Energy Modifiers.");
+
+        this.add("tooltip.voidminers.controller.status.structure_incomplete", "STRUCTURE INCOMPLETE");
+        this.add("tooltip.voidminers.controller.status.working", "WORKING");
+        this.add("tooltip.voidminers.controller.status.power_full", "POWER BUFFER FULL");
+        this.add("tooltip.voidminers.controller.efficiency_limited_by_rain", "Efficiency limited because of Rain.");
+        this.add("tooltip.voidminers.controller.efficiency_limited_by_thunder", "Efficiency limited because of Thunder.");
+        this.add("tooltip.voidminers.controller.efficiency_limited_by_time_of_day", "Efficiency limited because of the current time.");
+
+        this.add("tooltip.voidminers.controller.status.no_sky_view", "NO SKY VIEW / DIMENSION DOES NOT HAVE A \"DAY\"");
 
         this.add("tooltip.voidminers.structure.weight", "Weight: %d");
 
@@ -65,40 +79,44 @@ public class ModLanguageProvider extends LanguageProvider {
         for (CrystalSet set : CrystalSet.sets()) {
             if (set.CRYSTAL != null) {
                 this.add(set.CRYSTAL.get(), cFL(set.name));
-
                 this.add(set.CRYSTAL_BLOCK.get(), cFL(set.name) + " Block");
-
-                this.add(set.MINER_CONTROLLER.get(), cFL(set.name) + " Miner");
-
+                this.add(set.CONTROLLER.get(), cFL(set.name) + " Miner");
                 this.add(set.FRAME.get(), cFL(set.name) + " Frame");
-
                 this.add(set.ENERGY_MOD.get(), cFL(set.name) + " Energy Modifier");
-
                 this.add(set.SPEED_MOD.get(), cFL(set.name) + " Speed Modifier");
-
                 this.add(set.ITEM_MOD.get(), cFL(set.name) + " Item Modifier");
             } else {
                 this.add(CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get(), cFL(CrystalSet.ULTIMATE.name) + " Block");
-
-                this.add(CrystalSet.ULTIMATE.MINER_CONTROLLER.get(), cFL(CrystalSet.ULTIMATE.name) + " Miner");
-
+                this.add(CrystalSet.ULTIMATE.CONTROLLER.get(), cFL(CrystalSet.ULTIMATE.name) + " Miner");
                 this.add(CrystalSet.ULTIMATE.FRAME.get(), cFL(CrystalSet.ULTIMATE.name) + " Frame");
-
                 this.add(CrystalSet.ULTIMATE.ENERGY_MOD.get(), cFL(CrystalSet.ULTIMATE.name) + " Energy Modifier");
-
                 this.add(CrystalSet.ULTIMATE.SPEED_MOD.get(), cFL(CrystalSet.ULTIMATE.name) + " Speed Modifier");
-
                 this.add(CrystalSet.ULTIMATE.ITEM_MOD.get(), cFL(CrystalSet.ULTIMATE.name) + " Item Modifier");
             }
         }
 
+        for (SolarSet set : SolarSet.sets()) {
+            if (set.CRYSTAL != null) {
+                this.add(set.CRYSTAL.get(), "Solar " + cFL(set.name));
+                this.add(set.CRYSTAL_BLOCK.get(), "Solar " + cFL(set.name) + " Block");
+                this.add(set.CONTROLLER.get(), "Solar " + cFL(set.name) + " Panel");
+                this.add(set.FRAME.get(), "Solar " + cFL(set.name) + " Frame");
+                this.add(set.WEATHER_MOD.get(), "Solar " + cFL(set.name) + " Weather Modifier");
+                this.add(set.EFFICIENCY_MOD.get(), "Solar " + cFL(set.name) + " Efficiency Modifier");
+            } else {
+                this.add(SolarSet.ULTIMATE.CRYSTAL_BLOCK.get(), "Solar " + cFL(SolarSet.ULTIMATE.name) + " Block");
+                this.add(SolarSet.ULTIMATE.CONTROLLER.get(), cFL(SolarSet.ULTIMATE.name) + " Solar Panel");
+                this.add(SolarSet.ULTIMATE.FRAME.get(), "Solar " + cFL(SolarSet.ULTIMATE.name) + " Frame");
+                this.add(SolarSet.ULTIMATE.WEATHER_MOD.get(), "Solar " + cFL(SolarSet.ULTIMATE.name) + " Weather Modifier");
+                this.add(SolarSet.ULTIMATE.EFFICIENCY_MOD.get(), "Solar " + cFL(SolarSet.ULTIMATE.name) + " Efficiency Modifier");
+            }
+        }
+
         this.add("tooltip.voidminers.energy", "Energy Consumption: %s%%");
-
         this.add("tooltip.voidminers.speed", "Mining Speed: %s%%");
-
         this.add("tooltip.voidminers.item", "Item Multiplier: %s%%");
 
-        this.add("tooltip.voidminers.structure_helper.creative_only", "Creative Only");
+        this.add("tooltip.voidminers.structure_helper.creative_only", "Not supposed to be used in survival.");
         this.add("tooltip.voidminers.structure_helper.instructions", "Sneak + right-click on a Miner to complete it.");
         this.add("tooltip.voidminers.structure_helper.warning", "Blocks in the way will be voided");
 
@@ -120,6 +138,9 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("jade.voidminers.halt_reason.too_much_item_multiplier", "Reason: Item Multiplier too high");
         this.add("jade.voidminers.halt_reason.not_enough_empty_slots", "Reason: Not enough empty slots");
         this.add("jade.voidminers.halt_reason.no_bedrock_or_void_view", "Reason: Can't see Bedrock or Void");
+
+        this.add("jade.voidminers.halt_reason.no_sky_view", "Reason: Can't see the sky");
+        this.add("jade.voidminers.halt_reason.power_full", "Reason: Power buffer full");
 
         this.add("jade.voidminers.progress", "Progress: %s%%");
 

@@ -1,6 +1,7 @@
 package nadiendev.voidminers.common.compat.jade;
 
-import nadiendev.voidminers.world.block.entity.ControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.SolarControllerBaseBE;
 import net.minecraft.world.level.block.Block;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
@@ -12,11 +13,13 @@ public class JadePlugin implements IWailaPlugin {
     
     @Override
     public void register(IWailaCommonRegistration registration) {
-        registration.registerBlockDataProvider(VoidMinerProvider.INSTANCE, ControllerBaseBE.class);
+        registration.registerBlockDataProvider(MinerProvider.INSTANCE, MinerControllerBaseBE.class);
+        registration.registerBlockDataProvider(SolarProvider.INSTANCE, SolarControllerBaseBE.class);
     }
     
     @Override
     public void registerClient(IWailaClientRegistration registration) {
-        registration.registerBlockComponent(VoidMinerProvider.INSTANCE, Block.class);
+        registration.registerBlockComponent(MinerProvider.INSTANCE, Block.class);
+        registration.registerBlockComponent(SolarProvider.INSTANCE, Block.class);
     }
 }

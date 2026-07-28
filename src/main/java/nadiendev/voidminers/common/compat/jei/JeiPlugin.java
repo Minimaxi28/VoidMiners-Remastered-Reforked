@@ -34,7 +34,7 @@ public class JeiPlugin implements IModPlugin {
             tiers.add(
                 new MinerCategory(
                     registration.getJeiHelpers().getGuiHelper(),
-                    set.MINER_CONTROLLER.get(),
+                    set.CONTROLLER.get(),
                     i + 1
                 )
             );
@@ -91,7 +91,7 @@ public class JeiPlugin implements IModPlugin {
         for (int i = 0; i < allSets.size(); i++) {
             CrystalSet set = allSets.get(i);
             registration.addRecipeCatalyst(
-                set.MINER_CONTROLLER.get().asItem().getDefaultInstance(),
+                set.CONTROLLER.get().asItem().getDefaultInstance(),
                 tiers.get(i).getRecipeType()
             );
         }

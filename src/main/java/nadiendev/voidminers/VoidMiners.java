@@ -1,10 +1,12 @@
 package nadiendev.voidminers;
 
-import nadiendev.voidminers.config.ConfigLoader;
+import nadiendev.voidminers.config.MinerConfigLoader;
+import nadiendev.voidminers.config.SolarConfigLoader;
 import nadiendev.voidminers.init.*;
 import nadiendev.voidminers.world.multiblock.MinerMultiblocks;
 import nadiendev.voidminers.common.network.ModNetwork;
 import com.mojang.logging.LogUtils;
+import nadiendev.voidminers.world.multiblock.SolarMultiblocks;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.neoforged.bus.api.IEventBus;
@@ -20,9 +22,11 @@ public class VoidMiners {
     public static final Logger LOGGER = LogUtils.getLogger();
     
     public VoidMiners(IEventBus modEventBus, ModContainer container) {
-        ConfigLoader.getInstance().load();
+        MinerConfigLoader.getInstance().load();
+        SolarConfigLoader.getInstance().load();
         CrystalSet.initSets();
-        
+        SolarSet.initSets();
+
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
@@ -49,7 +53,8 @@ public class VoidMiners {
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             ModRarities.init();
-            MinerMultiblocks.init(); 
+            MinerMultiblocks.init();
+            SolarMultiblocks.init();
             LOGGER.info("Multiblocks initialized successfully!");
         });
     }

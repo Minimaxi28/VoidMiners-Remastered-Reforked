@@ -3,6 +3,7 @@ package nadiendev.voidminers.datagen;
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.init.ModBlocks;
 import nadiendev.voidminers.init.CrystalSet;
+import nadiendev.voidminers.init.SolarSet;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -40,12 +41,12 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                 ModBlocks.NULL_MOD.get()
             );
 
-        List<CrystalSet> allSets = CrystalSet.sets();
-        for (int i = 0; i < allSets.size(); i++) {
-            CrystalSet set = allSets.get(i);
+        List<CrystalSet> allCrystalSets = CrystalSet.sets();
+        for (int i = 0; i < allCrystalSets.size(); i++) {
+            CrystalSet set = allCrystalSets.get(i);
             this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(
-                    set.MINER_CONTROLLER.get(),
+                    set.CONTROLLER.get(),
                     set.CRYSTAL_BLOCK.get(),
                     set.FRAME.get(),
                     set.ENERGY_MOD.get(),
@@ -55,7 +56,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
 
             this.tag(BlockTags.NEEDS_STONE_TOOL)
                 .add(
-                    set.MINER_CONTROLLER.get(),
+                    set.CONTROLLER.get(),
                     set.CRYSTAL_BLOCK.get(),
                     set.FRAME.get(),
                     set.ENERGY_MOD.get(),
@@ -75,6 +76,41 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                     set.ENERGY_MOD.get(),
                     set.SPEED_MOD.get(),
                     set.ITEM_MOD.get()
+                );
+        }
+
+        List<SolarSet> allSolarSets = SolarSet.sets();
+        for (int i = 0; i < allSolarSets.size(); i++) {
+            SolarSet set = allSolarSets.get(i);
+            this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(
+                    set.CONTROLLER.get(),
+                    set.CRYSTAL_BLOCK.get(),
+                    set.FRAME.get(),
+                    set.EFFICIENCY_MOD.get(),
+                    set.WEATHER_MOD.get()
+                );
+
+            this.tag(BlockTags.NEEDS_STONE_TOOL)
+                .add(
+                    set.CONTROLLER.get(),
+                    set.CRYSTAL_BLOCK.get(),
+                    set.FRAME.get(),
+                    set.EFFICIENCY_MOD.get(),
+                    set.WEATHER_MOD.get()
+                );
+
+            for (int j = 1; j < CrystalSet.sets().size() + 1; j++) {
+                if (i + 1 >= j) {
+                    this.tag(create("frames/" + j))
+                        .add(set.FRAME.get());
+                }
+            }
+
+            this.tag(MODIFIERS)
+                .add(
+                    set.EFFICIENCY_MOD.get(),
+                    set.WEATHER_MOD.get()
                 );
         }
 

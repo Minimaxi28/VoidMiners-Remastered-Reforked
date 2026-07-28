@@ -1,6 +1,6 @@
 package nadiendev.voidminers.world.item;
 
-import nadiendev.voidminers.config.ConfigLoader;
+import nadiendev.voidminers.config.MinerConfigLoader;
 import nadiendev.voidminers.init.ModItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -16,7 +16,7 @@ public class MaxStorageUpgradeItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        ConfigLoader cfg = ConfigLoader.getInstance();
+        MinerConfigLoader cfg = MinerConfigLoader.getInstance();
         Item item = stack.getItem();
         int slots;
 

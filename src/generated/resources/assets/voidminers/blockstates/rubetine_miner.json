@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "voidminers:block/rubetine_miner"
+      "model": "voidminers:block/rubetine/miner"
     }
   }
 }

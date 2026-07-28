@@ -19,7 +19,7 @@ import java.util.function.Supplier;
 
 public class MinerMultiblocks {
 
-    public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers");
+    public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers_miners");
     
     // IMPORTANTE: Flag para evitar registros duplicados
     private static boolean INITIALIZED = false;
@@ -57,7 +57,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.RUBETINE.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.RUBETINE.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_1)
         ),
@@ -117,7 +117,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.AURANTIUM.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.AURANTIUM.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_2),
             'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
@@ -188,7 +188,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.CITRINETINE.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.CITRINETINE.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_3),
             'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
@@ -271,7 +271,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.VERDIUM.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.VERDIUM.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_4),
             'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
@@ -354,7 +354,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.AZURINE.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.AZURINE.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_5),
             'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
@@ -448,7 +448,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.CAERIUM.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.CAERIUM.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_6),
             'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
@@ -542,7 +542,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.AMETHYSTINE.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.AMETHYSTINE.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_7),
             'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
@@ -631,7 +631,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.ROSARIUM.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.ROSARIUM.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_8),
             'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
@@ -765,7 +765,7 @@ public class MinerMultiblocks {
             )
         ),
         Map.of(
-            '*', a -> a.getState().is(CrystalSet.ULTIMATE.MINER_CONTROLLER.get()),
+            '*', a -> a.getState().is(CrystalSet.ULTIMATE.CONTROLLER.get()),
             'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
             'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_9),
             'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)

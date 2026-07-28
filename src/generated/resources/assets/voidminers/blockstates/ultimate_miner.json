@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "voidminers:block/ultimate_miner"
+      "model": "voidminers:block/ultimate/miner"
     }
   }
 }

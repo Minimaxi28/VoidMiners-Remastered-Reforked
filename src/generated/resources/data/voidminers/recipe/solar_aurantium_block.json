@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "voidminers:solar_aurantium"
+    },
+    {
+      "item": "voidminers:solar_aurantium"
+    },
+    {
+      "item": "voidminers:solar_aurantium"
+    },
+    {
+      "item": "voidminers:solar_aurantium"
+    },
+    {
+      "item": "voidminers:solar_aurantium"
+    },
+    {
+      "item": "voidminers:solar_aurantium"
+    },
+    {
+      "item": "voidminers:solar_aurantium"
+    },
+    {
+      "item": "voidminers:solar_aurantium"
+    },
+    {
+      "item": "voidminers:solar_aurantium"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "voidminers:solar_aurantium_block"
+  }
+}

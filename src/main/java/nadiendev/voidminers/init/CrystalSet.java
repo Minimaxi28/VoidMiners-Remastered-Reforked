@@ -1,11 +1,8 @@
 package nadiendev.voidminers.init;
 
 import nadiendev.voidminers.VoidMiners;
-import nadiendev.voidminers.world.block.ColoredBlock;
-import nadiendev.voidminers.world.block.ColoredControllerBaseBlock;
-import nadiendev.voidminers.world.block.ColoredModifierBlock;
-import nadiendev.voidminers.world.block.ControllerBaseBlock;
-import nadiendev.voidminers.world.block.ModifierBlock;
+import nadiendev.voidminers.world.block.*;
+import nadiendev.voidminers.world.block.MinerControllerBaseBlock;
 import nadiendev.voidminers.util.CustomColorUtil;
 import nadiendev.voidminers.world.item.ColoredItem;
 import net.minecraft.resources.ResourceLocation;
@@ -32,7 +29,7 @@ public class CrystalSet {
     public final String name;
     public final DeferredHolder<Item, Item> CRYSTAL;
     public final DeferredHolder<Block, Block> CRYSTAL_BLOCK;
-    public final DeferredHolder<Block, ? extends Block> MINER_CONTROLLER;
+    public final DeferredHolder<Block, ? extends Block> CONTROLLER;
     public final DeferredHolder<Block, Block> FRAME;
     public final DeferredHolder<Block, ? extends Block> SPEED_MOD;
     public final DeferredHolder<Block, ? extends Block> ENERGY_MOD;
@@ -46,7 +43,7 @@ public class CrystalSet {
         this.name = name;
         CRYSTAL = crystal;
         CRYSTAL_BLOCK = crystalBlock;
-        MINER_CONTROLLER = minerController;
+        CONTROLLER = minerController;
         FRAME = frame;
         SPEED_MOD = speedMod;
         ENERGY_MOD = energyMod;
@@ -88,9 +85,9 @@ public class CrystalSet {
         );
     }
 
-    public static DeferredHolder<Block, ControllerBaseBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure, CustomColorUtil color) {
+    public static DeferredHolder<Block, MinerControllerBaseBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure, CustomColorUtil color) {
         return ModBlocks.registerColoredBlock(name + "_miner",
-                () -> new ColoredControllerBaseBlock(
+                () -> new ColoredMinerControllerBaseBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
                                 .requiresCorrectToolForDrops(),
@@ -141,27 +138,5 @@ public class CrystalSet {
         sets.add(ROSARIUM);
         sets.add(ULTIMATE);
         return sets;
-    }
-
-    public enum ModifierType {
-        ENERGY("energy"),
-        SPEED("speed"),
-        ITEM("item"),
-        NULL("null");
-
-        public final String type;
-
-        ModifierType(String type) {
-            this.type = type;
-        }
-
-        public static ModifierType getFromName(String name) {
-            return switch (name.toLowerCase()) {
-                case "energy" -> ENERGY;
-                case "speed" -> SPEED;
-                case "item" -> ITEM;
-                default -> null;
-            };
-        }
     }
 }

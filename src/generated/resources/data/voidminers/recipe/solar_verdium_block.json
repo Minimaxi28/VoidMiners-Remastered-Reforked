@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "voidminers:solar_verdium"
+    },
+    {
+      "item": "voidminers:solar_verdium"
+    },
+    {
+      "item": "voidminers:solar_verdium"
+    },
+    {
+      "item": "voidminers:solar_verdium"
+    },
+    {
+      "item": "voidminers:solar_verdium"
+    },
+    {
+      "item": "voidminers:solar_verdium"
+    },
+    {
+      "item": "voidminers:solar_verdium"
+    },
+    {
+      "item": "voidminers:solar_verdium"
+    },
+    {
+      "item": "voidminers:solar_verdium"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "voidminers:solar_verdium_block"
+  }
+}

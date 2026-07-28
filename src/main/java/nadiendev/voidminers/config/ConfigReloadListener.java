@@ -9,6 +9,7 @@ public class ConfigReloadListener implements ResourceManagerReloadListener {
     @SuppressWarnings("null")
     @Override
     public void onResourceManagerReload(@NotNull ResourceManager pResourceManager) {
-        ConfigLoader.getInstance().load();
+        MinerConfigLoader.getInstance().load();
+        SolarConfigLoader.getInstance().load();
     }
 }

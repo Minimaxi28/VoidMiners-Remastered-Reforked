@@ -35,11 +35,9 @@ public class ModRarities {
             case "amethystine" -> AMETHYSTINE_COLOR;
             case "rosarium" -> ROSARIUM_COLOR;
             case "ultimate" -> ULTIMATE_COLOR;
-            default -> CustomColorUtil.fromHex("#FFFFFF"); // White fallback
+            default -> CustomColorUtil.fromHex("#FFFFFF");
         };
     }
 
-    public static void init() {
-
-    }
+    public static void init() {}
 }

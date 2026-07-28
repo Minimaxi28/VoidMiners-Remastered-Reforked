@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "voidminers:block/aurantium_miner"
+      "model": "voidminers:block/aurantium/miner"
     }
   }
 }

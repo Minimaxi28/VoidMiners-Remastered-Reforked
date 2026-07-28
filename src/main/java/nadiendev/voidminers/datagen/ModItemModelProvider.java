@@ -3,9 +3,11 @@ package nadiendev.voidminers.datagen;
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.init.ModItems;
 import nadiendev.voidminers.init.CrystalSet;
+import nadiendev.voidminers.init.SolarSet;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -25,8 +27,14 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.MAX_STORAGE_UPGRADE_T3);
 
         for (CrystalSet set : CrystalSet.sets()) {
-            if (set.CRYSTAL != null) {  // Add this check
+            if (set.CRYSTAL != null) {
                 simpleItem(set.CRYSTAL);
+            }
+        }
+
+        for (SolarSet set : SolarSet.sets()) {
+            if (set.CRYSTAL != null) {
+                simpleItemWithTexture(set.CRYSTAL, set.name);
             }
         }
     }
@@ -39,5 +47,11 @@ public class ModItemModelProvider extends ItemModelProvider {
         withExistingParent(name,
             ResourceLocation.parse("item/generated")).texture("layer0",
             ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "item/" + name));
+    }
+
+    private void simpleItemWithTexture(DeferredHolder<Item, ? extends Item> item, String textureName) {
+        withExistingParent(item.getId().getPath(),
+                ResourceLocation.parse("item/generated")).texture("layer0",
+                ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "item/" + textureName));
     }
 }

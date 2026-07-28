@@ -1,7 +1,7 @@
 package nadiendev.voidminers.event;
 
 import nadiendev.voidminers.VoidMiners;
-import nadiendev.voidminers.config.ConfigLoader;
+import nadiendev.voidminers.config.MinerConfigLoader;
 import nadiendev.voidminers.config.ConfigReloadListener;
 import nadiendev.voidminers.common.network.ModNetwork;
 import nadiendev.voidminers.common.network.packet.SyncConfigS2CPacket;
@@ -27,7 +27,7 @@ public class GameBusEvent {
 
         ModNetwork.sendToAllPlayers(
             new SyncConfigS2CPacket(
-                ConfigLoader.getInstance().MINER_CONFIGS
+                MinerConfigLoader.getInstance().MINER_CONFIGS
             )
         );
     }

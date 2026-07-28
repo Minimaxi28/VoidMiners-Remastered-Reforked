@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "voidminers:block/verdium_miner"
+      "model": "voidminers:block/verdium/miner"
     }
   }
 }

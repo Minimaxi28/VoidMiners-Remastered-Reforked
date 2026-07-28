@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "voidminers:block/amethystine_miner"
+      "model": "voidminers:block/amethystine/miner"
     }
   }
 }

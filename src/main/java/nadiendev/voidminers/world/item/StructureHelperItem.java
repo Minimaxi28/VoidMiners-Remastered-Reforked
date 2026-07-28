@@ -1,13 +1,14 @@
 package nadiendev.voidminers.world.item;
 
-import nadiendev.voidminers.world.block.entity.ControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.SolarControllerBaseBE;
 import nadiendev.voidminers.world.multiblock.MinerMultiblocks;
+import nadiendev.voidminers.world.multiblock.SolarMultiblocks;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -37,12 +38,17 @@ public class StructureHelperItem extends Item {
 
         BlockEntity entity = level.getBlockEntity(pos);
 
-        if(!(entity instanceof ControllerBaseBE controller)) return InteractionResult.PASS;
-        ResourceLocation structure = controller.getStructure();
-        RegisteredMultiBlockPattern multiBlock = MinerMultiblocks.MANAGER.getStructure(structure);
+        ResourceLocation structure;
+        RegisteredMultiBlockPattern multiBlock;
 
-        if (!((ServerPlayer) pContext.getPlayer()).gameMode.isCreative()) {
-            return InteractionResult.CONSUME;
+        if(entity instanceof MinerControllerBaseBE MinerController) {
+            structure = MinerController.getStructure();
+            multiBlock = MinerMultiblocks.MANAGER.getStructure(structure);
+        } else if (entity instanceof SolarControllerBaseBE SolarController) {
+            structure = SolarController.getStructure();
+            multiBlock = SolarMultiblocks.MANAGER.getStructure(structure);
+        } else {
+            return InteractionResult.PASS;
         }
 
         assert multiBlock != null;
