@@ -463,6 +463,14 @@ public class MinerControllerBaseBE extends BlockEntity {
             updateShowStructure();
         }
 
+        canSeeBedrockOrVoid = hasViewOnBedrockOrVoid(pPos);
+        sync();
+
+        if(!canSeeBedrockOrVoid) {
+            haltReason = HaltReason.NO_BEDROCK_OR_VOID_VIEW;
+            return;
+        }
+
         int itemModMultMultiplier = (int) getItemModifierMultiplier();
 
         if (!MinerConfigLoader.getInstance().MINERS_FILL_ALL_SLOTS) {
@@ -478,14 +486,6 @@ public class MinerControllerBaseBE extends BlockEntity {
 
         if(isItemHandlerFull()) {
             haltReason = HaltReason.NOT_ENOUGH_EMPTY_SLOTS;
-            return;
-        }
-
-        canSeeBedrockOrVoid = hasViewOnBedrockOrVoid(pPos);
-        sync();
-
-        if(!canSeeBedrockOrVoid) {
-            haltReason = HaltReason.NO_BEDROCK_OR_VOID_VIEW;
             return;
         }
 
