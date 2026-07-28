@@ -115,6 +115,8 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip.voidminers.energy", "Energy Consumption: %s%%");
         this.add("tooltip.voidminers.speed", "Mining Speed: %s%%");
         this.add("tooltip.voidminers.item", "Item Multiplier: %s%%");
+        this.add("tooltip.voidminers.efficiency", "Solar Efficiency: %s%%");
+        this.add("tooltip.voidminers.weatherResistance", "Weather Resistance: %s%%");
 
         this.add("tooltip.voidminers.structure_helper.creative_only", "Not supposed to be used in survival.");
         this.add("tooltip.voidminers.structure_helper.instructions", "Sneak + right-click on a Miner to complete it.");

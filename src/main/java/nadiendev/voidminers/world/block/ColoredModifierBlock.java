@@ -1,6 +1,7 @@
 package nadiendev.voidminers.world.block;
 
 import nadiendev.voidminers.config.MinerConfigLoader;
+import nadiendev.voidminers.config.SolarConfigLoader;
 import nadiendev.voidminers.init.ModifierType;
 import nadiendev.voidminers.util.CustomColorUtil;
 import net.minecraft.ChatFormatting;
@@ -27,26 +28,38 @@ public class ColoredModifierBlock extends ModifierBlock {
     public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         switch (type) {
             case ENERGY, SPEED, ITEM:
-                MinerConfigLoader.ModifierConfig modConfig = MinerConfigLoader.getInstance().getModifierConfig(this);
+                MinerConfigLoader.ModifierConfig minerConfig = MinerConfigLoader.getInstance().getModifierConfig(this);
 
-                final String energy = String.format(modConfig.energy() >= 1 ? "+%.0f" : "%.0f", -(1 - modConfig.energy()) * 100);
-                final String speed = String.format(modConfig.speed() >= 1 ? "+%.0f" : "%.0f", -(1 - modConfig.speed()) * 100);
-                final String item = String.format(modConfig.item() >= 1 ? "+%.0f" : "%.0f",  -(1 - modConfig.item()) * 100);
+                final String energy = String.format(minerConfig.energy() >= 1 ? "+%.0f" : "%.0f", -(1 - minerConfig.energy()) * 100);
+                final String speed = String.format(minerConfig.speed() >= 1 ? "+%.0f" : "%.0f", -(1 - minerConfig.speed()) * 100);
+                final String item = String.format(minerConfig.item() >= 1 ? "+%.0f" : "%.0f",  -(1 - minerConfig.item()) * 100);
 
-                if(modConfig.speed() != 1f) {
+                if(minerConfig.speed() != 1f) {
                     tooltipComponents.add(Component.translatable("tooltip.voidminers.speed",
                             speed).withStyle(ChatFormatting.GREEN));
                 }
-                if(modConfig.item() != 1f) {
+                if(minerConfig.item() != 1f) {
                     tooltipComponents.add(Component.translatable("tooltip.voidminers.item",
                             item).withStyle(ChatFormatting.AQUA));
                 }
-                if(modConfig.energy() != 1f) {
+                if(minerConfig.energy() != 1f) {
                     tooltipComponents.add(Component.translatable("tooltip.voidminers.energy",
                             energy).withStyle(ChatFormatting.GOLD));
                 }
+                break;
             case WEATHER, EFFICIENCY:
-                // TODO add tooltip
+                SolarConfigLoader.ModifierConfig solarConfig = SolarConfigLoader.getInstance().getModifierConfig(this);
+                final String efficiency = String.format(solarConfig.efficiency() >= 1 ? "+%.0f" : "%.0f", -(1 - solarConfig.efficiency()) * 100);
+                final String weatherResistance = String.format(solarConfig.weatherResistance() >= 1 ? "+%.0f" : "%.0f", -(1 - solarConfig.weatherResistance()) * 100);
+
+                if(solarConfig.efficiency() != 1f) {
+                    tooltipComponents.add(Component.translatable("tooltip.voidminers.efficiency",
+                            efficiency).withStyle(ChatFormatting.GREEN));
+                }
+                if(solarConfig.weatherResistance() != 1f) {
+                    tooltipComponents.add(Component.translatable("tooltip.voidminers.weatherResistance",
+                            weatherResistance).withStyle(ChatFormatting.AQUA));
+                }
         }
 
 

@@ -1,15 +1,10 @@
 package nadiendev.voidminers.world.block;
 
 import nadiendev.voidminers.util.CustomColorUtil;
-import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 
 public class ColoredMinerControllerBaseBlock extends MinerControllerBaseBlock {
     private final CustomColorUtil color;
@@ -23,12 +18,6 @@ public class ColoredMinerControllerBaseBlock extends MinerControllerBaseBlock {
     public MutableComponent getName() {
         return Component.literal(super.getName().getString())
                 .setStyle(Style.EMPTY.withColor(color.getTextColor()));
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new MinerControllerBaseBE(blockPos, blockState);
     }
 
     public CustomColorUtil getColor() {

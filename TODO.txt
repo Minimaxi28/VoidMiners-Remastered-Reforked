@@ -1,4 +1,1 @@
-revert the recipe changes, either make it read E notation correctly or make it write the entire number
-Done
-
 rework voidminers max power config

@@ -177,6 +177,7 @@
   "tooltip.voidminers.controller.status.status": "⚠ STATUS: ",
   "tooltip.voidminers.controller.status.structure_incomplete": "STRUCTURE INCOMPLETE",
   "tooltip.voidminers.controller.status.working": "WORKING",
+  "tooltip.voidminers.efficiency": "Solar Efficiency: %s%%",
   "tooltip.voidminers.energy": "Energy Consumption: %s%%",
   "tooltip.voidminers.item": "Item Multiplier: %s%%",
   "tooltip.voidminers.max_storage_upgrades": "Right-click a miner with this upgrade to apply it.\nIncreases the miner's output inventory by +%s slots.\nOnly the highest installed tier is applied\nNon-cumulative.\nConsumed on use.",
@@ -184,5 +185,6 @@
   "tooltip.voidminers.structure.weight": "Weight: %d",
   "tooltip.voidminers.structure_helper.creative_only": "Not supposed to be used in survival.",
   "tooltip.voidminers.structure_helper.instructions": "Sneak + right-click on a Miner to complete it.",
-  "tooltip.voidminers.structure_helper.warning": "Blocks in the way will be voided"
+  "tooltip.voidminers.structure_helper.warning": "Blocks in the way will be voided",
+  "tooltip.voidminers.weatherResistance": "Weather Resistance: %s%%"
 }

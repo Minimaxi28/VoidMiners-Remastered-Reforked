@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -60,14 +59,11 @@ public class SolarControllerBaseBlock extends TransparentBlock implements Entity
             return InteractionResult.CONSUME;
         }
 
-        // TODO tooltip
-
         if (blockEntity != null) {
             for (Component component : blockEntity.getInteractionTooltip()) {
                 pPlayer.displayClientMessage(component, false);
             }
         }
-
 
         return InteractionResult.CONSUME;
     }

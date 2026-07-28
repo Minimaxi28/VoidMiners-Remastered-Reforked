@@ -2,7 +2,6 @@ package nadiendev.voidminers.common.compat.jade;
 
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.util.MiscUtil;
-import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
 import nadiendev.voidminers.world.block.entity.HaltReason;
 import nadiendev.voidminers.world.block.entity.SolarControllerBaseBE;
 import net.minecraft.nbt.CompoundTag;
