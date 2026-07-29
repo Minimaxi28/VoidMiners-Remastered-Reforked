@@ -13,6 +13,7 @@ import nadiendev.voidminers.util.ListUtil;
 import nadiendev.voidminers.util.MiscUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -34,6 +35,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 import org.mangorage.mangomultiblock.core.manager.MultiBlockManager;
@@ -471,30 +475,30 @@ public class MinerControllerBaseBE extends BlockEntity {
             return;
         }
 
-        int itemModMultMultiplier = (int) getItemModifierMultiplier();
+        if(!MinerConfigLoader.getInstance().MINERS_AUTO_EXPORT_INSTEAD_OF_FILLING_THEIR_OWN_INVENTORY) {
+            int itemModMultMultiplier = (int) getItemModifierMultiplier();
 
-        if (!MinerConfigLoader.getInstance().MINERS_FILL_ALL_SLOTS) {
-            if (itemModMultMultiplier > itemHandler.getSlots() * 64) {
-                haltReason = HaltReason.TOO_MUCH_ITEM_MULTIPLIER;
-                return;
+            if (!MinerConfigLoader.getInstance().MINERS_FILL_ALL_SLOTS) {
+                if (itemModMultMultiplier > itemHandler.getSlots() * 64) {
+                    haltReason = HaltReason.TOO_MUCH_ITEM_MULTIPLIER;
+                    return;
+                }
+                if(itemModMultMultiplier > getNumberOfEmptySlots() * 64) {
+                    haltReason = HaltReason.NOT_ENOUGH_EMPTY_SLOTS;
+                    return;
+                }
             }
-            if(itemModMultMultiplier > getNumberOfEmptySlots() * 64) {
+
+            if(isItemHandlerFull()) {
                 haltReason = HaltReason.NOT_ENOUGH_EMPTY_SLOTS;
                 return;
             }
         }
 
-        if(isItemHandlerFull()) {
-            haltReason = HaltReason.NOT_ENOUGH_EMPTY_SLOTS;
-            return;
-        }
-
         int rfPerTick = getRFPerTick();
 
         enoughPower = rfPerTick <= energyHandler.getEnergyStored();
-
         enoughPowerForNextOperation = rfPerTick * 2 <= energyHandler.getEnergyStored();
-
         sync();
 
         if (!enoughPower) {
@@ -519,17 +523,54 @@ public class MinerControllerBaseBE extends BlockEntity {
         }
 
         ItemStack output = getBoostedStack(getWeightedItem(allOutputs, level.random));
-        ItemStack remaining;
 
-        for (int i = 0; i < itemHandler.getSlots(); i++) {
-            if (!isItemValid(output, itemHandler.getStackInSlot(i))) continue;
-            remaining = itemHandler.insertItem(i, output.copy(), false);
-            if (remaining.isEmpty()) break;
-            output = remaining;
+        if(!MinerConfigLoader.getInstance().MINERS_AUTO_EXPORT_INSTEAD_OF_FILLING_THEIR_OWN_INVENTORY) {
+            ItemStack remaining;
+
+            for (int i = 0; i < itemHandler.getSlots(); i++) {
+                if (!isItemValid(output, itemHandler.getStackInSlot(i))) continue;
+                remaining = itemHandler.insertItem(i, output.copy(), false);
+                if (remaining.isEmpty()) break;
+                output = remaining;
+            }
+        } else {
+            pushItemsToNeighbors(output);
         }
 
         progress = 0;
         sync();
+    }
+
+    private void pushItemsToNeighbors(ItemStack outputStack) {
+        if (level == null || level.isClientSide) return;
+        if (outputStack.isEmpty()) return;
+
+        int remainingCount = outputStack.getCount();
+
+        for (Direction dir : Direction.values()) {
+            if (remainingCount <= 0) break;
+
+            BlockPos neighborPos = worldPosition.relative(dir);
+            BlockEntity neighbor = level.getBlockEntity(neighborPos);
+            if (neighbor == null) continue;
+
+            IItemHandler receiver = level.getCapability(
+                    Capabilities.ItemHandler.BLOCK,
+                    neighborPos,
+                    dir.getOpposite()
+            );
+
+            if (receiver == null) continue;
+
+            ItemStack toPush = outputStack.copyWithCount(remainingCount);
+            ItemStack remaining = ItemHandlerHelper.insertItemStacked(
+                    receiver,
+                    toPush,
+                    false
+            );
+
+            remainingCount = remaining.getCount();
+        }
     }
 
     private int getNumberOfEmptySlots() {
