@@ -20,761 +20,761 @@ import java.util.function.Supplier;
 public class MinerMultiblocks {
 
     public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers_miners");
-    
+
     // IMPORTANTE: Flag para evitar registros duplicados
     private static boolean INITIALIZED = false;
 
     public static final SimpleMultiBlockAislePatternBuilder RUBETINE = createAccessiblePattern(
-        VoidMiners.MODID + ":rubetine",
-        List.of(
+            VoidMiners.MODID + ":miner_rubetine",
             List.of(
-                "     ",
-                "     ",
-                "  *  ",
-                "     ",
-                "     "
+                    List.of(
+                            "     ",
+                            "     ",
+                            "  *  ",
+                            "     ",
+                            "     "
+                    ),
+                    List.of(
+                            "     ",
+                            "  F  ",
+                            " F F ",
+                            "  F  ",
+                            "     "
+                    ),
+                    List.of(
+                            "  F  ",
+                            "     ",
+                            "F   F",
+                            "     ",
+                            "  F  "
+                    ),
+                    List.of(
+                            " FFF ",
+                            "FPPPF",
+                            "FPPPF",
+                            "FPPPF",
+                            " FFF "
+                    )
             ),
-            List.of(
-                "     ",
-                "  F  ",
-                " F F ",
-                "  F  ",
-                "     "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.RUBETINE.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_1)
             ),
-            List.of(
-                "  F  ",
-                "     ",
-                "F   F",
-                "     ",
-                "  F  "
-            ),
-            List.of(
-                " FFF ",
-                "FPPPF",
-                "FPPPF",
-                "FPPPF",
-                " FFF "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.RUBETINE.FRAME.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.RUBETINE.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_1)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.RUBETINE.FRAME.get()::defaultBlockState
-        )
     );
 
     public static final SimpleMultiBlockAislePatternBuilder AURANTIUM = createAccessiblePattern(
-        VoidMiners.MODID + ":aurantium",
-        List.of(
+            VoidMiners.MODID + ":miner_aurantium",
             List.of(
-                "       ",
-                "       ",
-                "       ",
-                "   *   ",
-                "       ",
-                "       ",
-                "       "
+                    List.of(
+                            "       ",
+                            "       ",
+                            "       ",
+                            "   *   ",
+                            "       ",
+                            "       ",
+                            "       "
+                    ),
+                    List.of(
+                            "       ",
+                            "   F   ",
+                            "   F   ",
+                            " FF FF ",
+                            "   F   ",
+                            "   F   ",
+                            "       "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            " FFFFF ",
+                            "FPPMPPF",
+                            "FPPPPPF",
+                            "FPPPPPF",
+                            "FPPPPPF",
+                            "FPPMPPF",
+                            " FFFFF "
+                    )
             ),
-            List.of(
-                "       ",
-                "   F   ",
-                "   F   ",
-                " FF FF ",
-                "   F   ",
-                "   F   ",
-                "       "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.AURANTIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_2),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
             ),
-            List.of(
-                "   F   ",
-                "       ",
-                "       ",
-                "F     F",
-                "       ",
-                "       ",
-                "   F   "
-            ),
-            List.of(
-                "   F   ",
-                "       ",
-                "       ",
-                "F     F",
-                "       ",
-                "       ",
-                "   F   "
-            ),
-            List.of(
-                " FFFFF ",
-                "FPPMPPF",
-                "FPPPPPF",
-                "FPPPPPF",
-                "FPPPPPF",
-                "FPPMPPF",
-                " FFFFF "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.AURANTIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.AURANTIUM.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_2),
-            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.AURANTIUM.FRAME.get()::defaultBlockState,
-            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
-        )
     );
 
     public static final SimpleMultiBlockAislePatternBuilder CITRINETINE = createAccessiblePattern(
-        VoidMiners.MODID + ":citrinetine",
-        List.of(
+            VoidMiners.MODID + ":miner_citrinetine",
             List.of(
-                "       ",
-                "       ",
-                "       ",
-                "   *   ",
-                "       ",
-                "       ",
-                "       "
+                    List.of(
+                            "       ",
+                            "       ",
+                            "       ",
+                            "   *   ",
+                            "       ",
+                            "       ",
+                            "       "
+                    ),
+                    List.of(
+                            "       ",
+                            "       ",
+                            "   F   ",
+                            "  F F  ",
+                            "   F   ",
+                            "       ",
+                            "       "
+                    ),
+                    List.of(
+                            "       ",
+                            "   F   ",
+                            "       ",
+                            " F   F ",
+                            "       ",
+                            "   F   ",
+                            "       "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            " FFFFF ",
+                            "FMPPPMF",
+                            "FPPPPPF",
+                            "FPPPPPF",
+                            "FPPPPPF",
+                            "FMPPPMF",
+                            " FFFFF "
+                    )
             ),
-            List.of(
-                "       ",
-                "       ",
-                "   F   ",
-                "  F F  ",
-                "   F   ",
-                "       ",
-                "       "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.CITRINETINE.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_3),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
             ),
-            List.of(
-                "       ",
-                "   F   ",
-                "       ",
-                " F   F ",
-                "       ",
-                "   F   ",
-                "       "
-            ),
-            List.of(
-                "   F   ",
-                "       ",
-                "       ",
-                "F     F",
-                "       ",
-                "       ",
-                "   F   "
-            ),
-            List.of(
-                "   F   ",
-                "       ",
-                "       ",
-                "F     F",
-                "       ",
-                "       ",
-                "   F   "
-            ),
-            List.of(
-                " FFFFF ",
-                "FMPPPMF",
-                "FPPPPPF",
-                "FPPPPPF",
-                "FPPPPPF",
-                "FMPPPMF",
-                " FFFFF "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.CITRINETINE.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.CITRINETINE.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_3),
-            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.CITRINETINE.FRAME.get()::defaultBlockState,
-            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
-        )
     );
 
     public static final SimpleMultiBlockAislePatternBuilder VERDIUM = createAccessiblePattern(
-        VoidMiners.MODID + ":verdium",
-        List.of(
+            VoidMiners.MODID + ":miner_verdium",
             List.of(
-                "         ",
-                "         ",
-                "         ",
-                "         ",
-                "    *    ",
-                "         ",
-                "         ",
-                "         ",
-                "         "
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    *    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "    F    ",
+                            "  FF FF  ",
+                            "    F    ",
+                            "    F    ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            " F     F ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "  FFFFF  ",
+                            " FMPMPMF ",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            " FMPMPMF ",
+                            "  FFFFF  "
+                    )
             ),
-            List.of(
-                "         ",
-                "         ",
-                "    F    ",
-                "    F    ",
-                "  FF FF  ",
-                "    F    ",
-                "    F    ",
-                "         ",
-                "         "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.VERDIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_4),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
             ),
-            List.of(
-                "         ",
-                "    F    ",
-                "         ",
-                "         ",
-                " F     F ",
-                "         ",
-                "         ",
-                "    F    ",
-                "         "
-            ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "  FFFFF  ",
-                " FMPMPMF ",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                " FMPMPMF ",
-                "  FFFFF  "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.VERDIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.VERDIUM.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_4),
-            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.VERDIUM.FRAME.get()::defaultBlockState,
-            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
-        )
     );
 
     public static final SimpleMultiBlockAislePatternBuilder AZURINE = createAccessiblePattern(
-        VoidMiners.MODID + ":azurine",
-        List.of(
+            VoidMiners.MODID + ":miner_azurine",
             List.of(
-                "         ",
-                "         ",
-                "         ",
-                "         ",
-                "    *    ",
-                "         ",
-                "         ",
-                "         ",
-                "         "
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    *    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "    F    ",
+                            "    F    ",
+                            " FFF FFF ",
+                            "    F    ",
+                            "    F    ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "  FFFFF  ",
+                            " FMPPPMF ",
+                            "FMPPPPPMF",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            "FMPPPPPMF",
+                            " FMPPPMF ",
+                            "  FFFFF  "
+                    )
             ),
-            List.of(
-                "         ",
-                "    F    ",
-                "    F    ",
-                "    F    ",
-                " FFF FFF ",
-                "    F    ",
-                "    F    ",
-                "    F    ",
-                "         "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.AZURINE.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_5),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
             ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "  FFFFF  ",
-                " FMPPPMF ",
-                "FMPPPPPMF",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                "FMPPPPPMF",
-                " FMPPPMF ",
-                "  FFFFF  "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.AZURINE.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.AZURINE.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_5),
-            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.AZURINE.FRAME.get()::defaultBlockState,
-            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
-        )
     );
 
     public static final SimpleMultiBlockAislePatternBuilder CAERIUM = createAccessiblePattern(
-        VoidMiners.MODID + ":caerium",
-        List.of(
+            VoidMiners.MODID + ":miner_caerium",
             List.of(
-                "         ",
-                "         ",
-                "         ",
-                "         ",
-                "    *    ",
-                "         ",
-                "         ",
-                "         ",
-                "         "
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    *    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "   F F   ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "  F   F  ",
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            " F     F ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "  FFFFF  ",
+                            " FMMMMMF ",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            "FPPPPPPPF",
+                            " FMMMMMF ",
+                            "  FFFFF  "
+                    )
             ),
-            List.of(
-                "         ",
-                "         ",
-                "         ",
-                "    F    ",
-                "   F F   ",
-                "    F    ",
-                "         ",
-                "         ",
-                "         "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.CAERIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_6),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
             ),
-            List.of(
-                "         ",
-                "         ",
-                "    F    ",
-                "         ",
-                "  F   F  ",
-                "         ",
-                "    F    ",
-                "         ",
-                "         "
-            ),
-            List.of(
-                "         ",
-                "    F    ",
-                "         ",
-                "         ",
-                " F     F ",
-                "         ",
-                "         ",
-                "    F    ",
-                "         "
-            ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "  FFFFF  ",
-                " FMMMMMF ",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                "FPPPPPPPF",
-                " FMMMMMF ",
-                "  FFFFF  "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.CAERIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.CAERIUM.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_6),
-            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.CAERIUM.FRAME.get()::defaultBlockState,
-            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
-        )
     );
 
     public static final SimpleMultiBlockAislePatternBuilder AMETHYSTINE = createAccessiblePattern(
-        VoidMiners.MODID + ":amethystine",
-        List.of(
+            VoidMiners.MODID + ":miner_amethystine",
             List.of(
-                "         ",
-                "         ",
-                "         ",
-                "         ",
-                "    *    ",
-                "         ",
-                "         ",
-                "         ",
-                "         "
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    *    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "    F    ",
+                            "  FF FF  ",
+                            "    F    ",
+                            "    F    ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            " F     F ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            " F     F ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "   FFF   ",
+                            "  FMMMF  ",
+                            " FPPPPPF ",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            " FPPPPPF ",
+                            "  FMMMF  ",
+                            "   FFF   "
+                    )
             ),
-            List.of(
-                "         ",
-                "         ",
-                "    F    ",
-                "    F    ",
-                "  FF FF  ",
-                "    F    ",
-                "    F    ",
-                "         ",
-                "         "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.AMETHYSTINE.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_7),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
             ),
-            List.of(
-                "         ",
-                "    F    ",
-                "         ",
-                "         ",
-                " F     F ",
-                "         ",
-                "         ",
-                "    F    ",
-                "         "
-            ),
-            List.of(
-                "         ",
-                "    F    ",
-                "         ",
-                "         ",
-                " F     F ",
-                "         ",
-                "         ",
-                "    F    ",
-                "         "
-            ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "    F    ",
-                "         ",
-                "         ",
-                "         ",
-                "F       F",
-                "         ",
-                "         ",
-                "         ",
-                "    F    "
-            ),
-            List.of(
-                "   FFF   ",
-                "  FMMMF  ",
-                " FPPPPPF ",
-                "FMPPPPPMF",
-                "FMPPPPPMF",
-                "FMPPPPPMF",
-                " FPPPPPF ",
-                "  FMMMF  ",
-                "   FFF   "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.AMETHYSTINE.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.AMETHYSTINE.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_7),
-            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.AMETHYSTINE.FRAME.get()::defaultBlockState,
-            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
-        )
     );
 
     public static final SimpleMultiBlockAislePatternBuilder ROSARIUM = createAccessiblePattern(
-        VoidMiners.MODID + ":rosarium",
-        List.of(
+            VoidMiners.MODID + ":miner_rosarium",
             List.of(
-                "       ",
-                "       ",
-                "       ",
-                "   *   ",
-                "       ",
-                "       ",
-                "       "
+                    List.of(
+                            "       ",
+                            "       ",
+                            "       ",
+                            "   *   ",
+                            "       ",
+                            "       ",
+                            "       "
+                    ),
+                    List.of(
+                            "       ",
+                            "       ",
+                            "   F   ",
+                            "  F F  ",
+                            "   F   ",
+                            "       ",
+                            "       "
+                    ),
+                    List.of(
+                            "       ",
+                            "   F   ",
+                            "       ",
+                            " F   F ",
+                            "       ",
+                            "   F   ",
+                            "       "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            "  FFF  ",
+                            " FPMPF ",
+                            "FPMPMPF",
+                            "FMPPPMF",
+                            "FPMPMPF",
+                            " FPMPF ",
+                            "  FFF  "
+                    ),
+                    List.of(
+                            " F   F ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            " F   F "
+                    ),
+                    List.of(
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "       ",
+                            "       ",
+                            "       ",
+                            "F     F"
+                    ),
+                    List.of(
+                            " FFFFF ",
+                            "FMPMPMF",
+                            "FPPPPPF",
+                            "FMPPPMF",
+                            "FPPPPPF",
+                            "FMPMPMF",
+                            " FFFFF "
+                    )
             ),
-            List.of(
-                "       ",
-                "       ",
-                "   F   ",
-                "  F F  ",
-                "   F   ",
-                "       ",
-                "       "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.ROSARIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_8),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
             ),
-            List.of(
-                "       ",
-                "   F   ",
-                "       ",
-                " F   F ",
-                "       ",
-                "   F   ",
-                "       "
-            ),
-            List.of(
-                "   F   ",
-                "       ",
-                "       ",
-                "F     F",
-                "       ",
-                "       ",
-                "   F   "
-            ),
-            List.of(
-                "  FFF  ",
-                " FPMPF ",
-                "FPMPMPF",
-                "FMPPPMF",
-                "FPMPMPF",
-                " FPMPF ",
-                "  FFF  "
-            ),
-            List.of(
-                " F   F ",
-                "F     F",
-                "       ",
-                "       ",
-                "       ",
-                "F     F",
-                " F   F "
-            ),
-            List.of(
-                "F     F",
-                "       ",
-                "       ",
-                "       ",
-                "       ",
-                "       ",
-                "F     F"
-            ),
-            List.of(
-                " FFFFF ",
-                "FMPMPMF",
-                "FPPPPPF",
-                "FMPPPMF",
-                "FPPPPPF",
-                "FMPMPMF",
-                " FFFFF "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.ROSARIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.ROSARIUM.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_8),
-            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.ROSARIUM.FRAME.get()::defaultBlockState,
-            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
-        )
     );
 
     public static final SimpleMultiBlockAislePatternBuilder ULTIMATE = createAccessiblePattern(
-        VoidMiners.MODID + ":ultimate",
-        List.of(
+            VoidMiners.MODID + ":miner_ultimate",
             List.of(
-            "           ",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "     *     ",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "           "
+                    List.of(
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "     *     ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           "
+                    ),
+                    List.of(
+                            "           ",
+                            "           ",
+                            "           ",
+                            "     F     ",
+                            "     F     ",
+                            "   FF FF   ",
+                            "     F     ",
+                            "     F     ",
+                            "           ",
+                            "           ",
+                            "           "
+                    ),
+                    List.of(
+                            "           ",
+                            "           ",
+                            "     F     ",
+                            "           ",
+                            "           ",
+                            "  F     F  ",
+                            "           ",
+                            "           ",
+                            "     F     ",
+                            "           ",
+                            "           "
+                    ),
+                    List.of(
+                            "           ",
+                            "     F     ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            " F       F ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "     F     ",
+                            "           "
+                    ),
+                    List.of(
+                            "     F     ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "F         F",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "     F     "
+                    ),
+                    List.of(
+                            "     F     ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "F         F",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "     F     "
+                    ),
+                    List.of(
+                            "     F     ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "F         F",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "     F     "
+                    ),
+                    List.of(
+                            "   FFFFF   ",
+                            "  FMMMMMF  ",
+                            " FMPPPPPMF ",
+                            "FMPPPPPPPMF",
+                            "FMPPPPPPPMF",
+                            "FMPPPPPPPMF",
+                            "FMPPPPPPPMF",
+                            "FMPPPPPPPMF",
+                            " FMPPPPPMF ",
+                            "  FMMMMMF  ",
+                            "   FFFFF   "
+                    ),
+                    List.of(
+                            " F       F ",
+                            "F         F",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "           ",
+                            "F         F",
+                            " F       F "
+                    )
             ),
-            List.of(
-                "           ",
-                "           ",
-                "           ",
-                "     F     ",
-                "     F     ",
-                "   FF FF   ",
-                "     F     ",
-                "     F     ",
-                "           ",
-                "           ",
-                "           "
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.ULTIMATE.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
+                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_9),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
             ),
-            List.of(
-                "           ",
-                "           ",
-                "     F     ",
-                "           ",
-                "           ",
-                "  F     F  ",
-                "           ",
-                "           ",
-                "     F     ",
-                "           ",
-                "           "
-            ),
-            List.of(
-                "           ",
-                "     F     ",
-                "           ",
-                "           ",
-                "           ",
-                " F       F ",
-                "           ",
-                "           ",
-                "           ",
-                "     F     ",
-                "           "
-            ),
-            List.of(
-                "     F     ",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "F         F",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "     F     "
-            ),
-            List.of(
-                "     F     ",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "F         F",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "     F     "
-            ),
-            List.of(
-                "     F     ",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "F         F",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "     F     "
-            ),
-            List.of(
-                "   FFFFF   ",
-                "  FMMMMMF  ",
-                " FMPPPPPMF ",
-                "FMPPPPPPPMF",
-                "FMPPPPPPPMF",
-                "FMPPPPPPPMF",
-                "FMPPPPPPPMF",
-                "FMPPPPPPPMF",
-                " FMPPPPPMF ",
-                "  FMMMMMF  ",
-                "   FFFFF   "
-            ),
-            List.of(
-                " F       F ",
-                "F         F",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "           ",
-                "F         F",
-                " F       F "
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.ULTIMATE.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
             )
-        ),
-        Map.of(
-            '*', a -> a.getState().is(CrystalSet.ULTIMATE.CONTROLLER.get()),
-            'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-            'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_9),
-            'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
-        ),
-        Map.of(
-            'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-            'F', CrystalSet.ULTIMATE.FRAME.get()::defaultBlockState,
-            'M', ModBlocks.NULL_MOD.get()::defaultBlockState
-        )
     );
 
     public static SimpleMultiBlockAislePatternBuilder createAccessiblePattern(String structure, List<List<String>> stringPattern, Map<Character, Predicate<BlockInWorld>> lookup, Map<Character, Supplier<BlockState>> blockProvider) {
@@ -788,7 +788,7 @@ public class MinerMultiblocks {
 
             for (String s : strings) {
                 blockForAisle.add(
-                    getStatesForString(s, blockProvider)
+                        getStatesForString(s, blockProvider)
                 );
             }
 
@@ -796,8 +796,8 @@ public class MinerMultiblocks {
         }
 
         MiscUtil.structureMap.put(
-            structure,
-            blocks
+                structure,
+                blocks
         );
 
         lookup.forEach(pattern::where);
@@ -814,12 +814,12 @@ public class MinerMultiblocks {
 
             if (c == ' ') {
                 toReturn.add(
-                    Blocks.AIR.defaultBlockState()
+                        Blocks.AIR.defaultBlockState()
                 );
             } else {
                 if (map.containsKey(c)) {
                     toReturn.add(
-                        map.get(c).get()
+                            map.get(c).get()
                     );
                 }
             }
@@ -834,19 +834,19 @@ public class MinerMultiblocks {
             VoidMiners.LOGGER.warn("MinerMultiblocks already initialized, skipping...");
             return;
         }
-        
+
         VoidMiners.LOGGER.info("Initializing MinerMultiblocks...");
-        
-        MANAGER.register("rubetine", RUBETINE.build());
-        MANAGER.register("aurantium", AURANTIUM.build());
-        MANAGER.register("citrinetine", CITRINETINE.build());
-        MANAGER.register("verdium", VERDIUM.build());
-        MANAGER.register("azurine", AZURINE.build());
-        MANAGER.register("caerium", CAERIUM.build());
-        MANAGER.register("amethystine", AMETHYSTINE.build());
-        MANAGER.register("rosarium", ROSARIUM.build());
-        MANAGER.register("ultimate", ULTIMATE.build());
-        
+
+        MANAGER.register("miner_rubetine", RUBETINE.build());
+        MANAGER.register("miner_aurantium", AURANTIUM.build());
+        MANAGER.register("miner_citrinetine", CITRINETINE.build());
+        MANAGER.register("miner_verdium", VERDIUM.build());
+        MANAGER.register("miner_azurine", AZURINE.build());
+        MANAGER.register("miner_caerium", CAERIUM.build());
+        MANAGER.register("miner_amethystine", AMETHYSTINE.build());
+        MANAGER.register("miner_rosarium", ROSARIUM.build());
+        MANAGER.register("miner_ultimate", ULTIMATE.build());
+
         INITIALIZED = true;
         VoidMiners.LOGGER.info("MinerMultiblocks initialized successfully!");
     }

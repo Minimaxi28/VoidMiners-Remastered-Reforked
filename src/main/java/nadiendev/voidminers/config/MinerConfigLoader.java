@@ -114,9 +114,9 @@ public class MinerConfigLoader {
 
     public void load() {
         Gson gson = new GsonBuilder()
-            .excludeFieldsWithoutExposeAnnotation()
-            .setPrettyPrinting()
-            .create();
+                .excludeFieldsWithoutExposeAnnotation()
+                .setPrettyPrinting()
+                .create();
 
         Path configPath = FMLPaths.CONFIGDIR.get().resolve(CONFIG_FILE);
         File file = configPath.toFile();
@@ -219,31 +219,31 @@ public class MinerConfigLoader {
 
     public record Config(@Expose int energyStorage, @Expose int duration, @Expose int energyConsumptionPerTick, @Expose Map<String, ModifierConfig> modifiers) {
         public static final StreamCodec<ByteBuf, Config> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.INT,
-            Config::energyStorage,
-            ByteBufCodecs.INT,
-            Config::duration,
-            ByteBufCodecs.INT,
-            Config::energyConsumptionPerTick,
-            ByteBufCodecs.map(
-                HashMap::new,
-                ByteBufCodecs.STRING_UTF8,
-                ModifierConfig.STREAM_CODEC
-            ),
-            Config::modifiers,
-            Config::new
+                ByteBufCodecs.INT,
+                Config::energyStorage,
+                ByteBufCodecs.INT,
+                Config::duration,
+                ByteBufCodecs.INT,
+                Config::energyConsumptionPerTick,
+                ByteBufCodecs.map(
+                        HashMap::new,
+                        ByteBufCodecs.STRING_UTF8,
+                        ModifierConfig.STREAM_CODEC
+                ),
+                Config::modifiers,
+                Config::new
         );
     }
 
     public record ModifierConfig(@Expose float energy, @Expose float speed, @Expose float item) {
         public static final StreamCodec<ByteBuf, ModifierConfig> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.FLOAT,
-            ModifierConfig::energy,
-            ByteBufCodecs.FLOAT,
-            ModifierConfig::speed,
-            ByteBufCodecs.FLOAT,
-            ModifierConfig::item,
-            ModifierConfig::new
+                ByteBufCodecs.FLOAT,
+                ModifierConfig::energy,
+                ByteBufCodecs.FLOAT,
+                ModifierConfig::speed,
+                ByteBufCodecs.FLOAT,
+                ModifierConfig::item,
+                ModifierConfig::new
         );
     }
 }

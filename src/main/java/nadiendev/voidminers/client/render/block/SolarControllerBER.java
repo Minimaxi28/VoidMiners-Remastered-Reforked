@@ -46,7 +46,7 @@ public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBa
 
         if(pBlockEntity.getStructure() == null) return;
 
-        String structure = pBlockEntity.getStructure().toString().replace("solar_", "");
+        String structure = pBlockEntity.getStructure().toString();
 
         if (!MiscUtil.structureMap.containsKey(structure)) return;
 
@@ -79,9 +79,9 @@ public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBa
                     pose.translate(-0.5f, -0.5f, -0.5f);
 
                     renderBlock(
-                        block,
-                        pose,
-                        pBuffer
+                            block,
+                            pose,
+                            pBuffer
                     );
 
                     pose.popPose();

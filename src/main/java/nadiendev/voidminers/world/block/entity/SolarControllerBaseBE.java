@@ -74,7 +74,7 @@ public class SolarControllerBaseBE extends BlockEntity {
     }
 
     public int getBeamColor() {
-        return MiscUtil.colorMap.getOrDefault(structure.getPath().replace("solar_", ""), 0xFFFFFFFF);
+        return MiscUtil.colorMap.getOrDefault(name, 0xFFFFFFFF);
     }
 
     public List<Component> getInteractionTooltip() {
@@ -99,7 +99,7 @@ public class SolarControllerBaseBE extends BlockEntity {
 
                 tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.structure_not_found").withStyle(ChatFormatting.YELLOW));
 
-                MiscUtil.getNeededBlocks(MiscUtil.structureMap.get(VoidMiners.MODID + ":" + structure.toString().split("_")[1])).forEach((string, integer) -> {
+                MiscUtil.getNeededBlocks(MiscUtil.structureMap.get(structure.toString())).forEach((string, integer) -> {
                     tooltip.add(Component.literal("• ").withStyle(ChatFormatting.GRAY)
                             .append(Component.literal(string.contains("Null") ? "Modifiers" : string).withStyle(ChatFormatting.WHITE))
                             .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))

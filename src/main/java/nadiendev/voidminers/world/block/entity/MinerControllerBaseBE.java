@@ -117,11 +117,11 @@ public class MinerControllerBaseBE extends BlockEntity {
 
         this.itemHandler = newHandler;
     }
-    
+
     public MinerControllerBaseBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.MINER_CONTROLLER_BASE_BE.get(), pPos, pBlockState);
     }
-    
+
     public MinerControllerBaseBE(BlockEntityType<?> type, BlockPos pPos, BlockState pBlockState) {
         super(type, pPos, pBlockState);
     }
@@ -150,7 +150,7 @@ public class MinerControllerBaseBE extends BlockEntity {
     }
 
     public int getBeamColor() {
-        return MiscUtil.colorMap.getOrDefault(structure.getPath(), 0xFFFFFFFF);
+        return MiscUtil.colorMap.getOrDefault(name, 0xFFFFFFFF);
     }
 
     public List<Component> getInteractionTooltip() {
@@ -247,7 +247,7 @@ public class MinerControllerBaseBE extends BlockEntity {
 
         tooltip.add(Component.translatable("tooltip.voidminers.controller.duration")
                 .append(Component.literal(String.format(
-                        "§f%d ticks §b(%.2f×)", getRFPerTick(), getEnergyModifierMultiplier()))));
+                        "§f%d ticks §b(%.2f×)", getMaxProgress(), getSpeedModifierMultiplier()))));
 
         if (getItemModifierMultiplier() != 1.0f) {
             tooltip.add(Component.translatable("tooltip.voidminers.controller.item_boost")
@@ -606,7 +606,7 @@ public class MinerControllerBaseBE extends BlockEntity {
             if(level.getBlockState(check).is(Blocks.BEDROCK)) return true;
 
             if (level.getBlockState(check).propagatesSkylightDown(level, check) || level.isFluidAtPosition(check, (fluidState -> !fluidState.isEmpty()))) continue;
-            
+
             return false;
         }
 
@@ -633,17 +633,17 @@ public class MinerControllerBaseBE extends BlockEntity {
         }
 
         return level.getRecipeManager().getAllRecipesFor(MinerRecipe.Type.INSTANCE)
-            .stream()
-            .map(RecipeHolder::value)
-            .filter(recipe -> {
-                if (recipe.allowHigherTiers()) {
-                    return recipe.minTier() <= MiscUtil.tierMap.get(structure.getPath());
-                } else {
-                    return recipe.minTier() == MiscUtil.tierMap.get(structure.getPath());
-                }
-            })
-            .filter(recipe -> recipe.dimension().equals(this.level.dimension()))
-            .toList();
+                .stream()
+                .map(RecipeHolder::value)
+                .filter(recipe -> {
+                    if (recipe.allowHigherTiers()) {
+                        return recipe.minTier() <= MiscUtil.tierMap.get(structure.getPath());
+                    } else {
+                        return recipe.minTier() == MiscUtil.tierMap.get(structure.getPath());
+                    }
+                })
+                .filter(recipe -> recipe.dimension().equals(this.level.dimension()))
+                .toList();
     }
 
     private boolean isItemValid(ItemStack stack, ItemStack handler) {
@@ -689,19 +689,19 @@ public class MinerControllerBaseBE extends BlockEntity {
 
     public void checkStructure(Level pLevel, BlockPos pPos) {
         RegisteredMultiBlockPattern pattern = MultiBlockManager.findAnyStructure(pLevel, pPos, Rotation.NONE);
-        
+
         if (pattern == null) {
             foundStructure = false;
             return;
         }
 
         MultiblockMatchResult result = pattern.pattern().matchesWithResult(pLevel, pPos, Rotation.NONE);
-        
+
         if (result == null) {
             foundStructure = false;
             return;
         }
-        
+
         if (!pattern.ID().equals(structure)) {
             foundStructure = false;
             return;
@@ -710,13 +710,13 @@ public class MinerControllerBaseBE extends BlockEntity {
         modifierMap.clear();
         foundStructure = true;
         result.blocks().stream()
-            .filter(block -> block.getState().getBlock() instanceof ModifierBlock)
-            .forEach(block -> {
-                MinerConfigLoader.ModifierConfig modifier = MinerConfigLoader.getInstance().getModifierConfig(block.getState().getBlock());
-                if (!modifierMap.containsKey(block)) {
-                    modifierMap.put(block, modifier);
-                }
-            });
+                .filter(block -> block.getState().getBlock() instanceof ModifierBlock)
+                .forEach(block -> {
+                    MinerConfigLoader.ModifierConfig modifier = MinerConfigLoader.getInstance().getModifierConfig(block.getState().getBlock());
+                    if (!modifierMap.containsKey(block)) {
+                        modifierMap.put(block, modifier);
+                    }
+                });
     }
 
     public ResourceLocation getStructure() {

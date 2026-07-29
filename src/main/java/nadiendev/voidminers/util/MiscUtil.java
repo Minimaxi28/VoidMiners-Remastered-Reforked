@@ -20,8 +20,8 @@ public class MiscUtil {
             CrystalSet set = CrystalSet.sets().get(i);
 
             tierMap.put(
-                set.name,
-                i + 1
+                    "miner_" + set.name,
+                    i + 1
             );
         }
 

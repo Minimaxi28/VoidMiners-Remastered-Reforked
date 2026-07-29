@@ -117,7 +117,7 @@ public class CrystalSet {
                 name,
                 name.equals("ultimate") ? null : fastCreateItem(name, rarity, color),
                 fastCreateBlock(name + "_block", 10, 5, rarity, color),
-                fastCreateController(name, 10, 50, rarity, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, name), color),
+                fastCreateController(name, 10, 50, rarity, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "miner_" + name), color),
                 fastCreateBlock(name + "_frame", 10, 50, rarity, color),
                 fastCreateModifier(name, 10, 50, rarity, ModifierType.ENERGY, color),
                 fastCreateModifier(name, 10, 50, rarity, ModifierType.SPEED, color),

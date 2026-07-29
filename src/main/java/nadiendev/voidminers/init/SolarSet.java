@@ -98,18 +98,18 @@ public class SolarSet {
     }
 
     public static void initSets() {
-        RUBETINE = createSolarSet("rubetine", ModRarities.RUBETINE, ModRarities.RUBETINE_COLOR);
-        AURANTIUM = createSolarSet("aurantium", ModRarities.AURANTIUM, ModRarities.AURANTIUM_COLOR);
-        CITRINETINE = createSolarSet("citrinetine", ModRarities.CITRINETINE, ModRarities.CITRINETINE_COLOR);
-        VERDIUM = createSolarSet("verdium", ModRarities.VERDIUM, ModRarities.VERDIUM_COLOR);
-        AZURINE = createSolarSet("azurine", ModRarities.AZURINE, ModRarities.AZURINE_COLOR);
-        CAERIUM = createSolarSet("caerium", ModRarities.CAERIUM, ModRarities.CAERIUM_COLOR);
-        AMETHYSTINE = createSolarSet("amethystine", ModRarities.AMETHYSTINE, ModRarities.AMETHYSTINE_COLOR);
-        ROSARIUM = createSolarSet("rosarium", ModRarities.ROSARIUM, ModRarities.ROSARIUM_COLOR);
-        ULTIMATE = createSolarSet("ultimate", ModRarities.ULTIMATE, ModRarities.ULTIMATE_COLOR);
+        RUBETINE = createSet("rubetine", ModRarities.RUBETINE, ModRarities.RUBETINE_COLOR);
+        AURANTIUM = createSet("aurantium", ModRarities.AURANTIUM, ModRarities.AURANTIUM_COLOR);
+        CITRINETINE = createSet("citrinetine", ModRarities.CITRINETINE, ModRarities.CITRINETINE_COLOR);
+        VERDIUM = createSet("verdium", ModRarities.VERDIUM, ModRarities.VERDIUM_COLOR);
+        AZURINE = createSet("azurine", ModRarities.AZURINE, ModRarities.AZURINE_COLOR);
+        CAERIUM = createSet("caerium", ModRarities.CAERIUM, ModRarities.CAERIUM_COLOR);
+        AMETHYSTINE = createSet("amethystine", ModRarities.AMETHYSTINE, ModRarities.AMETHYSTINE_COLOR);
+        ROSARIUM = createSet("rosarium", ModRarities.ROSARIUM, ModRarities.ROSARIUM_COLOR);
+        ULTIMATE = createSet("ultimate", ModRarities.ULTIMATE, ModRarities.ULTIMATE_COLOR);
     }
 
-    public static SolarSet createSolarSet(String name, Rarity rarity, CustomColorUtil color) {
+    public static SolarSet createSet(String name, Rarity rarity, CustomColorUtil color) {
         return new SolarSet(
                 name,
                 name.equals("ultimate") ? null : fastCreateSolarItem(name, rarity, color),
