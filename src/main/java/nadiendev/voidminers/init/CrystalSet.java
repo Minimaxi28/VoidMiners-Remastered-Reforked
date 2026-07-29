@@ -90,7 +90,8 @@ public class CrystalSet {
                 () -> new ColoredMinerControllerBaseBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
-                                .requiresCorrectToolForDrops(),
+                                .requiresCorrectToolForDrops()
+                                .noOcclusion(),
                         structure,
                         name,
                         color

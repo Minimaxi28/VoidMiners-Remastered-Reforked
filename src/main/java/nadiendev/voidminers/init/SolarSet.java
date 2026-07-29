@@ -87,7 +87,8 @@ public class SolarSet {
                 () -> new ColoredSolarControllerBaseBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
-                                .requiresCorrectToolForDrops(),
+                                .requiresCorrectToolForDrops()
+                                .noOcclusion(),
                         structure,
                         name,
                         color
