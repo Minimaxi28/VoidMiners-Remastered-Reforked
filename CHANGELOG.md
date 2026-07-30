@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.21.1-1.6.3
+
+- Make the Max Storage Upgrades use Components to tell how many slots they will add
+- This change makes them not hot-changeable, if you change the config for them, you will have to close the game and re-open it
+- This also makes it so KubeJS can add custom ones, see [wiki.md](https://github.com/Minimaxi28/VoidMiners-Remastered-Reforked/wiki#add-custom-max-storage-upgrades)
+
 ## 1.21.1-1.6.2
 
 - Fix the Miners rendering the Solar multiblocks
