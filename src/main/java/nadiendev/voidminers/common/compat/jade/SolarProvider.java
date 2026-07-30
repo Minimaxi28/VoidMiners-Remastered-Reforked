@@ -30,8 +30,8 @@ public enum SolarProvider implements IBlockComponentProvider, IServerDataProvide
         }
 
         if (serverData.contains("Energy") && serverData.contains("MaxEnergy")) {
-            int energy = serverData.getInt("Energy");
-            int maxEnergy = serverData.getInt("MaxEnergy");
+            long energy = serverData.getLong("Energy");
+            long maxEnergy = serverData.getLong("MaxEnergy");
             tooltip.add(Component.translatable("jade.voidminers.energy",
                     String.format("%,d", energy),
                     String.format("%,d", maxEnergy)));

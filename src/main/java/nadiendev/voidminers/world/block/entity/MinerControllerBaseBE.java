@@ -78,6 +78,10 @@ public class MinerControllerBaseBE extends BlockEntity {
 
     private HaltReason haltReason = HaltReason.NONE;
 
+    private boolean dimensionOK = false;
+
+    private int checkStructureTTL = 0;
+
     private static ItemStackHandler createItemHandler() {
         return new ItemStackHandler(BASE_OUTPUT_SLOTS) {
             @Override
@@ -120,10 +124,6 @@ public class MinerControllerBaseBE extends BlockEntity {
 
     public MinerControllerBaseBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.MINER_CONTROLLER_BASE_BE.get(), pPos, pBlockState);
-    }
-
-    public MinerControllerBaseBE(BlockEntityType<?> type, BlockPos pPos, BlockState pBlockState) {
-        super(type, pPos, pBlockState);
     }
 
     public void setup(ResourceLocation structure, String name) {
@@ -428,24 +428,34 @@ public class MinerControllerBaseBE extends BlockEntity {
     public void tick(Level pLevel, BlockPos pPos, BlockState pState, ResourceLocation structure, String name) {
         if (level == null || level.isClientSide) return;
 
+        long gameTime = level.getGameTime();
+
         if (!MinerConfigLoader.getInstance().ALLOW_TICK_ACCELERATION) {
-            long gameTime = level.getGameTime();
             if (this.lastProcessedGameTime == gameTime) return;
             this.lastProcessedGameTime = gameTime;
         }
 
-        // TODO check if this is laggy
-        // Check that a recipe exists for the dimension
-        if (allRecipes().isEmpty()) {
-            haltReason = HaltReason.NO_RECIPES_IN_DIMENSION;
-            return;
+        // only check dimension once
+        if(!dimensionOK && haltReason != HaltReason.NO_RECIPES_IN_DIMENSION) {
+            if (allRecipes().isEmpty()) {
+                haltReason = HaltReason.NO_RECIPES_IN_DIMENSION;
+                return;
+            }
         }
+
+        dimensionOK = true;
 
         if(getStructure() == null) {
             setup(structure, name);
         }
 
-        checkStructure(level, pPos);
+        if(this.lastProcessedGameTime != gameTime) {
+            if(checkStructureTTL == 0) {
+                checkStructure(level, pPos);
+                checkStructureTTL = 20; // only check structure every 20 ticks even if tick accelerated
+            }
+            checkStructureTTL--;
+        }
         sync();
 
         if (!foundStructure) {
@@ -473,7 +483,7 @@ public class MinerControllerBaseBE extends BlockEntity {
                     haltReason = HaltReason.TOO_MUCH_ITEM_MULTIPLIER;
                     return;
                 }
-                if(itemModMultMultiplier > getNumberOfEmptySlots() * 64) {
+                if(!hasEnoughEmptySlots(itemModMultMultiplier / 64)) {
                     haltReason = HaltReason.NOT_ENOUGH_EMPTY_SLOTS;
                     return;
                 }
@@ -563,14 +573,17 @@ public class MinerControllerBaseBE extends BlockEntity {
         }
     }
 
-    private int getNumberOfEmptySlots() {
-        int numberOfEmptySlots = 0;
+    private boolean hasEnoughEmptySlots(int neededSlots) {
+        int emptyCount = 0;
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             if (itemHandler.getStackInSlot(i).isEmpty()) {
-                numberOfEmptySlots++;
+                emptyCount++;
+                if (emptyCount >= neededSlots) {
+                    return true;
+                }
             }
         }
-        return numberOfEmptySlots;
+        return false;
     }
 
     private void sync() {
@@ -645,6 +658,8 @@ public class MinerControllerBaseBE extends BlockEntity {
     }
 
     private boolean isItemHandlerFull() {
+        if(itemHandler.getStackInSlot(itemHandler.getSlots() - 1).getCount() == 0) return false;
+
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             if (itemHandler.getStackInSlot(i).getCount() < itemHandler.getStackInSlot(i).getMaxStackSize()) {
                 return false;
@@ -748,7 +763,7 @@ public class MinerControllerBaseBE extends BlockEntity {
     public void setAppliedUpgradeItem(Item item) {
         this.upgradeItem = item;
         recalculateStorageFromUpgrades();
-        setChanged();
+        sync();
     }
 
     public Item getUpgradeItem() {

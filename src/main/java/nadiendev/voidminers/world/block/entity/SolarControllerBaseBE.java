@@ -51,6 +51,8 @@ public class SolarControllerBaseBE extends BlockEntity {
 
     private HaltReason haltReason = HaltReason.NONE;
 
+    private int checkStructureTTL = 0;
+
     public SolarControllerBaseBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.SOLAR_BASE_BE.get(), pPos, pBlockState);
     }
@@ -243,8 +245,9 @@ public class SolarControllerBaseBE extends BlockEntity {
     public void tick(Level pLevel, BlockPos pPos, BlockState pState, ResourceLocation structure, String name) {
         if (level == null || level.isClientSide) return;
 
+        long gameTime = level.getGameTime();
+
         if (!SolarConfigLoader.getInstance().ALLOW_TICK_ACCELERATION) {
-            long gameTime = level.getGameTime();
             if (this.lastProcessedGameTime == gameTime) return;
             this.lastProcessedGameTime = gameTime;
         }
@@ -253,7 +256,13 @@ public class SolarControllerBaseBE extends BlockEntity {
             setup(structure, name);
         }
 
-        checkStructure(level, pPos);
+        if(this.lastProcessedGameTime != gameTime) {
+            if(checkStructureTTL == 0) {
+                checkStructure(level, pPos);
+                checkStructureTTL = 20; // only check structure every 20 ticks even if tick accelerated
+            }
+            checkStructureTTL--;
+        }
         sync();
 
         if (!foundStructure) {
