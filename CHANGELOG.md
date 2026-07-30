@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.21.1-1.6.4
+
+- Lot of optimization of the Miners and Solars Controllers
+  - Tested with up to 131 072x tick acceleration
+
 ## 1.21.1-1.6.3
 
 - Make the Max Storage Upgrades use Components to tell how many slots they will add

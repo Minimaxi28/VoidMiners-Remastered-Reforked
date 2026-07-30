@@ -437,9 +437,10 @@ public class MinerControllerBaseBE extends BlockEntity {
                 haltReason = HaltReason.NO_RECIPES_IN_DIMENSION;
                 return;
             }
+            dimensionOK = true;
+        } else if (haltReason == HaltReason.NO_RECIPES_IN_DIMENSION) {
+            return;
         }
-
-        dimensionOK = true;
 
         if(getStructure() == null) {
             setup(structure, name);
