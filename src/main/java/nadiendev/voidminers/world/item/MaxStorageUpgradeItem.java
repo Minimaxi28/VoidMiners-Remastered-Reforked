@@ -1,7 +1,6 @@
 package nadiendev.voidminers.world.item;
 
-import nadiendev.voidminers.config.MinerConfigLoader;
-import nadiendev.voidminers.init.ModItems;
+import nadiendev.voidminers.init.ModDataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -10,25 +9,15 @@ import net.minecraft.world.item.TooltipFlag;
 import java.util.List;
 
 public class MaxStorageUpgradeItem extends Item {
-    public MaxStorageUpgradeItem(Properties pProperties) {
-        super(pProperties);
+    private final int addedSlots;
+    public MaxStorageUpgradeItem(Integer addedSlots, Properties pProperties) {
+        super(pProperties.component(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS, addedSlots));
+        this.addedSlots = addedSlots;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        MinerConfigLoader cfg = MinerConfigLoader.getInstance();
-        Item item = stack.getItem();
-        int slots;
-
-        if (item == ModItems.MAX_STORAGE_UPGRADE_T1.get()) {
-            slots = cfg.UPGRADE_T1_SLOTS;
-        } else if (item == ModItems.MAX_STORAGE_UPGRADE_T2.get()) {
-            slots = cfg.UPGRADE_T2_SLOTS;
-        } else {
-            slots = cfg.UPGRADE_T3_SLOTS;
-        }
-
-        tooltipComponents.add(Component.translatable("tooltip.voidminers.max_storage_upgrades", slots));
+        tooltipComponents.add(Component.translatable("tooltip.voidminers.max_storage_upgrades", this.addedSlots));
 
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
     }

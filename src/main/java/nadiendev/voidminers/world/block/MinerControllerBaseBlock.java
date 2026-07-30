@@ -1,24 +1,19 @@
 package nadiendev.voidminers.world.block;
 
-import nadiendev.voidminers.init.ModItems;
+import nadiendev.voidminers.init.ModDataComponents;
 import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
-import nadiendev.voidminers.util.ShapeUtil;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.TransparentBlock;
@@ -27,9 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class MinerControllerBaseBlock extends TransparentBlock implements EntityBlock {
@@ -92,53 +84,50 @@ public class MinerControllerBaseBlock extends TransparentBlock implements Entity
             return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
         }
 
-        ItemStack held = pPlayer.getItemInHand(pHand);
-        String itemId = BuiltInRegistries.ITEM.getKey(held.getItem()).getPath();
+        handleUpgrade(blockEntity, pPlayer, pStack, pHand, pLevel, pState, pPos);
 
-        assert blockEntity != null;
-        switch (itemId) {
-            case "max_storage_upgrade_t1" -> {
-                return handleUpgrade(1, blockEntity, pPlayer, held, pHand, pLevel, pState, pPos);
-            }
-            case "max_storage_upgrade_t2" -> {
-                return handleUpgrade(2, blockEntity, pPlayer, held, pHand, pLevel, pState, pPos);
-            }
-            case "max_storage_upgrade_t3" -> {
-                return handleUpgrade(3, blockEntity, pPlayer, held, pHand, pLevel, pState, pPos);
-            }
-            default -> {
-                return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
-            }
-        }
+        return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
     }
 
-    private ItemInteractionResult handleUpgrade(int tier, MinerControllerBaseBE blockEntity, Player pPlayer, ItemStack held, InteractionHand pHand, Level pLevel, BlockState pState, BlockPos pPos) {
-        int current = blockEntity.getUpgradeTier();
-        if (current == tier) {
+    private void handleUpgrade(MinerControllerBaseBE blockEntity, Player pPlayer, ItemStack pStack, InteractionHand pHand, Level pLevel, BlockState pState, BlockPos pPos) {
+        Item currentUpgradeItem = blockEntity.getUpgradeItem();
+        Item newUpgradeItem = pStack.getItem();
+
+        if (currentUpgradeItem == newUpgradeItem) {
             pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied"), true);
-            return ItemInteractionResult.CONSUME;
+            return;
         }
 
-        if (current > tier) {
+        int newAddedSlots = 0;
+
+        if(newUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
+            newAddedSlots = newUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
+        } else {
+            return;
+        }
+
+        int currentAddedSlots = 0;
+
+        if(currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
+            currentAddedSlots = currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
+        }
+
+        if (currentAddedSlots > newAddedSlots) {
             pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier"), true);
-            return ItemInteractionResult.CONSUME;
+            return;
         }
 
-        ItemStack previousStack = ItemStack.EMPTY;
-        if (current == 1) previousStack = new ItemStack(ModItems.MAX_STORAGE_UPGRADE_T1.get());
-        if (current == 2) previousStack = new ItemStack(ModItems.MAX_STORAGE_UPGRADE_T2.get());
-
-        blockEntity.setAppliedUpgradeTier(tier);
+        blockEntity.setAppliedUpgradeItem(newUpgradeItem);
 
         if (!pPlayer.getAbilities().instabuild) {
-            held.shrink(1);
-            pPlayer.setItemInHand(pHand, held);
+            pStack.shrink(1);
+            pPlayer.setItemInHand(pHand, pStack);
         }
 
-        if (!previousStack.isEmpty()) {
-            boolean added = pPlayer.getInventory().add(previousStack);
+        if (!(currentUpgradeItem == Items.AIR)) {
+            boolean added = pPlayer.getInventory().add(new ItemStack(currentUpgradeItem));
             if (!added) {
-                ItemEntity drop = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), previousStack);
+                ItemEntity drop = new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), new ItemStack(currentUpgradeItem));
                 pLevel.addFreshEntity(drop);
             }
         }
@@ -147,8 +136,7 @@ public class MinerControllerBaseBlock extends TransparentBlock implements Entity
             blockEntity.getLevel().sendBlockUpdated(pPos, pState, pState, 3);
         }
 
-        pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_applied", tier), true);
-        return ItemInteractionResult.CONSUME;
+        pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_applied", newAddedSlots), true);
     }
 
     @Override

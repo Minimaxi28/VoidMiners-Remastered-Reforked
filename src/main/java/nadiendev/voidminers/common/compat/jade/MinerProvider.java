@@ -4,6 +4,7 @@ import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.util.MiscUtil;
 import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
 import nadiendev.voidminers.world.block.entity.HaltReason;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -37,9 +38,11 @@ public enum MinerProvider implements IBlockComponentProvider, IServerDataProvide
                 String.format("%,d", maxEnergy)));
         }
 
-        if (serverData.contains("MaxStorageUpgradeTier")) {
-            int maxStorageUpgradeTier = serverData.getInt("MaxStorageUpgradeTier");
-            tooltip.add(Component.translatable("jade.voidminers.max_storage_upgrade_tier", maxStorageUpgradeTier));
+        if (serverData.contains("MaxStorageUpgradeItem")) {
+            ResourceLocation itemId = ResourceLocation.tryParse(serverData.getString("MaxStorageUpgradeItem"));
+            if (itemId != null) {
+                tooltip.add(Component.translatable("jade.voidminers.storage_upgrade", BuiltInRegistries.ITEM.get(itemId).getDescription()));
+            }
         }
 
         if (serverData.contains("HaltReason")) {
@@ -93,7 +96,7 @@ public enum MinerProvider implements IBlockComponentProvider, IServerDataProvide
         tag.putInt("Energy", miner.getEnergyStorage().getEnergyStored());
         tag.putInt("MaxEnergy", miner.getEnergyStorage().getMaxEnergyStored());
 
-        tag.putInt("MaxStorageUpgradeTier", miner.getUpgradeTier());
+        tag.putString("MaxStorageUpgradeItem", miner.getUpgradeItem().toString());
 
         tag.putInt("HaltReason", HaltReason.getIntFromHaltReason(miner.getHaltReason()));
 

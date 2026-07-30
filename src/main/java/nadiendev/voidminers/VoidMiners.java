@@ -10,7 +10,6 @@ import nadiendev.voidminers.world.multiblock.SolarMultiblocks;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -21,7 +20,7 @@ public class VoidMiners {
     public static final String MODID = "voidminers";
     public static final Logger LOGGER = LogUtils.getLogger();
     
-    public VoidMiners(IEventBus modEventBus, ModContainer container) {
+    public VoidMiners(IEventBus modEventBus) {
         MinerConfigLoader.getInstance().load();
         SolarConfigLoader.getInstance().load();
         CrystalSet.initSets();
@@ -32,6 +31,7 @@ public class VoidMiners {
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModRecipes.SERIALIZERS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+        ModDataComponents.DATA_COMPONENT_TYPES.register(modEventBus);
 
         modEventBus.addListener(this::registerPayloads);
         modEventBus.addListener(this::clientSetup);

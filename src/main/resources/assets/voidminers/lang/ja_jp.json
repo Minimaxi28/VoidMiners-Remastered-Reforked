@@ -141,10 +141,10 @@
   "jade.voidminers.halt_reason.power_full": "Reason: Power buffer full",
   "jade.voidminers.halt_reason.structure_not_found": "Reason: Structure not found",
   "jade.voidminers.halt_reason.too_much_item_multiplier": "Reason: Item Multiplier too high",
-  "jade.voidminers.max_storage_upgrade_tier": "Max Storage Upgrade Tier: %s",
   "jade.voidminers.progress": "Progress: %s%%",
   "jade.voidminers.status.idle": "Status: Idle",
   "jade.voidminers.status.working": "Status: Working",
+  "jade.voidminers.storage_upgrade": "Storage Upgrade: %s",
   "jade.voidminers.tier": "Tier: %s",
   "minecraft.overworld": "オーバーワールド",
   "minecraft.the_end": "ジ・エンド",
@@ -186,11 +186,5 @@
   "tooltip.voidminers.structure_helper.creative_only": "Not supposed to be used in survival.",
   "tooltip.voidminers.structure_helper.instructions": "Sneak + right-click on a Miner to complete it.",
   "tooltip.voidminers.structure_helper.warning": "Blocks in the way will be voided",
-  "tooltip.voidminers.weatherResistance": "Weather Resistance: %s%%",
-  "tooltip.voidminers.controller.missing_structure": "採掘機が正しく組み立てられていません。ブロックをShiftキーを押しながら右クリックしてガイドを確認してください。必要なブロックの総数：",
-  "tooltip.voidminers.controller.not_active": "採掘機は正しく組み立てられていますが、有効ではありません。\n採掘機が奈落/岩盤を見えるようにしてください。\n岩盤と採掘機の間の距離は重要ではなく、中央のブロックが岩盤を見えることだけが重要です。",
-  "tooltip.voidminers.controller.not_working": "採掘機が正常に動作していません！\n採掘機に少なくとも1つの空きスロットがあるか、また必要なエネルギーが総エネルギー貯蔵量より小さいかを確認してください。",
-  "tooltip.voidminers.controller.working": "採掘機は正常に動作しています。",
-  "tooltip.voidminerscreative_only": "クリエイティブ専用",
-  "voidminers.itemGroup.items": "アイテム"
+  "tooltip.voidminers.weatherResistance": "Weather Resistance: %s%%"
 }

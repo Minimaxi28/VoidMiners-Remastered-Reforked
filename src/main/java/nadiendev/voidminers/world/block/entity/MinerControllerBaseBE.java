@@ -2,7 +2,7 @@ package nadiendev.voidminers.world.block.entity;
 
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.config.MinerConfigLoader;
-import nadiendev.voidminers.init.ModItems;
+import nadiendev.voidminers.init.ModDataComponents;
 import nadiendev.voidminers.init.ModRarities;
 import nadiendev.voidminers.world.block.ModifierBlock;
 import nadiendev.voidminers.common.energy.MinerEnergyStorage;
@@ -15,6 +15,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -25,7 +26,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -53,7 +56,7 @@ public class MinerControllerBaseBE extends BlockEntity {
 
     public static final int ENERGY_CAPACITY = Integer.MAX_VALUE;
     private static final int BASE_OUTPUT_SLOTS = 9;
-    private int upgradeTier = 0;
+    private Item upgradeItem = Items.AIR;
 
     private MinerEnergyStorage energyHandler = new MinerEnergyStorage(ENERGY_CAPACITY, ENERGY_CAPACITY, 0, 0);
     private ItemStackHandler itemHandler = createItemHandler();
@@ -85,16 +88,9 @@ public class MinerControllerBaseBE extends BlockEntity {
     }
 
     private void recalculateStorageFromUpgrades() {
-        int tier = this.upgradeTier;
+        if(this.upgradeItem == Items.AIR) return;
 
-        int extraSlots = 0;
-        if (tier == 3) {
-            extraSlots = MinerConfigLoader.getInstance().UPGRADE_T3_SLOTS;
-        } else if (tier == 2) {
-            extraSlots = MinerConfigLoader.getInstance().UPGRADE_T2_SLOTS;
-        } else if (tier == 1) {
-            extraSlots = MinerConfigLoader.getInstance().UPGRADE_T1_SLOTS;
-        }
+        int extraSlots = this.upgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
 
         int desiredSlots = BASE_OUTPUT_SLOTS + extraSlots;
         if (desiredSlots != itemHandler.getSlots()) {
@@ -207,9 +203,7 @@ public class MinerControllerBaseBE extends BlockEntity {
 
                 tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.too_much_item_multiplier", itemHandler.getSlots() * 64).withStyle(ChatFormatting.YELLOW));
 
-                if (upgradeTier != 3) {
-                    tooltip.add(Component.translatable("tooltip.voidminers.controller.max_storage_upgrade_tip").withStyle(ChatFormatting.YELLOW));
-                }
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.max_storage_upgrade_tip").withStyle(ChatFormatting.YELLOW));
 
                 addMinerInfo(tooltip);
                 break;
@@ -264,7 +258,7 @@ public class MinerControllerBaseBE extends BlockEntity {
                 .append(Component.literal(String.format(
                         "§r%s §f%.2f%%", getProgressBar(progressPercent), progressPercent * 100))));
 
-        tooltip.add(getUpgradeInfoText(upgradeTier));
+        tooltip.add(getUpgradeInfoText());
     }
 
     private String getEnergyBar(int current, int max) {
@@ -300,24 +294,15 @@ public class MinerControllerBaseBE extends BlockEntity {
         return bar + "§r";
     }
 
-    private Component getUpgradeInfoText(int upgradeTier) {
-        return switch (upgradeTier) {
-            case 0 -> Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
+    private Component getUpgradeInfoText() {
+        if(this.upgradeItem == Items.AIR) {
+            return Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
                     .append(Component.literal("No upgrades applied.").withStyle(ChatFormatting.WHITE));
+        }
 
-            case 1 -> Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
-                    .append(Component.translatable(ModItems.MAX_STORAGE_UPGRADE_T1.get().getDescriptionId()).withStyle(ChatFormatting.WHITE))
-                    .append(Component.literal(" (+" + MinerConfigLoader.getInstance().UPGRADE_T1_SLOTS + " slots)").withStyle(ChatFormatting.GRAY));
-
-            case 2 -> Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
-                    .append(Component.translatable(ModItems.MAX_STORAGE_UPGRADE_T2.get().getDescriptionId()).withStyle(ChatFormatting.WHITE))
-                    .append(Component.literal(" (+" + MinerConfigLoader.getInstance().UPGRADE_T2_SLOTS + " slots)").withStyle(ChatFormatting.GRAY));
-
-            case 3 -> Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
-                    .append(Component.translatable(ModItems.MAX_STORAGE_UPGRADE_T3.get().getDescriptionId()).withStyle(ChatFormatting.WHITE))
-                    .append(Component.literal(" (+" + MinerConfigLoader.getInstance().UPGRADE_T3_SLOTS + " slots)").withStyle(ChatFormatting.GRAY));
-            default -> Component.empty();
-        };
+        return Component.literal("⚙ UPGRADE: ").withStyle(ChatFormatting.AQUA)
+                .append(Component.translatable(this.upgradeItem.getDescriptionId()).withStyle(ChatFormatting.WHITE))
+                .append(Component.literal(" (+" + this.upgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) + " slots)").withStyle(ChatFormatting.GRAY));
     }
 
     public void updateShowStructure() {
@@ -332,7 +317,7 @@ public class MinerControllerBaseBE extends BlockEntity {
         CompoundTag data = new CompoundTag();
         if (energyHandler != null) data.put("energy", energyHandler.serializeNBT(pRegistries));
         data.put("items", itemHandler.serializeNBT(pRegistries));
-        data.putInt("upgradeTier", this.upgradeTier);
+        data.putString("upgradeItem", this.upgradeItem.toString());
         data.putInt("progress", this.progress);
         if (name != null) data.putString("name", this.name);
         if (structure != null) data.putString("structure", structure.toString());
@@ -359,8 +344,13 @@ public class MinerControllerBaseBE extends BlockEntity {
             itemHandler.deserializeNBT(pRegistries, data.getCompound("items"));
         }
 
-        if (data.contains("upgradeTier")) {
-            this.upgradeTier = data.getInt("upgradeTier");
+        if (data.contains("upgradeItem")) {
+            ResourceLocation itemId = ResourceLocation.tryParse(data.getString("upgradeItem"));
+            if (itemId != null) {
+                this.upgradeItem = BuiltInRegistries.ITEM.get(itemId);
+            } else {
+                this.upgradeItem = Items.AIR;
+            }
         }
 
         if (data.contains("progress")) {
@@ -698,19 +688,10 @@ public class MinerControllerBaseBE extends BlockEntity {
             container.addItem(itemHandler.getStackInSlot(i));
         }
 
-        container.addItem(getUpgradeStackFromTier(upgradeTier));
+        container.addItem(new ItemStack(this.upgradeItem));
 
         assert level != null;
         Containers.dropContents(level, worldPosition, container);
-    }
-
-    public ItemStack getUpgradeStackFromTier(int tier) {
-        return switch (tier) {
-            case 1 -> ModItems.MAX_STORAGE_UPGRADE_T1.toStack();
-            case 2 -> ModItems.MAX_STORAGE_UPGRADE_T2.toStack();
-            case 3 -> ModItems.MAX_STORAGE_UPGRADE_T3.toStack();
-            default -> ItemStack.EMPTY;
-        };
     }
 
     public ItemStack getWeightedItem(List<WeightedStack> items, RandomSource random) {
@@ -764,14 +745,14 @@ public class MinerControllerBaseBE extends BlockEntity {
         return structure;
     }
 
-    public void setAppliedUpgradeTier(int tier) {
-        this.upgradeTier = tier;
+    public void setAppliedUpgradeItem(Item item) {
+        this.upgradeItem = item;
         recalculateStorageFromUpgrades();
         setChanged();
     }
 
-    public int getUpgradeTier() {
-        return upgradeTier;
+    public Item getUpgradeItem() {
+        return upgradeItem;
     }
 
     public HaltReason getHaltReason() {

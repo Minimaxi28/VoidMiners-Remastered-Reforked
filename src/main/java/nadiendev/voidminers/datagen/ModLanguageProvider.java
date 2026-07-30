@@ -43,7 +43,7 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip.voidminers.controller.duration", "§9⏱ DURATION: ");
         this.add("tooltip.voidminers.controller.consumption", "§c⚡ CONSUMPTION: ");
         this.add("tooltip.voidminers.controller.energy", "§e⚡ ENERGY: ");
-        this.add("tooltip.voidminers.controller.max_storage_upgrade_tip", "You can also add a better Max Storage Upgrade");
+        this.add("tooltip.voidminers.controller.max_storage_upgrade_tip", "If a better one is available, you could also add a better Max Storage Upgrade");
 
         this.add("tooltip.voidminers.controller.generation", "⚡ GENERATION: ");
         this.add("tooltip.voidminers.controller.efficiency", "☀ EFFICIENCY: ");
@@ -131,7 +131,7 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("jade.voidminers.halt_reason.not_enough_power", "Reason: Not enough power");
         this.add("jade.voidminers.halt_reason.not_enough_power_buffer", "Reason: Not enough power buffer");
         this.add("jade.voidminers.tier", "Tier: %s");
-        this.add("jade.voidminers.max_storage_upgrade_tier", "Max Storage Upgrade Tier: %s");
+        this.add("jade.voidminers.storage_upgrade", "Storage Upgrade: %s");
         this.add("jade.voidminers.energy", "Energy: %s / %s FE");
         this.add("jade.voidminers.status.working", "Status: Working");
         this.add("jade.voidminers.status.idle", "Status: Idle");
@@ -147,8 +147,8 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("jade.voidminers.progress", "Progress: %s%%");
 
         this.add("client_message.voidminers.max_storage_upgrades.upgrade_already_applied", "Same Upgrade already applied");
-        this.add("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier", "Cannot apply lower-tier upgrade while a higher-tier upgrade is installed");
-        this.add("client_message.voidminers.max_storage_upgrades.upgrade_applied", "Upgrade applied, Tier : %d");
+        this.add("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier", "Cannot apply an upgrade with less slots then the current upgrade.");
+        this.add("client_message.voidminers.max_storage_upgrades.upgrade_applied", "Upgrade applied, added slots : %d");
     }
 
 

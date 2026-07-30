@@ -141,10 +141,10 @@
   "jade.voidminers.halt_reason.power_full": "Reason: Power buffer full",
   "jade.voidminers.halt_reason.structure_not_found": "Reason: Structure not found",
   "jade.voidminers.halt_reason.too_much_item_multiplier": "Reason: Item Multiplier too high",
-  "jade.voidminers.max_storage_upgrade_tier": "Max Storage Upgrade Tier: %s",
   "jade.voidminers.progress": "Progreso: %s%%",
   "jade.voidminers.status.idle": "Estado: Inactivo",
   "jade.voidminers.status.working": "Estado: Trabajando",
+  "jade.voidminers.storage_upgrade": "Storage Upgrade: %s",
   "jade.voidminers.tier": "Nivel: %s",
   "minecraft.overworld": "Overworld",
   "minecraft.the_end": "The End",
@@ -186,11 +186,5 @@
   "tooltip.voidminers.structure_helper.creative_only": "Not supposed to be used in survival.",
   "tooltip.voidminers.structure_helper.instructions": "Sneak + right-click on a Miner to complete it.",
   "tooltip.voidminers.structure_helper.warning": "Blocks in the way will be voided",
-  "tooltip.voidminers.weatherResistance": "Weather Resistance: %s%%",
-  "tooltip.voidminers.controller.missing_structure": "Miner is not assembled correctly, shift r-click the block for a guide. Total needed blocks: ",
-  "tooltip.voidminers.controller.not_active": "Miner is assembled correctly, but is not active.\nMake sure that the miner can see the void / bedrock!\nThe distance between bedrock and miner does NOT matter, only that the center block can see bedrock!",
-  "tooltip.voidminers.controller.not_working": "Miner is not working correctly!\nCheck if the miner has at least 1 empty slot, and that the required energy is smaller than the total energy storage",
-  "tooltip.voidminers.controller.working": "Miner is working correctly.",
-  "tooltip.voidminerscreative_only": "Creative Only",
-  "voidminers.itemGroup.items": "Items"
+  "tooltip.voidminers.weatherResistance": "Weather Resistance: %s%%"
 }

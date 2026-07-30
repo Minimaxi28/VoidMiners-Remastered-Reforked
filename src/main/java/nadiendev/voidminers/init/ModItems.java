@@ -1,6 +1,7 @@
 package nadiendev.voidminers.init;
 
 import nadiendev.voidminers.VoidMiners;
+import nadiendev.voidminers.config.MinerConfigLoader;
 import nadiendev.voidminers.world.item.MaxStorageUpgradeItem;
 import nadiendev.voidminers.world.item.StructureHelperItem;
 import net.minecraft.world.item.Item;
@@ -18,9 +19,9 @@ public class ModItems {
             () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));
 
     public static final DeferredItem<Item> MAX_STORAGE_UPGRADE_T1 = ITEMS.register("max_storage_upgrade_t1",
-            () -> new MaxStorageUpgradeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
+            () -> new MaxStorageUpgradeItem(MinerConfigLoader.getInstance().UPGRADE_T1_SLOTS, new Item.Properties().rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<Item> MAX_STORAGE_UPGRADE_T2 = ITEMS.register("max_storage_upgrade_t2",
-            () -> new MaxStorageUpgradeItem(new Item.Properties().rarity(Rarity.RARE)));
+            () -> new MaxStorageUpgradeItem(MinerConfigLoader.getInstance().UPGRADE_T2_SLOTS, new Item.Properties().rarity(Rarity.RARE)));
     public static final DeferredItem<Item> MAX_STORAGE_UPGRADE_T3 = ITEMS.register("max_storage_upgrade_t3",
-            () -> new MaxStorageUpgradeItem(new Item.Properties().rarity(Rarity.EPIC)));
+            () -> new MaxStorageUpgradeItem(MinerConfigLoader.getInstance().UPGRADE_T3_SLOTS, new Item.Properties().rarity(Rarity.EPIC)));
 }
