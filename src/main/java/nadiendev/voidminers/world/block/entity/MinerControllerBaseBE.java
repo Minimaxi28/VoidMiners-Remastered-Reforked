@@ -35,7 +35,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -107,9 +106,6 @@ public class MinerControllerBaseBE extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 super.onContentsChanged(slot);
-                if (MinerControllerBaseBE.this.level != null) {
-                    MinerControllerBaseBE.this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
-                }
             }
         };
 
@@ -453,10 +449,10 @@ public class MinerControllerBaseBE extends BlockEntity {
             if(checkStructureTTL == 0) {
                 checkStructure(level, pPos);
                 checkStructureTTL = 20; // only check structure every 20 ticks even if tick accelerated
+                sync();
             }
             checkStructureTTL--;
         }
-        sync();
 
         if (!foundStructure) {
             haltReason = HaltReason.STRUCTURE_NOT_FOUND;
