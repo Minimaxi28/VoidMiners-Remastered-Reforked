@@ -33,7 +33,7 @@ import org.mangorage.mangomultiblock.core.misc.MultiblockMatchResult;
 
 import java.util.*;
 
-public class SolarControllerBaseBE extends BlockEntity {
+public class SolarControllerBE extends BlockEntity {
     private SolarEnergyStorage energyHandler = new SolarEnergyStorage(Long.MAX_VALUE, 0, Long.MAX_VALUE, 0);
 
     public boolean foundStructure = false;
@@ -53,7 +53,7 @@ public class SolarControllerBaseBE extends BlockEntity {
 
     private int checkStructureTTL = 0;
 
-    public SolarControllerBaseBE(BlockPos pPos, BlockState pBlockState) {
+    public SolarControllerBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.SOLAR_BASE_BE.get(), pPos, pBlockState);
     }
 

@@ -69,7 +69,7 @@ public class SolarSet {
 
     public static DeferredHolder<Block, ModifierBlock> fastCreateModifier(String name, float hardness, float resistance, Rarity rarity, ModifierType type, CustomColorUtil color) {
         return ModBlocks.registerColoredBlock("solar_" + name + "_" + type.type + "_modifier",
-                () -> new ColoredModifierBlock(
+                () -> new ModifierBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
                                 .requiresCorrectToolForDrops(),
@@ -82,9 +82,9 @@ public class SolarSet {
         );
     }
 
-    public static DeferredHolder<Block, SolarControllerBaseBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure, CustomColorUtil color) {
+    public static DeferredHolder<Block, SolarControllerBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure, CustomColorUtil color) {
         return ModBlocks.registerColoredBlock("solar_" + name + "_panel",
-                () -> new ColoredSolarControllerBaseBlock(
+                () -> new SolarControllerBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
                                 .requiresCorrectToolForDrops()

@@ -52,7 +52,8 @@ public class ModBlocks {
                     BlockBehaviour.Properties.of()
                             .strength(10, 50)
                             .requiresCorrectToolForDrops(),
-                    "null"
+                    "null",
+                    ModifierType.NULL
             )
     );
 

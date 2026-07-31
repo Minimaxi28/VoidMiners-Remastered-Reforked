@@ -51,7 +51,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MinerControllerBaseBE extends BlockEntity {
+public class MinerControllerBE extends BlockEntity {
 
     public static final int ENERGY_CAPACITY = Integer.MAX_VALUE;
     private static final int BASE_OUTPUT_SLOTS = 9;
@@ -118,7 +118,7 @@ public class MinerControllerBaseBE extends BlockEntity {
         this.itemHandler = newHandler;
     }
 
-    public MinerControllerBaseBE(BlockPos pPos, BlockState pBlockState) {
+    public MinerControllerBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.MINER_CONTROLLER_BASE_BE.get(), pPos, pBlockState);
     }
 

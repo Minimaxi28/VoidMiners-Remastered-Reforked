@@ -1,39 +1,30 @@
 package nadiendev.voidminers.world.block;
 
-import nadiendev.voidminers.util.ShapeUtil;
-import nadiendev.voidminers.world.block.entity.SolarControllerBaseBE;
+import nadiendev.voidminers.util.CustomColorUtil;
+import nadiendev.voidminers.world.block.entity.SolarControllerBE;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.BlockParticleOption;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SolarControllerBaseBlock extends TransparentBlock implements EntityBlock {
+public class SolarControllerBlock extends ColoredBlock implements EntityBlock {
     final ResourceLocation structure;
     final String name;
 
-    public SolarControllerBaseBlock(Properties pProperties, ResourceLocation structure, String name) {
-        super(pProperties);
+    public SolarControllerBlock(Properties pProperties, ResourceLocation structure, String name, CustomColorUtil color) {
+        super(pProperties, color);
         this.structure = structure;
         this.name = name;
     }
@@ -41,12 +32,12 @@ public class SolarControllerBaseBlock extends TransparentBlock implements Entity
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
-        return new SolarControllerBaseBE(blockPos, blockState);
+        return new SolarControllerBE(blockPos, blockState);
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHit) {
-        SolarControllerBaseBE blockEntity = (SolarControllerBaseBE) pLevel.getBlockEntity(pPos);
+        SolarControllerBE blockEntity = (SolarControllerBE) pLevel.getBlockEntity(pPos);
 
         if (pLevel.isClientSide) {
             return InteractionResult.SUCCESS;
@@ -72,9 +63,9 @@ public class SolarControllerBaseBlock extends TransparentBlock implements Entity
     public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 
-        SolarControllerBaseBE controller = ((SolarControllerBaseBE) pLevel.getBlockEntity(pPos));
+        SolarControllerBE controller = ((SolarControllerBE) pLevel.getBlockEntity(pPos));
         if (controller == null) {
-            controller = ((SolarControllerBaseBE) this.newBlockEntity(pPos, pState));
+            controller = ((SolarControllerBE) this.newBlockEntity(pPos, pState));
         }
 
         if (controller != null) {
@@ -90,14 +81,9 @@ public class SolarControllerBaseBlock extends TransparentBlock implements Entity
         }
 
         return ((level, blockPos, blockState, be) -> {
-            if (be instanceof SolarControllerBaseBE controllerBE) {
+            if (be instanceof SolarControllerBE controllerBE) {
                 controllerBE.tick(pLevel, blockPos, blockState, structure, name);
             }
         });
-    }
-
-    @Override
-    protected boolean propagatesSkylightDown(BlockState p_309084_, BlockGetter p_309133_, BlockPos p_309097_) {
-        return false;
     }
 }

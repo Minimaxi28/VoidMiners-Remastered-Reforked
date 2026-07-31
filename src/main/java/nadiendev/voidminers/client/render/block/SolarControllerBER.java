@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import nadiendev.voidminers.util.MiscUtil;
-import nadiendev.voidminers.world.block.entity.SolarControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.SolarControllerBE;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,13 +21,13 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBaseBE> {
+public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBE> {
 
     public SolarControllerBER(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(SolarControllerBaseBE pBlockEntity, float pPartialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    public void render(SolarControllerBE pBlockEntity, float pPartialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         if (pBlockEntity.foundStructure && pBlockEntity.canSeeSky) {
             long gameTime = pBlockEntity.getLevel().getGameTime();
             float f = (float) Math.floorMod(gameTime, 40) + pPartialTick;
@@ -154,7 +154,7 @@ public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBa
     }
 
     @Override
-    public boolean shouldRenderOffScreen(SolarControllerBaseBE pBlockEntity) {
+    public boolean shouldRenderOffScreen(SolarControllerBE pBlockEntity) {
         return true;
     }
 
@@ -164,7 +164,7 @@ public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBa
     }
 
     @Override
-    public boolean shouldRender(SolarControllerBaseBE pBlockEntity, Vec3 pCameraPos) {
+    public boolean shouldRender(SolarControllerBE pBlockEntity, Vec3 pCameraPos) {
         return pBlockEntity.getBlockPos().getCenter().distanceTo(pCameraPos) <= 100;
     }
 }

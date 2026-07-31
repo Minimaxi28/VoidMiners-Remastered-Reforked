@@ -2,7 +2,7 @@ package nadiendev.voidminers.common.compat.jade;
 
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.util.MiscUtil;
-import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.MinerControllerBE;
 import nadiendev.voidminers.world.block.entity.HaltReason;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -19,7 +19,7 @@ public enum MinerProvider implements IBlockComponentProvider, IServerDataProvide
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-        if (!(accessor.getBlockEntity() instanceof MinerControllerBaseBE)) {
+        if (!(accessor.getBlockEntity() instanceof MinerControllerBE)) {
             return;
         }
 
@@ -82,7 +82,7 @@ public enum MinerProvider implements IBlockComponentProvider, IServerDataProvide
 
     @Override
     public void appendServerData(CompoundTag tag, BlockAccessor accessor) {
-        if (!(accessor.getBlockEntity() instanceof MinerControllerBaseBE miner)) {
+        if (!(accessor.getBlockEntity() instanceof MinerControllerBE miner)) {
             return;
         }
 

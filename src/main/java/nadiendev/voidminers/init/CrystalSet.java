@@ -2,7 +2,7 @@ package nadiendev.voidminers.init;
 
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.world.block.*;
-import nadiendev.voidminers.world.block.MinerControllerBaseBlock;
+import nadiendev.voidminers.world.block.MinerControllerBlock;
 import nadiendev.voidminers.util.CustomColorUtil;
 import nadiendev.voidminers.world.item.ColoredItem;
 import net.minecraft.resources.ResourceLocation;
@@ -72,7 +72,7 @@ public class CrystalSet {
 
     public static DeferredHolder<Block, ModifierBlock> fastCreateModifier(String name, float hardness, float resistance, Rarity rarity, ModifierType type, CustomColorUtil color) {
         return ModBlocks.registerColoredBlock(name + "_" + type.type + "_modifier",
-                () -> new ColoredModifierBlock(
+                () -> new ModifierBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
                                 .requiresCorrectToolForDrops(),
@@ -85,9 +85,9 @@ public class CrystalSet {
         );
     }
 
-    public static DeferredHolder<Block, MinerControllerBaseBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure, CustomColorUtil color) {
+    public static DeferredHolder<Block, MinerControllerBlock> fastCreateController(String name, float hardness, float resistance, Rarity rarity, ResourceLocation structure, CustomColorUtil color) {
         return ModBlocks.registerColoredBlock(name + "_miner",
-                () -> new ColoredMinerControllerBaseBlock(
+                () -> new MinerControllerBlock(
                         BlockBehaviour.Properties.of()
                                 .strength(hardness, resistance)
                                 .requiresCorrectToolForDrops()

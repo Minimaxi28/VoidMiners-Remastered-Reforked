@@ -1,6 +1,6 @@
 package nadiendev.voidminers.client.render.block;
 
-import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.MinerControllerBE;
 import nadiendev.voidminers.util.MiscUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -21,13 +21,13 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBaseBE> {
+public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE> {
 
     public MinerControllerBER(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
-    public void render(MinerControllerBaseBE pBlockEntity, float pPartialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+    public void render(MinerControllerBE pBlockEntity, float pPartialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
         if (pBlockEntity.canSeeBedrockOrVoid && pBlockEntity.foundStructure) {
             long gameTime = pBlockEntity.getLevel().getGameTime();
             float f = (float) Math.floorMod(gameTime, 40) + pPartialTick;
@@ -152,7 +152,7 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBa
     }
 
     @Override
-    public boolean shouldRenderOffScreen(MinerControllerBaseBE pBlockEntity) {
+    public boolean shouldRenderOffScreen(MinerControllerBE pBlockEntity) {
         return true;
     }
 
@@ -162,7 +162,7 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBa
     }
 
     @Override
-    public boolean shouldRender(MinerControllerBaseBE pBlockEntity, Vec3 pCameraPos) {
+    public boolean shouldRender(MinerControllerBE pBlockEntity, Vec3 pCameraPos) {
         return pBlockEntity.getBlockPos().getCenter().distanceTo(pCameraPos) <= 100;
     }
 }

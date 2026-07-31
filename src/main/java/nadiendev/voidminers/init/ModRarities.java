@@ -24,6 +24,8 @@ public class ModRarities {
     public static final CustomColorUtil ROSARIUM_COLOR = CustomColorUtil.fromHex("#FF00FF");
     public static final CustomColorUtil ULTIMATE_COLOR = CustomColorUtil.fromHex("#FFD700");
 
+    public static final CustomColorUtil NULL_COLOR = CustomColorUtil.fromHex("#FFFFFF");
+
     public static CustomColorUtil getColorForCrystal(String name) {
         return switch (name.toLowerCase()) {
             case "rubetine" -> RUBETINE_COLOR;

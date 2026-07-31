@@ -1,8 +1,8 @@
 package nadiendev.voidminers.init;
 
 import nadiendev.voidminers.VoidMiners;
-import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
-import nadiendev.voidminers.world.block.entity.SolarControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.MinerControllerBE;
+import nadiendev.voidminers.world.block.entity.SolarControllerBE;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -13,10 +13,10 @@ public class ModBlockEntities {
         DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, VoidMiners.MODID);
 
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MinerControllerBaseBE>> MINER_CONTROLLER_BASE_BE =
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MinerControllerBE>> MINER_CONTROLLER_BASE_BE =
             BLOCK_ENTITIES.register("controller_base",
                     () -> BlockEntityType.Builder.of(
-                            MinerControllerBaseBE::new,
+                            MinerControllerBE::new,
                             CrystalSet.RUBETINE.CONTROLLER.get(),
                             CrystalSet.AURANTIUM.CONTROLLER.get(),
                             CrystalSet.CITRINETINE.CONTROLLER.get(),
@@ -29,10 +29,10 @@ public class ModBlockEntities {
                     ).build(null)
             );
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarControllerBaseBE>> SOLAR_BASE_BE =
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarControllerBE>> SOLAR_BASE_BE =
             BLOCK_ENTITIES.register("solar_base",
                     () -> BlockEntityType.Builder.of(
-                            SolarControllerBaseBE::new,
+                            SolarControllerBE::new,
                             SolarSet.RUBETINE.CONTROLLER.get(),
                             SolarSet.AURANTIUM.CONTROLLER.get(),
                             SolarSet.CITRINETINE.CONTROLLER.get(),

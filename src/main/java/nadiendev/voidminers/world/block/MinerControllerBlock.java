@@ -2,6 +2,8 @@ package nadiendev.voidminers.world.block;
 
 import nadiendev.voidminers.init.ModDataComponents;
 import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
+import nadiendev.voidminers.util.CustomColorUtil;
+import nadiendev.voidminers.world.block.entity.MinerControllerBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,7 +18,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,12 +25,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public class MinerControllerBaseBlock extends TransparentBlock implements EntityBlock {
+public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
     final ResourceLocation structure;
     final String name;
 
-    public MinerControllerBaseBlock(Properties pProperties, ResourceLocation structure, String name) {
-        super(pProperties);
+    public MinerControllerBlock(Properties pProperties, ResourceLocation structure, String name, CustomColorUtil color) {
+        super(pProperties, color);
         this.structure = structure;
         this.name = name;
     }
@@ -38,7 +39,7 @@ public class MinerControllerBaseBlock extends TransparentBlock implements Entity
     protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMoving) {
         if (pState.getBlock() != pNewState.getBlock()) {
             BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof MinerControllerBaseBE controllerBE) {
+            if (blockEntity instanceof MinerControllerBE controllerBE) {
                 controllerBE.drops();
             }
         }
@@ -49,12 +50,12 @@ public class MinerControllerBaseBlock extends TransparentBlock implements Entity
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new MinerControllerBaseBE(blockPos, blockState);
+        return new MinerControllerBE(blockPos, blockState);
     }
 
     @Override
     protected InteractionResult useWithoutItem(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, BlockHitResult pHitResult) {
-        MinerControllerBaseBE blockEntity = (MinerControllerBaseBE) pLevel.getBlockEntity(pPos);
+        MinerControllerBE blockEntity = (MinerControllerBE) pLevel.getBlockEntity(pPos);
 
         if (pLevel.isClientSide) {
             return InteractionResult.SUCCESS;
@@ -78,18 +79,22 @@ public class MinerControllerBaseBlock extends TransparentBlock implements Entity
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
-        MinerControllerBaseBE blockEntity = (MinerControllerBaseBE) pLevel.getBlockEntity(pPos);
+        MinerControllerBE blockEntity = (MinerControllerBE) pLevel.getBlockEntity(pPos);
 
         if (pLevel.isClientSide) {
             return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
         }
 
         handleUpgrade(blockEntity, pPlayer, pStack, pHand, pLevel, pState, pPos);
+        if(pStack.getItem().components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
+            handleUpgrade(blockEntity, pPlayer, pStack, pHand, pLevel, pState, pPos);
+            return ItemInteractionResult.CONSUME;
+        }
 
         return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
     }
 
-    private void handleUpgrade(MinerControllerBaseBE blockEntity, Player pPlayer, ItemStack pStack, InteractionHand pHand, Level pLevel, BlockState pState, BlockPos pPos) {
+    private void handleUpgrade(MinerControllerBE blockEntity, Player pPlayer, ItemStack pStack, InteractionHand pHand, Level pLevel, BlockState pState, BlockPos pPos) {
         Item currentUpgradeItem = blockEntity.getUpgradeItem();
         Item newUpgradeItem = pStack.getItem();
 
@@ -106,11 +111,7 @@ public class MinerControllerBaseBlock extends TransparentBlock implements Entity
             return;
         }
 
-        int currentAddedSlots = 0;
-
-        if(currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
-            currentAddedSlots = currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
-        }
+        int currentAddedSlots = currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
 
         if (currentAddedSlots > newAddedSlots) {
             pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier"), true);
@@ -143,9 +144,9 @@ public class MinerControllerBaseBlock extends TransparentBlock implements Entity
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
 
-        MinerControllerBaseBE controller = ((MinerControllerBaseBE) pLevel.getBlockEntity(pPos));
+        MinerControllerBE controller = ((MinerControllerBE) pLevel.getBlockEntity(pPos));
         if (controller == null) {
-            controller = ((MinerControllerBaseBE) this.newBlockEntity(pPos, pState));
+            controller = ((MinerControllerBE) this.newBlockEntity(pPos, pState));
         }
 
         if (controller != null) {
@@ -161,7 +162,7 @@ public class MinerControllerBaseBlock extends TransparentBlock implements Entity
         }
 
         return ((level, blockPos, blockState, be) -> {
-            if (be instanceof MinerControllerBaseBE controllerBE) {
+            if (be instanceof MinerControllerBE controllerBE) {
                 controllerBE.tick(pLevel, blockPos, blockState, structure, name);
             }
         });

@@ -3,7 +3,7 @@ package nadiendev.voidminers.common.compat.jade;
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.util.MiscUtil;
 import nadiendev.voidminers.world.block.entity.HaltReason;
-import nadiendev.voidminers.world.block.entity.SolarControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.SolarControllerBE;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,7 +18,7 @@ public enum SolarProvider implements IBlockComponentProvider, IServerDataProvide
 
     @Override
     public void appendTooltip(ITooltip tooltip, BlockAccessor accessor, IPluginConfig config) {
-        if (!(accessor.getBlockEntity() instanceof SolarControllerBaseBE)) {
+        if (!(accessor.getBlockEntity() instanceof SolarControllerBE)) {
             return;
         }
 
@@ -61,7 +61,7 @@ public enum SolarProvider implements IBlockComponentProvider, IServerDataProvide
 
     @Override
     public void appendServerData(CompoundTag tag, BlockAccessor accessor) {
-        if (!(accessor.getBlockEntity() instanceof SolarControllerBaseBE solar)) {
+        if (!(accessor.getBlockEntity() instanceof SolarControllerBE solar)) {
             return;
         }
 

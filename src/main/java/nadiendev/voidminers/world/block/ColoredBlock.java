@@ -1,5 +1,6 @@
 package nadiendev.voidminers.world.block;
 
+import nadiendev.voidminers.init.ModRarities;
 import nadiendev.voidminers.util.CustomColorUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -14,16 +15,15 @@ public class ColoredBlock extends Block {
         this.color = color;
     }
 
+    public ColoredBlock(Properties properties) {
+        super(properties);
+        this.color = ModRarities.NULL_COLOR;
+    }
+
     @Override
     public MutableComponent getName() {
         return Component.literal(super.getName().getString())
                 .setStyle(Style.EMPTY.withColor(color.getTextColor()));
-    }
-
-    // This method is used for item tooltips and display names
-    @Override
-    public String getDescriptionId() {
-        return super.getDescriptionId();
     }
 
     public CustomColorUtil getColor() {

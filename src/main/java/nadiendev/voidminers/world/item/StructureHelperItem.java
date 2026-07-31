@@ -1,7 +1,7 @@
 package nadiendev.voidminers.world.item;
 
-import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
-import nadiendev.voidminers.world.block.entity.SolarControllerBaseBE;
+import nadiendev.voidminers.world.block.entity.MinerControllerBE;
+import nadiendev.voidminers.world.block.entity.SolarControllerBE;
 import nadiendev.voidminers.world.multiblock.MinerMultiblocks;
 import nadiendev.voidminers.world.multiblock.SolarMultiblocks;
 import net.minecraft.ChatFormatting;
@@ -41,10 +41,10 @@ public class StructureHelperItem extends Item {
         ResourceLocation structure;
         RegisteredMultiBlockPattern multiBlock;
 
-        if(entity instanceof MinerControllerBaseBE MinerController) {
+        if(entity instanceof MinerControllerBE MinerController) {
             structure = MinerController.getStructure();
             multiBlock = MinerMultiblocks.MANAGER.getStructure(structure);
-        } else if (entity instanceof SolarControllerBaseBE SolarController) {
+        } else if (entity instanceof SolarControllerBE SolarController) {
             structure = SolarController.getStructure();
             multiBlock = SolarMultiblocks.MANAGER.getStructure(structure);
         } else {
