@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.21.1-1.6.5
+
+- Fix Miners not seeing the bedrock / void
+- Make recipe ID show in JEI
+
 ## 1.21.1-1.6.4
 
 - Lot of optimization of the Miners and Solars Controllers
