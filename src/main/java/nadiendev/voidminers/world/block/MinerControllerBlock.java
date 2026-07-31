@@ -1,7 +1,6 @@
 package nadiendev.voidminers.world.block;
 
 import nadiendev.voidminers.init.ModDataComponents;
-import nadiendev.voidminers.world.block.entity.MinerControllerBaseBE;
 import nadiendev.voidminers.util.CustomColorUtil;
 import nadiendev.voidminers.world.block.entity.MinerControllerBE;
 import net.minecraft.core.BlockPos;
@@ -85,7 +84,6 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
             return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
         }
 
-        handleUpgrade(blockEntity, pPlayer, pStack, pHand, pLevel, pState, pPos);
         if(pStack.getItem().components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
             handleUpgrade(blockEntity, pPlayer, pStack, pHand, pLevel, pState, pPos);
             return ItemInteractionResult.CONSUME;
@@ -111,11 +109,13 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
             return;
         }
 
-        int currentAddedSlots = currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
+        if(currentUpgradeItem != Items.AIR) {
+            int currentAddedSlots = currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
 
-        if (currentAddedSlots > newAddedSlots) {
-            pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier"), true);
-            return;
+            if (currentAddedSlots > newAddedSlots) {
+                pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier"), true);
+                return;
+            }
         }
 
         blockEntity.setAppliedUpgradeItem(newUpgradeItem);

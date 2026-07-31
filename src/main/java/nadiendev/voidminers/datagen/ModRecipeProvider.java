@@ -28,6 +28,19 @@ public class ModRecipeProvider extends RecipeProvider {
 
         ShapedRecipeBuilder.shaped(
                         RecipeCategory.MISC,
+                        ModItems.STRUCTURE_BUILDER,
+                        1
+                )
+                .pattern(" P ")
+                .pattern("S  ")
+                .pattern("   ")
+                .define('P', ModBlocks.STRUCTURE_PANEL.get())
+                .define('S', Items.STICK)
+                .unlockedBy("hasItem", has(ModBlocks.STRUCTURE_PANEL.get()))
+                .save(pWriter);
+
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
                         ModBlocks.STRUCTURE_PANEL.get(),
                         1
                 )

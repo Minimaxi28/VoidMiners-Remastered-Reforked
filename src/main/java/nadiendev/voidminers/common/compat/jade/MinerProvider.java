@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Items;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;
@@ -40,7 +41,7 @@ public enum MinerProvider implements IBlockComponentProvider, IServerDataProvide
 
         if (serverData.contains("MaxStorageUpgradeItem")) {
             ResourceLocation itemId = ResourceLocation.tryParse(serverData.getString("MaxStorageUpgradeItem"));
-            if (itemId != null) {
+            if (itemId != null && BuiltInRegistries.ITEM.get(itemId) != Items.AIR) {
                 tooltip.add(Component.translatable("jade.voidminers.storage_upgrade", BuiltInRegistries.ITEM.get(itemId).getDescription()));
             }
         }

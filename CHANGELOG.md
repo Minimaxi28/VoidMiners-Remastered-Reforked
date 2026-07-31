@@ -4,6 +4,9 @@
 
 - Lot of optimization of the Miners and Solars Controllers
   - Tested with up to 131 072x tick acceleration
+- Replaced Structure Helper with Structure Builder
+  - Sneak + right-click a Controller with it to automatically take blocks from the player's inventory and build the multiblock
+  - In creative, it just places the multiblock, don't have to have the items
 
 ## 1.21.1-1.6.3
 

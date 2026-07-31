@@ -18,7 +18,7 @@ public class ModLanguageProvider extends LanguageProvider {
     protected void addTranslations() {
         this.add("creativetab.voidminers.title", "VoidMiners");
 
-        this.add(ModItems.STRUCTURE_HELPER.get(), "Structure Helper");
+        this.add(ModItems.STRUCTURE_BUILDER.get(), "Structure Builder");
         this.add(ModItems.ULTIMATE_STELLAR_CORE.get(), "Ultimate Stellar Core");
 
         this.add(ModItems.MAX_STORAGE_UPGRADE_T1.get(), "Max Storage Upgrade T1");
@@ -31,7 +31,7 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("gui.voidminers.miners", "Miners");
 
         this.add("tooltip.voidminers.controller.halt_reason.dimension_not_ok", "§eThis miner doesn't have any recipes available for this dimension : %s§d)§e.\nCheck JEI for available recipes / dimensions.");
-        this.add("tooltip.voidminers.controller.halt_reason.structure_not_found", "Structure is not correct, sneak + right-click the Miner for a guide.\nTotal needed blocks: ");
+        this.add("tooltip.voidminers.controller.halt_reason.structure_not_found", "Structure is not correct, sneak + right-click the Controller for a guide.\nTotal needed blocks: ");
         this.add("tooltip.voidminers.controller.halt_reason.too_much_item_multiplier", "§eItem Multiplier too high, remove some of the blocks that add Item Multiplier.\nMax Item Multiplier: %d×");
         this.add("tooltip.voidminers.controller.halt_reason.not_enough_empty_slots", "All slots are full, the miner can't mine until it has been emptied.");
         this.add("tooltip.voidminers.controller.halt_reason.no_bedrock_or_void_view", "Make sure that the miner can see the void / bedrock!\nThe distance does NOT matter, only that the center block can see void / bedrock.");
@@ -80,14 +80,14 @@ public class ModLanguageProvider extends LanguageProvider {
             if (set.CRYSTAL != null) {
                 this.add(set.CRYSTAL.get(), cFL(set.name));
                 this.add(set.CRYSTAL_BLOCK.get(), cFL(set.name) + " Block");
-                this.add(set.CONTROLLER.get(), cFL(set.name) + " Miner");
+                this.add(set.CONTROLLER.get(), cFL(set.name) + " Miner Controller");
                 this.add(set.FRAME.get(), cFL(set.name) + " Frame");
                 this.add(set.ENERGY_MOD.get(), cFL(set.name) + " Energy Modifier");
                 this.add(set.SPEED_MOD.get(), cFL(set.name) + " Speed Modifier");
                 this.add(set.ITEM_MOD.get(), cFL(set.name) + " Item Modifier");
             } else {
                 this.add(CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get(), cFL(CrystalSet.ULTIMATE.name) + " Block");
-                this.add(CrystalSet.ULTIMATE.CONTROLLER.get(), cFL(CrystalSet.ULTIMATE.name) + " Miner");
+                this.add(CrystalSet.ULTIMATE.CONTROLLER.get(), cFL(CrystalSet.ULTIMATE.name) + " Miner Controller");
                 this.add(CrystalSet.ULTIMATE.FRAME.get(), cFL(CrystalSet.ULTIMATE.name) + " Frame");
                 this.add(CrystalSet.ULTIMATE.ENERGY_MOD.get(), cFL(CrystalSet.ULTIMATE.name) + " Energy Modifier");
                 this.add(CrystalSet.ULTIMATE.SPEED_MOD.get(), cFL(CrystalSet.ULTIMATE.name) + " Speed Modifier");
@@ -99,13 +99,13 @@ public class ModLanguageProvider extends LanguageProvider {
             if (set.CRYSTAL != null) {
                 this.add(set.CRYSTAL.get(), "Solar " + cFL(set.name));
                 this.add(set.CRYSTAL_BLOCK.get(), "Solar " + cFL(set.name) + " Block");
-                this.add(set.CONTROLLER.get(), "Solar " + cFL(set.name) + " Panel");
+                this.add(set.CONTROLLER.get(), "Solar " + cFL(set.name) + " Panel Controller");
                 this.add(set.FRAME.get(), "Solar " + cFL(set.name) + " Frame");
                 this.add(set.WEATHER_MOD.get(), "Solar " + cFL(set.name) + " Weather Modifier");
                 this.add(set.EFFICIENCY_MOD.get(), "Solar " + cFL(set.name) + " Efficiency Modifier");
             } else {
                 this.add(SolarSet.ULTIMATE.CRYSTAL_BLOCK.get(), "Solar " + cFL(SolarSet.ULTIMATE.name) + " Block");
-                this.add(SolarSet.ULTIMATE.CONTROLLER.get(), cFL(SolarSet.ULTIMATE.name) + " Solar Panel");
+                this.add(SolarSet.ULTIMATE.CONTROLLER.get(), cFL(SolarSet.ULTIMATE.name) + " Solar Panel Controller");
                 this.add(SolarSet.ULTIMATE.FRAME.get(), "Solar " + cFL(SolarSet.ULTIMATE.name) + " Frame");
                 this.add(SolarSet.ULTIMATE.WEATHER_MOD.get(), "Solar " + cFL(SolarSet.ULTIMATE.name) + " Weather Modifier");
                 this.add(SolarSet.ULTIMATE.EFFICIENCY_MOD.get(), "Solar " + cFL(SolarSet.ULTIMATE.name) + " Efficiency Modifier");
@@ -118,9 +118,7 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip.voidminers.efficiency", "Solar Efficiency: %s%%");
         this.add("tooltip.voidminers.weatherResistance", "Weather Resistance: %s%%");
 
-        this.add("tooltip.voidminers.structure_helper.creative_only", "Not supposed to be used in survival.");
-        this.add("tooltip.voidminers.structure_helper.instructions", "Sneak + right-click on a Miner to complete it.");
-        this.add("tooltip.voidminers.structure_helper.warning", "Blocks in the way will be voided");
+        this.add("tooltip.voidminers.structure_builder.instructions", "Sneak + right-click on a Controller to automatically build the Multiblock.");
 
         this.add("minecraft.overworld", "Overworld");
         this.add("minecraft.the_nether", "The Nether");
@@ -149,6 +147,10 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("client_message.voidminers.max_storage_upgrades.upgrade_already_applied", "Same Upgrade already applied");
         this.add("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier", "Cannot apply an upgrade with less slots then the current upgrade.");
         this.add("client_message.voidminers.max_storage_upgrades.upgrade_applied", "Upgrade applied, added slots : %d");
+
+        this.add("tooltip.voidminers.structure_builder.unable_to_place_multiblock.1", "Unable to place the multiblock because other blocks are in the way.");
+        this.add("tooltip.voidminers.structure_builder.unable_to_place_multiblock.2", "Please clear the area where the multiblock will be made, you can sneak + right-click the Controller for a guide.");
+        this.add("tooltip.voidminers.structure_builder.missing_block_in_inventory", "Unable to place some blocks because they are not in your inventory.\nMissing Blocks:");
     }
 
 

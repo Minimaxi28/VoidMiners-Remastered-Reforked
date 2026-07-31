@@ -18,7 +18,7 @@ public class ModItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        simpleItem(ModItems.STRUCTURE_HELPER);
+        simpleItem(ModItems.STRUCTURE_BUILDER);
         simpleItem(ModItems.ULTIMATE_STELLAR_CORE);
 
         simpleItem(ModItems.MAX_STORAGE_UPGRADE_T1);

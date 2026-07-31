@@ -3,7 +3,7 @@ package nadiendev.voidminers.init;
 import nadiendev.voidminers.VoidMiners;
 import nadiendev.voidminers.config.MinerConfigLoader;
 import nadiendev.voidminers.world.item.MaxStorageUpgradeItem;
-import nadiendev.voidminers.world.item.StructureHelperItem;
+import nadiendev.voidminers.world.item.StructureBuilderItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -12,8 +12,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(VoidMiners.MODID);
 
-    public static final DeferredItem<Item> STRUCTURE_HELPER = ITEMS.register("structure_helper",
-        () -> new StructureHelperItem(new Item.Properties()));
+    public static final DeferredItem<Item> STRUCTURE_BUILDER = ITEMS.register("structure_builder",
+        () -> new StructureBuilderItem(new Item.Properties().stacksTo(1)));
 
     public static final DeferredItem<Item> ULTIMATE_STELLAR_CORE = ITEMS.register("ultimate_stellar_core",
             () -> new Item(new Item.Properties().rarity(Rarity.EPIC)));

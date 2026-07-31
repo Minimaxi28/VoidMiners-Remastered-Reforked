@@ -114,11 +114,11 @@ public class SolarSet {
         return new SolarSet(
                 name,
                 name.equals("ultimate") ? null : fastCreateSolarItem(name, rarity, color),
-                fastCreateBlock("solar_" + name + "_block", 10, 5, rarity, color),
-                fastCreateController(name, 10, 50, rarity, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "solar_" + name), color),
-                fastCreateBlock("solar_" + name + "_frame", 10, 50, rarity, color),
-                fastCreateModifier(name, 10, 50, rarity, ModifierType.EFFICIENCY, color),
-                fastCreateModifier(name, 10, 50, rarity, ModifierType.WEATHER, color),
+                fastCreateBlock("solar_" + name + "_block", 5, 6, rarity, color),
+                fastCreateController(name, 5, 6, rarity, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "solar_" + name), color),
+                fastCreateBlock("solar_" + name + "_frame", 5, 6, rarity, color),
+                fastCreateModifier(name, 5, 6, rarity, ModifierType.EFFICIENCY, color),
+                fastCreateModifier(name, 5, 6, rarity, ModifierType.WEATHER, color),
                 color
         );
     }

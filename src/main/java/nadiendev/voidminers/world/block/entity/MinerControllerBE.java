@@ -187,7 +187,7 @@ public class MinerControllerBE extends BlockEntity {
 
                 MiscUtil.getNeededBlocks(MiscUtil.structureMap.get(structure.toString())).forEach((string, integer) -> {
                     tooltip.add(Component.literal("• ").withStyle(ChatFormatting.GRAY)
-                            .append(Component.literal(string.contains("Null") ? "Modifiers" : string).withStyle(ChatFormatting.WHITE))
+                            .append(Component.literal(string.contains("Null") ? "Modifier" : string).withStyle(ChatFormatting.WHITE))
                             .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
                             .append(Component.literal(String.valueOf(integer)).withStyle(ChatFormatting.RED)));
                 });

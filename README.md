@@ -1,4 +1,4 @@
-# This mod is a port of [VoidMiners-Reforked](https://github.com/BOLTMAGIC/VoidMiners-Reforked) for 1.21.1 using the amazing work made by SrNadien in his own port to 1.21.1 [Void-Miners-Remastered](https://github.com/SrNadien/Void-Miners-Remastered).
+# This mod is a port of [VoidMiners-Reforked](https://www.curseforge.com/minecraft/mc-mods/voidminer-forked) for 1.21.1 using the amazing work made by SrNadien in his own port to 1.21.1 [Void-Miners-Remastered](https://www.curseforge.com/minecraft/mc-mods/void-miners-remastered).
 
 ## This mod has [JEI](https://www.curseforge.com/minecraft/mc-mods/jei), [JADE](https://www.curseforge.com/minecraft/mc-mods/jade) and [KubeJS](https://www.curseforge.com/minecraft/mc-mods/kubejs) integrations.
 

@@ -24,7 +24,7 @@ public class ModBlocks {
     public static final DeferredHolder<Block, Block> FRAME_BASE = registerBlock("frame_base",
             () -> new Block(
                     BlockBehaviour.Properties.of()
-                            .strength(10, 5)
+                            .strength(5, 6)
                             .requiresCorrectToolForDrops()
             )
     );
@@ -32,7 +32,7 @@ public class ModBlocks {
     public static final DeferredHolder<Block, Block> STRUCTURE_PANEL = registerBlock("structure_panel",
             () -> new Block(
                     BlockBehaviour.Properties.of()
-                            .strength(10, 5)
+                            .strength(5, 6)
                             .requiresCorrectToolForDrops()
             )
     );
@@ -50,7 +50,7 @@ public class ModBlocks {
     public static final DeferredHolder<Block, ModifierBlock> NULL_MOD = registerBlock("null_modifier",
             () -> new ModifierBlock(
                     BlockBehaviour.Properties.of()
-                            .strength(10, 50)
+                            .strength(5, 6)
                             .requiresCorrectToolForDrops(),
                     "null",
                     ModifierType.NULL
