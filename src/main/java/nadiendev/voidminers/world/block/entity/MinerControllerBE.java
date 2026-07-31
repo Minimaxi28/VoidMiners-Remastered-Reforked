@@ -641,7 +641,7 @@ public class MinerControllerBE extends BlockEntity {
 
     private boolean hasViewOnBedrockOrVoid(BlockPos pos) {
         for (int i = 0; i < 320; i++) {
-            BlockPos check = pos.below(i);
+            BlockPos check = pos.below(i + 1);
 
             assert level != null;
             if(level.getBlockState(check).is(Blocks.BEDROCK)) return true;
