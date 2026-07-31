@@ -13,6 +13,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -24,121 +25,87 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider pProvider) {
+    protected void addTags(HolderLookup.@NotNull Provider pProvider) {
         this.tag(BlockTags.NEEDS_STONE_TOOL)
-            .add(
-                ModBlocks.FRAME_BASE.get(),
-                ModBlocks.STRUCTURE_PANEL.get(),
-                ModBlocks.GLASS_PANEL.get(),
-                ModBlocks.NULL_MOD.get()
-            );
+                .add(
+                        ModBlocks.FRAME_BASE.get(),
+                        ModBlocks.STRUCTURE_PANEL.get(),
+                        ModBlocks.GLASS_PANEL.get(),
+                        ModBlocks.NULL_MOD.get()
+                );
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-            .add(
-                ModBlocks.FRAME_BASE.get(),
-                ModBlocks.STRUCTURE_PANEL.get(),
-                ModBlocks.GLASS_PANEL.get(),
-                ModBlocks.NULL_MOD.get()
-            );
+                .add(
+                        ModBlocks.FRAME_BASE.get(),
+                        ModBlocks.STRUCTURE_PANEL.get(),
+                        ModBlocks.GLASS_PANEL.get(),
+                        ModBlocks.NULL_MOD.get()
+                );
 
         List<CrystalSet> allCrystalSets = CrystalSet.sets();
-        for (int i = 0; i < allCrystalSets.size(); i++) {
-            CrystalSet set = allCrystalSets.get(i);
+        for (CrystalSet set : allCrystalSets) {
             this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(
-                    set.CONTROLLER.get(),
-                    set.CRYSTAL_BLOCK.get(),
-                    set.FRAME.get(),
-                    set.ENERGY_MOD.get(),
-                    set.SPEED_MOD.get(),
-                    set.ITEM_MOD.get()
-                );
+                    .add(
+                            set.CONTROLLER.get(),
+                            set.CRYSTAL_BLOCK.get(),
+                            set.FRAME.get(),
+                            set.ENERGY_MOD.get(),
+                            set.SPEED_MOD.get(),
+                            set.ITEM_MOD.get()
+                    );
 
             this.tag(BlockTags.NEEDS_STONE_TOOL)
-                .add(
-                    set.CONTROLLER.get(),
-                    set.CRYSTAL_BLOCK.get(),
-                    set.FRAME.get(),
-                    set.ENERGY_MOD.get(),
-                    set.SPEED_MOD.get(),
-                    set.ITEM_MOD.get()
-                );
+                    .add(
+                            set.CONTROLLER.get(),
+                            set.CRYSTAL_BLOCK.get(),
+                            set.FRAME.get(),
+                            set.ENERGY_MOD.get(),
+                            set.SPEED_MOD.get(),
+                            set.ITEM_MOD.get()
+                    );
 
-            for (int j = 1; j < CrystalSet.sets().size() + 1; j++) {
-                if (i + 1 >= j) {
-                    this.tag(create("frames/" + j))
-                        .add(set.FRAME.get());
-                }
-            }
-
-            this.tag(MODIFIERS)
-                .add(
-                    set.ENERGY_MOD.get(),
-                    set.SPEED_MOD.get(),
-                    set.ITEM_MOD.get()
-                );
+            this.tag(MINER_MODIFIERS)
+                    .add(
+                            set.ENERGY_MOD.get(),
+                            set.SPEED_MOD.get(),
+                            set.ITEM_MOD.get()
+                    );
         }
 
         List<SolarSet> allSolarSets = SolarSet.sets();
-        for (int i = 0; i < allSolarSets.size(); i++) {
-            SolarSet set = allSolarSets.get(i);
+        for (SolarSet set : allSolarSets) {
             this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(
-                    set.CONTROLLER.get(),
-                    set.CRYSTAL_BLOCK.get(),
-                    set.FRAME.get(),
-                    set.EFFICIENCY_MOD.get(),
-                    set.WEATHER_MOD.get()
-                );
+                    .add(
+                            set.CONTROLLER.get(),
+                            set.CRYSTAL_BLOCK.get(),
+                            set.FRAME.get(),
+                            set.EFFICIENCY_MOD.get(),
+                            set.WEATHER_MOD.get()
+                    );
 
             this.tag(BlockTags.NEEDS_STONE_TOOL)
-                .add(
-                    set.CONTROLLER.get(),
-                    set.CRYSTAL_BLOCK.get(),
-                    set.FRAME.get(),
-                    set.EFFICIENCY_MOD.get(),
-                    set.WEATHER_MOD.get()
-                );
+                    .add(
+                            set.CONTROLLER.get(),
+                            set.CRYSTAL_BLOCK.get(),
+                            set.FRAME.get(),
+                            set.EFFICIENCY_MOD.get(),
+                            set.WEATHER_MOD.get()
+                    );
 
-            for (int j = 1; j < CrystalSet.sets().size() + 1; j++) {
-                if (i + 1 >= j) {
-                    this.tag(create("frames/" + j))
-                        .add(set.FRAME.get());
-                }
-            }
-
-            this.tag(MODIFIERS)
-                .add(
-                    set.EFFICIENCY_MOD.get(),
-                    set.WEATHER_MOD.get()
-                );
+            this.tag(SOLAR_MODIFIERS)
+                    .add(
+                            set.EFFICIENCY_MOD.get(),
+                            set.WEATHER_MOD.get()
+                    );
         }
 
-        this.tag(PANELS)
-            .add(
-                ModBlocks.STRUCTURE_PANEL.get(),
-                ModBlocks.GLASS_PANEL.get()
-            );
+        this.tag(MINER_MODIFIERS).add(ModBlocks.NULL_MOD.get());
 
-        this.tag(MODIFIERS)
-            .add(
-                ModBlocks.NULL_MOD.get()
-            );
+        this.tag(SOLAR_MODIFIERS).add(ModBlocks.NULL_MOD.get());
     }
 
-    public static final TagKey<Block> FRAME_1 = create("frames/1");
-    public static final TagKey<Block> FRAME_2 = create("frames/2");
-    public static final TagKey<Block> FRAME_3 = create("frames/3");
-    public static final TagKey<Block> FRAME_4 = create("frames/4");
-    public static final TagKey<Block> FRAME_5 = create("frames/5");
-    public static final TagKey<Block> FRAME_6 = create("frames/6");
-    public static final TagKey<Block> FRAME_7 = create("frames/7");
-    public static final TagKey<Block> FRAME_8 = create("frames/8");
-    public static final TagKey<Block> FRAME_9 = create("frames/9");
-
-    public static final TagKey<Block> PANELS = create("panels");
-
-    public static final TagKey<Block> MODIFIERS = create("modifiers");
+    public static final TagKey<Block> MINER_MODIFIERS = create("miner_modifiers");
+    public static final TagKey<Block> SOLAR_MODIFIERS = create("solar_modifiers");
 
     private static TagKey<Block> create(String pName) {
         return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, pName));

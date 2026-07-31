@@ -21,7 +21,7 @@ public class SolarMultiblocks {
 
     public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers_solars");
 
-    // IMPORTANTE: Flag para evitar registros duplicados
+    // IMPORTANT: variable to stop duplicate registration
     private static boolean INITIALIZED = false;
 
     public static final SimpleMultiBlockAislePatternBuilder RUBETINE = createAccessiblePattern(
@@ -58,8 +58,8 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.RUBETINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_1)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.RUBETINE.FRAME.get())
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -118,9 +118,9 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.AURANTIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_2),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.AURANTIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -189,9 +189,9 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.CITRINETINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_3),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.CITRINETINE.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -272,9 +272,9 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.VERDIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_4),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.VERDIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -355,9 +355,9 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.AZURINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_5),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.AZURINE.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -449,9 +449,9 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.CAERIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_6),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.CAERIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -543,9 +543,9 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.AMETHYSTINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_7),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.AMETHYSTINE.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -632,9 +632,9 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.ROSARIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_8),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.ROSARIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -766,9 +766,9 @@ public class SolarMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(SolarSet.ULTIMATE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_9),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.ULTIMATE.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,

@@ -21,7 +21,7 @@ public class MinerMultiblocks {
 
     public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers_miners");
 
-    // IMPORTANTE: Flag para evitar registros duplicados
+    // IMPORTANT: variable to stop duplicate registration
     private static boolean INITIALIZED = false;
 
     public static final SimpleMultiBlockAislePatternBuilder RUBETINE = createAccessiblePattern(
@@ -58,8 +58,8 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.RUBETINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_1)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.RUBETINE.FRAME.get())
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -118,9 +118,9 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.AURANTIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_2),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.AURANTIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -189,9 +189,9 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.CITRINETINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_3),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.CITRINETINE.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -272,9 +272,9 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.VERDIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_4),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.VERDIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -355,9 +355,9 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.AZURINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_5),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.AZURINE.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -449,9 +449,9 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.CAERIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_6),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.CAERIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -543,9 +543,9 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.AMETHYSTINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_7),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.AMETHYSTINE.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -632,9 +632,9 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.ROSARIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_8),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.ROSARIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
@@ -766,9 +766,9 @@ public class MinerMultiblocks {
             ),
             Map.of(
                     '*', a -> a.getState().is(CrystalSet.ULTIMATE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlockTagGenerator.PANELS),
-                    'F', a -> a.getState().is(ModBlockTagGenerator.FRAME_9),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MODIFIERS)
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.ULTIMATE.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
             ),
             Map.of(
                     'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
