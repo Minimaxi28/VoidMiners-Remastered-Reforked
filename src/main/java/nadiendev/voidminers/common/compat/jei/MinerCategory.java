@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import org.jetbrains.annotations.Nullable;
 
 public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     public final ResourceLocation UID;
@@ -127,5 +128,10 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
     public static String getDimensionIcon(ResourceKey<Level> dimension) {
         return dimension.location().toString().replace(':', '.');
+    }
+
+    @Override
+    public @Nullable ResourceLocation getRegistryName(MinerRecipe recipe) {
+        return recipe.getId();
     }
 }

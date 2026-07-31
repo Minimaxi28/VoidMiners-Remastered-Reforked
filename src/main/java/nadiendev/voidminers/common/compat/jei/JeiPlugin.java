@@ -49,11 +49,14 @@ public class JeiPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         RecipeManager manager = Minecraft.getInstance().level.getRecipeManager();
 
-        
+
         List<MinerRecipe> minerRecipes = manager.getAllRecipesFor(MinerRecipe.Type.INSTANCE)
-            .stream()
-            .map(holder -> holder.value())
-            .toList();
+                .stream()
+                .map(holder -> {
+                    holder.value().setId(holder.id());
+                    return holder.value();
+                })
+                .toList();
 
         for (int i = 0; i < tiers.size(); i++) {
             addRecipeToTier(i, minerRecipes, registration);

@@ -31,12 +31,22 @@ public class MinerRecipe implements Recipe<RecipeInput> {
     private final int minTier;
     private final boolean allowHigherTiers;
     private final ResourceKey<Level> dimension;
+    private ResourceLocation id;
 
     public MinerRecipe(WeightedStack output, int minTier, boolean allowHigherTiers, ResourceKey<Level> dimension) {
         this.output = output;
         this.minTier = minTier;
         this.allowHigherTiers = allowHigherTiers;
         this.dimension = dimension;
+    }
+
+    public void setId(ResourceLocation id) {
+        this.id = id;
+    }
+
+    @Nullable
+    public ResourceLocation getId() {
+        return id;
     }
 
     public boolean allowHigherTiers() {
