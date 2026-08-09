@@ -1,1 +1,1 @@
-rework voidminers max power config
+JEI weight to %

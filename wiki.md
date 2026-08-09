@@ -312,7 +312,7 @@ Location: `kubejs\startup_scripts`
 
 Example if you don't want to add a custom item:
 ```javascript
-const $ModDataComponents = Java.loadClass("nadiendev.voidminers.init.ModDataComponents");
+const $ModDataComponents = Java.loadClass("net.minimaxi.voidminers.init.ModDataComponents");
 
 ItemEvents.modification(event => {
   event.modify("minecraft:gold_ingot", item => {
@@ -322,7 +322,7 @@ ItemEvents.modification(event => {
 ```
 Example if you want to add a custom item:
 ```javascript
-const $MaxStorageUpgradeItem = Java.loadClass("nadiendev.voidminers.world.item.MaxStorageUpgradeItem");
+const $MaxStorageUpgradeItem = Java.loadClass("net.minimaxi.voidminers.world.item.MaxStorageUpgradeItem");
 const $IProperties = Java.loadClass("net.minecraft.world.item.Item$Properties");
 
 StartupEvents.registry("item", event => {
