@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.21.1-1.6.6
+
+- Optimization of Miners and Solars
+- Changed the package name, if you are adding custom upgrade items, please see teh [wiki](https://github.com/Minimaxi28/VoidMiners-Remastered-Reforked/wiki#add-custom-max-storage-upgrades)
+
 ## 1.21.1-1.6.5
 
 - Fix Miners not seeing the bedrock / void
