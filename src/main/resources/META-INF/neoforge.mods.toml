@@ -8,7 +8,7 @@ version="${mod_version}"
 displayName="VoidMiners Remastered Reforked"
 updateJSONURL=""
 displayURL="https://github.com/Minimaxi28/VoidMiners-Remastered-Reforked"
-logoFile=""
+logoFile="logo.png"
 credits=""
 authors="${mod_authors}"
 

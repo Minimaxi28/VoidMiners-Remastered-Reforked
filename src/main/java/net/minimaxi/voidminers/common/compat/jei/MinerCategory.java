@@ -93,9 +93,12 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
             16
         );
 
+        // todo JEI weight to %
+        /*
         if (Screen.hasShiftDown()) {
             guiGraphics.renderTooltip(font, Component.literal("test"), (int) mouseX, (int) mouseY + 10);
         }
+         */
 
         if (!isHovering(mouseX, mouseY, 105, 0, 121, 16)) {
             return;

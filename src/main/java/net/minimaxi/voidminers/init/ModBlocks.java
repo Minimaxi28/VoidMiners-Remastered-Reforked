@@ -4,7 +4,6 @@ import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.util.CustomColorUtil;
 import net.minimaxi.voidminers.world.block.ModifierBlock;
 import net.minimaxi.voidminers.world.item.ColoredBlockItem;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -18,8 +17,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.function.Supplier;
 
 public class ModBlocks {
-    public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(Registries.BLOCK, VoidMiners.MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.createBlocks(VoidMiners.MODID);
 
     public static final DeferredHolder<Block, Block> FRAME_BASE = registerBlock("frame_base",
             () -> new Block(
@@ -63,12 +61,6 @@ public class ModBlocks {
         return toReturn;
     }
 
-    public static <T extends Block> DeferredHolder<Block, T> registerBlock(String name, Supplier<T> block, Rarity rarity) {
-        DeferredHolder<Block, T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn, rarity);
-        return toReturn;
-    }
-
     public static <T extends Block> DeferredHolder<Block, T> registerColoredBlock(String name, Supplier<T> block, Rarity rarity, CustomColorUtil color) {
         DeferredHolder<Block, T> toReturn = BLOCKS.register(name, block);
         registerColoredBlockItem(name, toReturn, rarity, color);
@@ -77,10 +69,6 @@ public class ModBlocks {
 
     private static <T extends Block> DeferredHolder<Item, BlockItem> registerBlockItem(String name, DeferredHolder<Block, T> block) {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
-    }
-
-    private static <T extends Block> DeferredHolder<Item, BlockItem> registerBlockItem(String name, DeferredHolder<Block, T> block, Rarity rarity) {
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().rarity(rarity)));
     }
 
     private static <T extends Block> DeferredHolder<Item, BlockItem> registerColoredBlockItem(String name, DeferredHolder<Block, T> block, Rarity rarity, CustomColorUtil color) {

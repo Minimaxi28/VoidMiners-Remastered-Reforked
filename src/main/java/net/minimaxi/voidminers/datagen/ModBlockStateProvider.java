@@ -25,8 +25,6 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        simpleBlockItem(ModBlocks.FRAME_BASE);
-
         quadLayerBlockWithItem(ModBlocks.FRAME_BASE, "voidminers:block/null/frame", "voidminers:block/_core/frame", "voidminers:block/_core/cover", "voidminers:block/null/core");
 
         dualLayerBlockWithItem(ModBlocks.STRUCTURE_PANEL, "voidminers:block/_core/panel", "voidminers:block/_core/cover");

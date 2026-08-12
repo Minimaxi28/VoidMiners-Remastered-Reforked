@@ -1,4 +1,4 @@
-package net.minimaxi.voidminers.datagen.loot;
+package net.minimaxi.voidminers.datagen;
 
 import net.minimaxi.voidminers.init.ModBlocks;
 import net.minecraft.core.HolderLookup;
