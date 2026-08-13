@@ -71,8 +71,6 @@ public class ModLanguageProvider extends LanguageProvider {
 
         this.add("tooltip.voidminers.controller.status.no_sky_view", "NO SKY VIEW / DIMENSION DOES NOT HAVE A \"DAY\"");
 
-        this.add("tooltip.voidminers.structure.weight", "Weight: %d");
-
         this.add(ModBlocks.FRAME_BASE.get(), "Frame Base");
 
         this.add(ModBlocks.STRUCTURE_PANEL.get(), "Structure Panel");
@@ -156,6 +154,10 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip.voidminers.structure_builder.unable_to_place_multiblock.1", "Unable to place the multiblock because other blocks are in the way.");
         this.add("tooltip.voidminers.structure_builder.unable_to_place_multiblock.2", "Please clear the area where the multiblock will be made, you can sneak + right-click the Controller for a guide.");
         this.add("tooltip.voidminers.structure_builder.missing_block_in_inventory", "Unable to place some blocks because they are not in your inventory.\nMissing Blocks:");
+
+        this.add("gui.voidminers.block_underneath", "Place this block at any Y level under the Miner Controller");
+        this.add("gui.voidminers.accepts_any", "Accepts any: %s");
+        this.add("gui.voidminers.weight", "Weight: %d");
     }
 
 

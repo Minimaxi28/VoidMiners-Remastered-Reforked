@@ -7,6 +7,23 @@ event.recipes.voidminers.miner(item, dimension, minTier)
     .weight(value)
     .count(value)
     .allowHigherTiers(boolean);
+    .blockUnderneath(string)
+```
+
+```json
+{
+  "type": "voidminers:miner",
+  "dimension": "dimension_id",
+  "minTier": Integer,
+  "output": {
+    "stack": {
+      "count": Integer,
+      "id": "item_id"
+    },
+    "weight": Double
+  },
+  "blockUnderneath": "block_id/block_tag"
+}
 ```
 
 ---
@@ -18,9 +35,26 @@ event.recipes.voidminers.miner('minecraft:sand', 'minecraft:overworld', 1)
     .weight(10.0)
     .count(2)
     .allowHigherTiers(true);
+    .blockUnderneath('minecraft:diamond_block')
 ```
 
-Creates a recipe that mines sand in the Overworld, requires tier 1 miner, has a weight of 10.0, drops 2 items, and allows higher tier miners to use this recipe.
+```json
+{
+  "type": "voidminers:miner",
+  "dimension": "minecraft:overworld",
+  "minTier": 1,
+  "output": {
+    "stack": {
+      "count": 2,
+      "id": "minecraft:sand"
+    },
+    "weight": 10.0
+  },
+  "blockUnderneath": "minecraft:diamond_block"
+}
+```
+
+Creates a recipe that mines sand in the Overworld, requires tier 1 miner and a Diamond Block under the miner, has a weight of 10.0, drops 2 items, and allows higher tier miners to use this recipe.
 
 ---
 
@@ -28,19 +62,20 @@ Creates a recipe that mines sand in the Overworld, requires tier 1 miner, has a 
 
 ### Required Parameters (Positional)
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `item` | String | The item to be mined (format: `'mod:item_id'`) |
-| `dimension` | String | The dimension where this recipe works (e.g., `'minecraft:overworld'`) |
-| `minTier` | Integer | Minimum tier of the miner required to use this recipe |
+| Parameter   | Type     | Description                                                           |
+|-------------|----------|-----------------------------------------------------------------------|
+| `item`      | String   | The item to be mined (format: `'mod:item_id'`)                        |
+| `dimension` | String   | The dimension where this recipe works (e.g., `'minecraft:overworld'`) |
+| `minTier `  | Integer  | Minimum tier of the miner required to use this recipe                 |
 
 ### Optional Methods (Chainable)
 
-| Method | Type | Default | Description |
-|--------|------|---------|-------------|
-| `.weight(value)` | Double | `1.0` | Probability weight - higher values make the item more common |
-| `.count(value)` | Integer | `1` | Amount of items dropped per mining operation |
-| `.allowHigherTiers(boolean)` | Boolean | `true` | Whether higher tier miners can use this recipe |
+| Method                       | Type    | Default            | Description                                                                                      |
+|------------------------------|---------|--------------------|--------------------------------------------------------------------------------------------------|
+| `.weight(value)`             | Double  | `1.0`              | Probability weight - higher values make the item more common                                     |
+| `.count(value)`              | Integer | `1`                | Amount of items dropped per mining operation                                                     |
+| `.allowHigherTiers(boolean)` | Boolean | `true`             | Whether higher tier miners can use this recipe                                                   |
+| `.blockUnderneath(string)`   | String  | `void and bedrock` | Block needed under the Miner Controller for the recipe to work, can be a block ID of a block tag |
 
 ---
 

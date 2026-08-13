@@ -1,9 +1,12 @@
 package net.minimaxi.voidminers.common.compat.jei;
 
+import net.minecraft.ChatFormatting;
 import net.minimaxi.voidminers.VoidMiners;
+import net.minimaxi.voidminers.server.recipe.BlockRequirement;
 import net.minimaxi.voidminers.server.recipe.MinerRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -18,9 +21,13 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     public final ResourceLocation UID;
@@ -30,15 +37,28 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
     private final IDrawable background;
     private final IDrawable icon;
-    public final Block blockIcon;
     public final int tier;
+
+    private final int recipeWidth = 140;
+    private final int recipeHeight = 15;
+
+    private final int recipeOutputX = 1;
+    private final int recipeOutputY = -1;
+
+    private final int blockUnderneathX = recipeOutputX + 16 + 1;
+    private final int blockUnderneathY = -1;
+
+    private final int weightTextX = blockUnderneathX + 16 + 2;
+    private final int weightTextY = 4;
+
+    private final int dimensionImageX = recipeWidth - 16 - 1;
+    private final int dimensionImageY = -1;
 
     public MinerCategory(IGuiHelper guiHelper, Block blockIcon, int tier) {
         UID = ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "miner/tier" + tier + "_miner");
         RECIPE_TYPE = new RecipeType<>(UID, MinerRecipe.class);
-        this.background = guiHelper.createDrawable(TEXTURE, 0, 0, 125, 15);
+        this.background = guiHelper.createDrawable(TEXTURE, 0, 0, recipeWidth, recipeHeight);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, blockIcon.asItem().getDefaultInstance());
-        this.blockIcon = blockIcon;
         this.tier = tier;
     }
 
@@ -49,7 +69,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("gui." + VoidMiners.MODID + ".miner", tier);
+        return Component.translatable("gui.voidminers.miner", tier);
     }
 
     @Override
@@ -66,31 +86,57 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     public void setRecipe(IRecipeLayoutBuilder builder, MinerRecipe minerRecipe, IFocusGroup iFocusGroup) {
         builder.addSlot(
                 RecipeIngredientRole.OUTPUT,
-                4,
-                -1
+                recipeOutputX,
+                recipeOutputY
         ).addItemStack(minerRecipe.output().stack);
+
+        BlockRequirement blockUnderneath = minerRecipe.blockUnderneath();
+        if (blockUnderneath != null) {
+            List<ItemStack> blockStacks = blockUnderneath.resolveBlocks().stream()
+                    .filter(block -> block != Blocks.AIR)
+                    .map(block -> new ItemStack(block.asItem()))
+                    .filter(stack -> !stack.isEmpty())
+                    .toList();
+
+            if (!blockStacks.isEmpty()) {
+                IRecipeSlotBuilder blockSlot = builder.addSlot(
+                        RecipeIngredientRole.INPUT,
+                        blockUnderneathX,
+                        blockUnderneathY
+                );
+                blockSlot.addItemStacks(blockStacks);
+
+                blockSlot.addRichTooltipCallback((recipeSlotView, tooltip) -> {
+                    tooltip.add(Component.translatable("gui.voidminers.block_underneath").withStyle(ChatFormatting.WHITE));
+                    if (blockUnderneath.isTag()) {
+                        tooltip.add(Component.translatable("gui.voidminers.accepts_any",blockUnderneath.raw()).withStyle(ChatFormatting.WHITE));
+                    }
+                });
+            }
+        }
     }
 
     @Override
     public void draw(MinerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Component weight = Component.translatable("tooltip." + VoidMiners.MODID + ".structure.weight", customFormat(recipe.output().weight));
+        Component weight = Component.translatable("gui.voidminers.weight", customFormat(recipe.output().weight));
+        Font font = Minecraft.getInstance().font;
+
+        guiGraphics.drawString(font, weight, weightTextX, weightTextY, 0xFFFFFFFF);
+
         String dimensionName = recipe.dimension().location().toLanguageKey();
 
         ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "textures/gui/icon/" + getDimensionIcon(recipe.dimension()) + ".png");
 
-        Font font = Minecraft.getInstance().font;
-
-        guiGraphics.drawString(font, weight, 24, 4, 0xFFFFFFFF);
         guiGraphics.blit(
-            texture,
-            105,
-            -1,
-            0,
-            0,
-            16,
-            16,
-            16,
-            16
+                texture,
+                dimensionImageX,
+                dimensionImageY,
+                0,
+                0,
+                16,
+                16,
+                16,
+                16
         );
 
         // todo JEI weight to %
@@ -100,7 +146,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
         }
          */
 
-        if (!isHovering(mouseX, mouseY, 105, 0, 121, 16)) {
+        if (!isHovering(mouseX, mouseY, dimensionImageX, dimensionImageY, dimensionImageX + 16, dimensionImageY + 16)) {
             return;
         }
         guiGraphics.renderTooltip(font, Component.translatable(dimensionName), (int) mouseX, (int) mouseY + 10);
@@ -120,8 +166,8 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
         String formatted;
 
-        if (Math.abs(number) < 0.000001) {
-            // Use scientific notation for very small numbers
+        if (number < 0.000001 || number > 10000000) {
+            // Use scientific notation for very small and very big numbers
             return String.format("%.1E", number);
         } else {
             formatted = String.format("%.6f", number);
