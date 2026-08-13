@@ -75,7 +75,7 @@ Creates a recipe that mines sand in the Overworld, requires tier 1 miner and a D
 | `.weight(value)`             | Double  | `1.0`              | Probability weight - higher values make the item more common                                     |
 | `.count(value)`              | Integer | `1`                | Amount of items dropped per mining operation                                                     |
 | `.allowHigherTiers(boolean)` | Boolean | `true`             | Whether higher tier miners can use this recipe                                                   |
-| `.blockUnderneath(string)`   | String  | `void and bedrock` | Block needed under the Miner Controller for the recipe to work, can be a block ID of a block tag |
+| `.blockUnderneath(string)`   | String  | `void and bedrock` | Block needed under the Miner Controller for the recipe to work, can be a block ID or a block tag |
 
 ---
 
