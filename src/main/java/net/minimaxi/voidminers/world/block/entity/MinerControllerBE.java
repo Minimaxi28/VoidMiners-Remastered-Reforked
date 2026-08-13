@@ -47,6 +47,7 @@ import org.mangorage.mangomultiblock.core.manager.RegisteredMultiBlockPattern;
 import org.mangorage.mangomultiblock.core.misc.MultiblockMatchResult;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 public class MinerControllerBE extends BlockEntity {
 
@@ -84,6 +85,9 @@ public class MinerControllerBE extends BlockEntity {
     private float cachedEnergyMod = 1f;
     private float cachedSpeedMod = 1f;
     private float cachedItemMod = 1f;
+
+    @Nullable
+    private BlockState blockUnderneathState = null;
 
     private void recalculateStorageFromUpgrades() {
         if(this.upgradeItem == Items.AIR) return;
@@ -670,15 +674,20 @@ public class MinerControllerBE extends BlockEntity {
     }
 
     private boolean hasViewOnBedrockOrVoid(BlockPos pos) {
+        assert level != null;
+        blockUnderneathState = null;
+
         for (int i = 0; i < 320; i++) {
             BlockPos check = pos.below(i + 1);
+            BlockState state = level.getBlockState(check);
 
-            assert level != null;
-            if(level.getBlockState(check).is(Blocks.BEDROCK)) return true;
+            if (state.is(Blocks.BEDROCK)) return true;
 
-            if (level.getBlockState(check).propagatesSkylightDown(level, check) || level.isFluidAtPosition(check, (fluidState -> !fluidState.isEmpty()))) continue;
+            if (state.propagatesSkylightDown(level, check) || level.isFluidAtPosition(check, (fluidState -> !fluidState.isEmpty()))) continue;
 
-            return false;
+            blockUnderneathState = state;
+
+            return hasRecipeRequiring(state);
         }
 
         return true;
@@ -697,12 +706,25 @@ public class MinerControllerBE extends BlockEntity {
     }
 
     private List<MinerRecipe> allRecipes() {
-        if (level == null || level.isClientSide) {
-            return new ArrayList<>();
+        List<MinerRecipe> candidates = recipesForTierAndDimension().toList();
+
+        List<MinerRecipe> specific = candidates.stream()
+                .filter(recipe -> recipe.blockUnderneath() != null)
+                .filter(recipe -> blockUnderneathState != null && recipe.blockUnderneath().matches(blockUnderneathState))
+                .toList();
+
+        if (!specific.isEmpty()) {
+            return specific;
         }
 
-        if (structure == null) {
-            return new ArrayList<>();
+        return candidates.stream()
+                .filter(recipe -> recipe.blockUnderneath() == null)
+                .toList();
+    }
+
+    private Stream<MinerRecipe> recipesForTierAndDimension() {
+        if (level == null || level.isClientSide || structure == null) {
+            return Stream.empty();
         }
 
         return level.getRecipeManager().getAllRecipesFor(MinerRecipe.Type.INSTANCE)
@@ -715,8 +737,12 @@ public class MinerControllerBE extends BlockEntity {
                         return recipe.minTier() == MiscUtil.tierMap.get(structure.getPath());
                     }
                 })
-                .filter(recipe -> recipe.dimension().equals(this.level.dimension()))
-                .toList();
+                .filter(recipe -> recipe.dimension().equals(this.level.dimension()));
+    }
+
+    private boolean hasRecipeRequiring(BlockState state) {
+        return recipesForTierAndDimension()
+                .anyMatch(recipe -> recipe.blockUnderneath() != null && recipe.blockUnderneath().matches(state));
     }
 
     private boolean isItemValid(ItemStack stack, ItemStack handler) {
