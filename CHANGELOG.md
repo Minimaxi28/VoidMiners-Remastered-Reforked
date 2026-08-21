@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.21.1-1.6.8
+
+- Fix Max Storage Upgrade T2 and T3 recipes
+
 ## 1.21.1-1.6.7
 
 - Make it so recipes can specify a blockUnderneath, a block that will need to be anywhere under the Miner Controller to be able to get the items (no default recipes use it, it's mainly for modpack makers)
