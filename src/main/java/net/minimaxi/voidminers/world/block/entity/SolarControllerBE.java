@@ -264,7 +264,6 @@ public class SolarControllerBE extends BlockEntity {
 
             if (checkStructureTTL <= 0) {
                 checkStructure(level, pPos);
-                VoidMiners.LOGGER.info("checkStructure {}", tickAcceleratedTicks);
                 sync();
                 checkStructureTTL = 20; // only check structure every 20 real ticks
             } else {

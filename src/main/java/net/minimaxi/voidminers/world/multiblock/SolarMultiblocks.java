@@ -21,9 +21,6 @@ public class SolarMultiblocks {
 
     public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers_solars");
 
-    // IMPORTANT: variable to stop duplicate registration
-    private static boolean INITIALIZED = false;
-
     public static final SimpleMultiBlockAislePatternBuilder RUBETINE = createAccessiblePattern(
             VoidMiners.MODID + ":solar_rubetine",
             List.of(
@@ -830,11 +827,6 @@ public class SolarMultiblocks {
 
 
     public static void init() {
-        if (INITIALIZED) {
-            VoidMiners.LOGGER.warn("SolarMultiblocks already initialized, skipping...");
-            return;
-        }
-
         VoidMiners.LOGGER.info("Initializing SolarMultiblocks...");
 
         MANAGER.register("solar_rubetine", RUBETINE.build());
@@ -847,7 +839,6 @@ public class SolarMultiblocks {
         MANAGER.register("solar_rosarium", ROSARIUM.build());
         MANAGER.register("solar_ultimate", ULTIMATE.build());
 
-        INITIALIZED = true;
         VoidMiners.LOGGER.info("SolarMultiblocks initialized successfully!");
     }
 }

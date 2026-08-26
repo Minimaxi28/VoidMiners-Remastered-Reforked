@@ -1,853 +1,891 @@
 package net.minimaxi.voidminers.world.multiblock;
 
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockPattern;
+import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.datagen.ModBlockTagGenerator;
 import net.minimaxi.voidminers.init.ModBlocks;
 import net.minimaxi.voidminers.init.CrystalSet;
-import net.minimaxi.voidminers.util.MiscUtil;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.pattern.BlockInWorld;
-import org.mangorage.mangomultiblock.core.SimpleMultiBlockAislePatternBuilder;
-import org.mangorage.mangomultiblock.core.manager.MultiBlockManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 public class MinerMultiblocks {
+    public record PatternPair(
+            BlockPattern primary,
+            BlockPattern alternate
+    ) {}
 
-    public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers_miners");
+    public static final Map<String, PatternPair> PATTERNS = new HashMap<>();
 
-    // IMPORTANT: variable to stop duplicate registration
-    private static boolean INITIALIZED = false;
+    public static BlockPattern RUBETINE = BlockPatternBuilder.start()
+            .aisle("     ",
+                    "     ",
+                    "  *  ",
+                    "     ",
+                    "     ")
+            .aisle("     ",
+                    "  F  ",
+                    " F F ",
+                    "  F  ",
+                    "     ")
+            .aisle("  F  ",
+                    "     ",
+                    "F   F",
+                    "     ",
+                    "  F  ")
+            .aisle(" FFF ",
+                    "FGGGF",
+                    "FGGGF",
+                    "FGGGF",
+                    " FFF ")
+            .where('*', a -> a.getState().is(CrystalSet.RUBETINE.CRYSTAL_BLOCK.get()))
+            .where('G', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.RUBETINE.FRAME.get()))
+            .build();
 
-    public static final SimpleMultiBlockAislePatternBuilder RUBETINE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_rubetine",
-            List.of(
-                    List.of(
-                            "     ",
-                            "     ",
-                            "  *  ",
-                            "     ",
-                            "     "
-                    ),
-                    List.of(
-                            "     ",
-                            "  F  ",
-                            " F F ",
-                            "  F  ",
-                            "     "
-                    ),
-                    List.of(
-                            "  F  ",
-                            "     ",
-                            "F   F",
-                            "     ",
-                            "  F  "
-                    ),
-                    List.of(
-                            " FFF ",
-                            "FPPPF",
-                            "FPPPF",
-                            "FPPPF",
-                            " FFF "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.RUBETINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.RUBETINE.FRAME.get())
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.RUBETINE.FRAME.get()::defaultBlockState
+    public static BlockPattern AURANTIUM1 = BlockPatternBuilder.start()
+            .aisle("       ",
+                    "       ",
+                    "       ",
+                    "   *   ",
+                    "       ",
+                    "       ",
+                    "       ")
+            .aisle("       ",
+                    "   F   ",
+                    "   F   ",
+                    " FF FF ",
+                    "   F   ",
+                    "   F   ",
+                    "       ")
+            .aisle("   F   ",
+                    "       ",
+                    "       ",
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "   F   ")
+            .aisle("   F   ",
+                    "       ",
+                    "       ",
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "   F   ")
+            .aisle(" FFFFF ",
+                    "FPPMPPF",
+                    "FPPPPPF",
+                    "FPPPPPF",
+                    "FPPPPPF",
+                    "FPPMPPF",
+                    " FFFFF ")
+            .where('*', a -> a.getState().is(CrystalSet.AURANTIUM.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.AURANTIUM.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
+
+    public static BlockPattern AURANTIUM2 = BlockPatternBuilder.start()
+            .aisle("       ",
+                    "       ",
+                    "       ",
+                    "   *   ",
+                    "       ",
+                    "       ",
+                    "       ")
+            .aisle("       ",
+                    "   F   ",
+                    "   F   ",
+                    " FF FF ",
+                    "   F   ",
+                    "   F   ",
+                    "       ")
+            .aisle("   F   ",
+                    "       ",
+                    "       ",
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "   F   ")
+            .aisle("   F   ",
+                    "       ",
+                    "       ",
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "   F   ")
+            .aisle(" FFFFF ",
+                    "FPPPPPF",
+                    "FPPPPPF",
+                    "FMPPPMF",
+                    "FPPPPPF",
+                    "FPPPPPF",
+                    " FFFFF ")
+            .where('*', a -> a.getState().is(CrystalSet.AURANTIUM.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.AURANTIUM.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
+
+    public static BlockPattern CITRINETINE = BlockPatternBuilder.start()
+            .aisle("       ",
+                    "       ",
+                    "       ",
+                    "   *   ",
+                    "       ",
+                    "       ",
+                    "       ")
+            .aisle("       ",
+                    "       ",
+                    "   F   ",
+                    "  F F  ",
+                    "   F   ",
+                    "       ",
+                    "       ")
+            .aisle("       ",
+                    "   F   ",
+                    "       ",
+                    " F   F ",
+                    "       ",
+                    "   F   ",
+                    "       ")
+            .aisle("   F   ",
+                    "       ",
+                    "       ",
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "   F   ")
+            .aisle("   F   ",
+                    "       ",
+                    "       ",
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "   F   ")
+            .aisle(" FFFFF ",
+                    "FMPPPMF",
+                    "FPPPPPF",
+                    "FPPPPPF",
+                    "FPPPPPF",
+                    "FMPPPMF",
+                    " FFFFF ")
+            .where('*', a -> a.getState().is(CrystalSet.CITRINETINE.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.CITRINETINE.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
+
+    public static BlockPattern VERDIUM1 = BlockPatternBuilder.start()
+            .aisle(
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    *    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         "
             )
-    );
-
-    public static final SimpleMultiBlockAislePatternBuilder AURANTIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_aurantium",
-            List.of(
-                    List.of(
-                            "       ",
-                            "       ",
-                            "       ",
-                            "   *   ",
-                            "       ",
-                            "       ",
-                            "       "
-                    ),
-                    List.of(
-                            "       ",
-                            "   F   ",
-                            "   F   ",
-                            " FF FF ",
-                            "   F   ",
-                            "   F   ",
-                            "       "
-                    ),
-                    List.of(
-                            "   F   ",
-                            "       ",
-                            "       ",
-                            "F     F",
-                            "       ",
-                            "       ",
-                            "   F   "
-                    ),
-                    List.of(
-                            "   F   ",
-                            "       ",
-                            "       ",
-                            "F     F",
-                            "       ",
-                            "       ",
-                            "   F   "
-                    ),
-                    List.of(
-                            " FFFFF ",
-                            "FPPMPPF",
-                            "FPPPPPF",
-                            "FPPPPPF",
-                            "FPPPPPF",
-                            "FPPMPPF",
-                            " FFFFF "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.AURANTIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.AURANTIUM.FRAME.get()),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.AURANTIUM.FRAME.get()::defaultBlockState,
-                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            .aisle(
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "    F    ",
+                    "  FF FF  ",
+                    "    F    ",
+                    "    F    ",
+                    "         ",
+                    "         "
             )
-    );
-
-    public static final SimpleMultiBlockAislePatternBuilder CITRINETINE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_citrinetine",
-            List.of(
-                    List.of(
-                            "       ",
-                            "       ",
-                            "       ",
-                            "   *   ",
-                            "       ",
-                            "       ",
-                            "       "
-                    ),
-                    List.of(
-                            "       ",
-                            "       ",
-                            "   F   ",
-                            "  F F  ",
-                            "   F   ",
-                            "       ",
-                            "       "
-                    ),
-                    List.of(
-                            "       ",
-                            "   F   ",
-                            "       ",
-                            " F   F ",
-                            "       ",
-                            "   F   ",
-                            "       "
-                    ),
-                    List.of(
-                            "   F   ",
-                            "       ",
-                            "       ",
-                            "F     F",
-                            "       ",
-                            "       ",
-                            "   F   "
-                    ),
-                    List.of(
-                            "   F   ",
-                            "       ",
-                            "       ",
-                            "F     F",
-                            "       ",
-                            "       ",
-                            "   F   "
-                    ),
-                    List.of(
-                            " FFFFF ",
-                            "FMPPPMF",
-                            "FPPPPPF",
-                            "FPPPPPF",
-                            "FPPPPPF",
-                            "FMPPPMF",
-                            " FFFFF "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.CITRINETINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.CITRINETINE.FRAME.get()),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.CITRINETINE.FRAME.get()::defaultBlockState,
-                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            .aisle(
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    " F     F ",
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "         "
             )
-    );
-
-    public static final SimpleMultiBlockAislePatternBuilder VERDIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_verdium",
-            List.of(
-                    List.of(
-                            "         ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    *    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "         ",
-                            "    F    ",
-                            "    F    ",
-                            "  FF FF  ",
-                            "    F    ",
-                            "    F    ",
-                            "         ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            " F     F ",
-                            "         ",
-                            "         ",
-                            "    F    ",
-                            "         "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "  FFFFF  ",
-                            " FMPMPMF ",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            " FMPMPMF ",
-                            "  FFFFF  "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.VERDIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.VERDIUM.FRAME.get()),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.VERDIUM.FRAME.get()::defaultBlockState,
-                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
             )
-    );
-
-    public static final SimpleMultiBlockAislePatternBuilder AZURINE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_azurine",
-            List.of(
-                    List.of(
-                            "         ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    *    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "    F    ",
-                            "    F    ",
-                            "    F    ",
-                            " FFF FFF ",
-                            "    F    ",
-                            "    F    ",
-                            "    F    ",
-                            "         "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "  FFFFF  ",
-                            " FMPPPMF ",
-                            "FMPPPPPMF",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            "FMPPPPPMF",
-                            " FMPPPMF ",
-                            "  FFFFF  "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.AZURINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.AZURINE.FRAME.get()),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.AZURINE.FRAME.get()::defaultBlockState,
-                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
             )
-    );
-
-    public static final SimpleMultiBlockAislePatternBuilder CAERIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_caerium",
-            List.of(
-                    List.of(
-                            "         ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    *    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    ",
-                            "   F F   ",
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "         ",
-                            "    F    ",
-                            "         ",
-                            "  F   F  ",
-                            "         ",
-                            "    F    ",
-                            "         ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            " F     F ",
-                            "         ",
-                            "         ",
-                            "    F    ",
-                            "         "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "  FFFFF  ",
-                            " FMMMMMF ",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            "FPPPPPPPF",
-                            " FMMMMMF ",
-                            "  FFFFF  "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.CAERIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.CAERIUM.FRAME.get()),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.CAERIUM.FRAME.get()::defaultBlockState,
-                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            .aisle(
+                    "  FFFFF  ",
+                    " FMPMPMF ",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    " FMPMPMF ",
+                    "  FFFFF  "
             )
-    );
+            .where('*', a -> a.getState().is(CrystalSet.VERDIUM.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.VERDIUM.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
 
-    public static final SimpleMultiBlockAislePatternBuilder AMETHYSTINE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_amethystine",
-            List.of(
-                    List.of(
-                            "         ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    *    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "         ",
-                            "    F    ",
-                            "    F    ",
-                            "  FF FF  ",
-                            "    F    ",
-                            "    F    ",
-                            "         ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            " F     F ",
-                            "         ",
-                            "         ",
-                            "    F    ",
-                            "         "
-                    ),
-                    List.of(
-                            "         ",
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            " F     F ",
-                            "         ",
-                            "         ",
-                            "    F    ",
-                            "         "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "    F    ",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "F       F",
-                            "         ",
-                            "         ",
-                            "         ",
-                            "    F    "
-                    ),
-                    List.of(
-                            "   FFF   ",
-                            "  FMMMF  ",
-                            " FPPPPPF ",
-                            "FMPPPPPMF",
-                            "FMPPPPPMF",
-                            "FMPPPPPMF",
-                            " FPPPPPF ",
-                            "  FMMMF  ",
-                            "   FFF   "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.AMETHYSTINE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.AMETHYSTINE.FRAME.get()),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.AMETHYSTINE.FRAME.get()::defaultBlockState,
-                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+    public static BlockPattern VERDIUM2 = BlockPatternBuilder.start()
+            .aisle(
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    *    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         "
             )
-    );
-
-    public static final SimpleMultiBlockAislePatternBuilder ROSARIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_rosarium",
-            List.of(
-                    List.of(
-                            "       ",
-                            "       ",
-                            "       ",
-                            "   *   ",
-                            "       ",
-                            "       ",
-                            "       "
-                    ),
-                    List.of(
-                            "       ",
-                            "       ",
-                            "   F   ",
-                            "  F F  ",
-                            "   F   ",
-                            "       ",
-                            "       "
-                    ),
-                    List.of(
-                            "       ",
-                            "   F   ",
-                            "       ",
-                            " F   F ",
-                            "       ",
-                            "   F   ",
-                            "       "
-                    ),
-                    List.of(
-                            "   F   ",
-                            "       ",
-                            "       ",
-                            "F     F",
-                            "       ",
-                            "       ",
-                            "   F   "
-                    ),
-                    List.of(
-                            "  FFF  ",
-                            " FPMPF ",
-                            "FPMPMPF",
-                            "FMPPPMF",
-                            "FPMPMPF",
-                            " FPMPF ",
-                            "  FFF  "
-                    ),
-                    List.of(
-                            " F   F ",
-                            "F     F",
-                            "       ",
-                            "       ",
-                            "       ",
-                            "F     F",
-                            " F   F "
-                    ),
-                    List.of(
-                            "F     F",
-                            "       ",
-                            "       ",
-                            "       ",
-                            "       ",
-                            "       ",
-                            "F     F"
-                    ),
-                    List.of(
-                            " FFFFF ",
-                            "FMPMPMF",
-                            "FPPPPPF",
-                            "FMPPPMF",
-                            "FPPPPPF",
-                            "FMPMPMF",
-                            " FFFFF "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.ROSARIUM.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.ROSARIUM.FRAME.get()),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.ROSARIUM.FRAME.get()::defaultBlockState,
-                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            .aisle(
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "    F    ",
+                    "  FF FF  ",
+                    "    F    ",
+                    "    F    ",
+                    "         ",
+                    "         "
             )
-    );
-
-    public static final SimpleMultiBlockAislePatternBuilder ULTIMATE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_ultimate",
-            List.of(
-                    List.of(
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "     *     ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           "
-                    ),
-                    List.of(
-                            "           ",
-                            "           ",
-                            "           ",
-                            "     F     ",
-                            "     F     ",
-                            "   FF FF   ",
-                            "     F     ",
-                            "     F     ",
-                            "           ",
-                            "           ",
-                            "           "
-                    ),
-                    List.of(
-                            "           ",
-                            "           ",
-                            "     F     ",
-                            "           ",
-                            "           ",
-                            "  F     F  ",
-                            "           ",
-                            "           ",
-                            "     F     ",
-                            "           ",
-                            "           "
-                    ),
-                    List.of(
-                            "           ",
-                            "     F     ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            " F       F ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "     F     ",
-                            "           "
-                    ),
-                    List.of(
-                            "     F     ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "F         F",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "     F     "
-                    ),
-                    List.of(
-                            "     F     ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "F         F",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "     F     "
-                    ),
-                    List.of(
-                            "     F     ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "F         F",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "     F     "
-                    ),
-                    List.of(
-                            "   FFFFF   ",
-                            "  FMMMMMF  ",
-                            " FMPPPPPMF ",
-                            "FMPPPPPPPMF",
-                            "FMPPPPPPPMF",
-                            "FMPPPPPPPMF",
-                            "FMPPPPPPPMF",
-                            "FMPPPPPPPMF",
-                            " FMPPPPPMF ",
-                            "  FMMMMMF  ",
-                            "   FFFFF   "
-                    ),
-                    List.of(
-                            " F       F ",
-                            "F         F",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "           ",
-                            "F         F",
-                            " F       F "
-                    )
-            ),
-            Map.of(
-                    '*', a -> a.getState().is(CrystalSet.ULTIMATE.CONTROLLER.get()),
-                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
-                    'F', a -> a.getState().is(CrystalSet.ULTIMATE.FRAME.get()),
-                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
-            ),
-            Map.of(
-                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
-                    'F', CrystalSet.ULTIMATE.FRAME.get()::defaultBlockState,
-                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            .aisle(
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    " F     F ",
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "         "
             )
-    );
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "  FFFFF  ",
+                    " FPPPPPF ",
+                    "FMPPPPPMF",
+                    "FPPPPPPPF",
+                    "FMPPPPPMF",
+                    "FPPPPPPPF",
+                    "FMPPPPPMF",
+                    " FPPPPPF ",
+                    "  FFFFF  "
+            )
+            .where('*', a -> a.getState().is(CrystalSet.VERDIUM.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.VERDIUM.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
 
-    public static SimpleMultiBlockAislePatternBuilder createAccessiblePattern(String structure, List<List<String>> stringPattern, Map<Character, Predicate<BlockInWorld>> lookup, Map<Character, Supplier<BlockState>> blockProvider) {
-        SimpleMultiBlockAislePatternBuilder pattern = SimpleMultiBlockAislePatternBuilder.start();
-        List<List<List<BlockState>>> blocks = new ArrayList<>();
+    public static BlockPattern AZURINE = BlockPatternBuilder.start()
+            .aisle(
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    *    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "    F    ",
+                    "    F    ",
+                    "    F    ",
+                    " FFF FFF ",
+                    "    F    ",
+                    "    F    ",
+                    "    F    ",
+                    "         "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "  FFFFF  ",
+                    " FMPPPMF ",
+                    "FMPPPPPMF",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    "FMPPPPPMF",
+                    " FMPPPMF ",
+                    "  FFFFF  "
+            )
+            .where('*', a -> a.getState().is(CrystalSet.AZURINE.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.AZURINE.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
 
-        for (List<String> strings : stringPattern) {
-            pattern.aisle(strings.toArray(new String[]{}));
+    public static BlockPattern CAERIUM1 = BlockPatternBuilder.start()
+            .aisle(
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    *    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "   F F   ",
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "  F   F  ",
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    " F     F ",
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "         "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "  FFFFF  ",
+                    " FMMMMMF ",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    "FPPPPPPPF",
+                    " FMMMMMF ",
+                    "  FFFFF  "
+            )
+            .where('*', a -> a.getState().is(CrystalSet.CAERIUM.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.CAERIUM.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
 
-            List<List<BlockState>> blockForAisle = new ArrayList<>();
+    public static BlockPattern CAERIUM2 = BlockPatternBuilder.start()
+            .aisle(
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    *    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "   F F   ",
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "  F   F  ",
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    " F     F ",
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "         "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "  FFFFF  ",
+                    " FPPPPPF ",
+                    "FMPPPPPMF",
+                    "FMPPPPPMF",
+                    "FMPPPPPMF",
+                    "FMPPPPPMF",
+                    "FMPPPPPMF",
+                    " FPPPPPF ",
+                    "  FFFFF  "
+            )
+            .where('*', a -> a.getState().is(CrystalSet.CAERIUM.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.CAERIUM.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
 
-            for (String s : strings) {
-                blockForAisle.add(
-                        getStatesForString(s, blockProvider)
-                );
-            }
+    public static BlockPattern AMETHYSTINE = BlockPatternBuilder.start()
+            .aisle(
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    *    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "    F    ",
+                    "  FF FF  ",
+                    "    F    ",
+                    "    F    ",
+                    "         ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    " F     F ",
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "         "
+            )
+            .aisle(
+                    "         ",
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    " F     F ",
+                    "         ",
+                    "         ",
+                    "    F    ",
+                    "         "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "    F    ",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "F       F",
+                    "         ",
+                    "         ",
+                    "         ",
+                    "    F    "
+            )
+            .aisle(
+                    "   FFF   ",
+                    "  FMMMF  ",
+                    " FPPPPPF ",
+                    "FMPPPPPMF",
+                    "FMPPPPPMF",
+                    "FMPPPPPMF",
+                    " FPPPPPF ",
+                    "  FMMMF  ",
+                    "   FFF   "
+            )
+            .where('*', a -> a.getState().is(CrystalSet.AMETHYSTINE.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.AMETHYSTINE.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
 
-            blocks.add(blockForAisle);
-        }
+    public static BlockPattern ROSARIUM = BlockPatternBuilder.start()
+            .aisle(
+                    "       ",
+                    "       ",
+                    "       ",
+                    "   *   ",
+                    "       ",
+                    "       ",
+                    "       "
+            )
+            .aisle(
+                    "       ",
+                    "       ",
+                    "   F   ",
+                    "  F F  ",
+                    "   F   ",
+                    "       ",
+                    "       "
+            )
+            .aisle(
+                    "       ",
+                    "   F   ",
+                    "       ",
+                    " F   F ",
+                    "       ",
+                    "   F   ",
+                    "       "
+            )
+            .aisle(
+                    "   F   ",
+                    "       ",
+                    "       ",
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "   F   "
+            )
+            .aisle(
+                    "  FFF  ",
+                    " FPMPF ",
+                    "FPMPMPF",
+                    "FMPPPMF",
+                    "FPMPMPF",
+                    " FPMPF ",
+                    "  FFF  "
+            )
+            .aisle(
+                    " F   F ",
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "       ",
+                    "F     F",
+                    " F   F "
+            )
+            .aisle(
+                    "F     F",
+                    "       ",
+                    "       ",
+                    "       ",
+                    "       ",
+                    "       ",
+                    "F     F"
+            )
+            .aisle(
+                    " FFFFF ",
+                    "FMPMPMF",
+                    "FPPPPPF",
+                    "FMPPPMF",
+                    "FPPPPPF",
+                    "FMPMPMF",
+                    " FFFFF "
+            )
+            .where('*', a -> a.getState().is(CrystalSet.ROSARIUM.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.ROSARIUM.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
 
-        MiscUtil.structureMap.put(
-                structure,
-                blocks
-        );
+    public static BlockPattern ULTIMATE = BlockPatternBuilder.start()
+            .aisle(
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "     *     ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           "
+            )
+            .aisle(
+                    "           ",
+                    "           ",
+                    "           ",
+                    "     F     ",
+                    "     F     ",
+                    "   FF FF   ",
+                    "     F     ",
+                    "     F     ",
+                    "           ",
+                    "           ",
+                    "           "
+            )
+            .aisle(
+                    "           ",
+                    "           ",
+                    "     F     ",
+                    "           ",
+                    "           ",
+                    "  F     F  ",
+                    "           ",
+                    "           ",
+                    "     F     ",
+                    "           ",
+                    "           "
+            )
+            .aisle(
+                    "           ",
+                    "     F     ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    " F       F ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "     F     ",
+                    "           "
+            )
+            .aisle(
+                    "     F     ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "F         F",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "     F     "
+            )
+            .aisle(
+                    "     F     ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "F         F",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "     F     "
+            )
+            .aisle(
+                    "     F     ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "F         F",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "     F     "
+            )
+            .aisle(
+                    "   FFFFF   ",
+                    "  FMMMMMF  ",
+                    " FMPPPPPMF ",
+                    "FMPPPPPPPMF",
+                    "FMPPPPPPPMF",
+                    "FMPPPPPPPMF",
+                    "FMPPPPPPPMF",
+                    "FMPPPPPPPMF",
+                    " FMPPPPPMF ",
+                    "  FMMMMMF  ",
+                    "   FFFFF   "
+            )
+            .aisle(
+                    " F       F ",
+                    "F         F",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "           ",
+                    "F         F",
+                    " F       F "
+            )
+            .where('*', a -> a.getState().is(CrystalSet.ULTIMATE.CRYSTAL_BLOCK.get()))
+            .where('P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()))
+            .where('F', a -> a.getState().is(CrystalSet.ULTIMATE.FRAME.get()))
+            .where('M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS))
+            .build();
 
-        lookup.forEach(pattern::where);
+    private static List<List<List<BlockState>>> extractStructureFromPattern(BlockPattern pattern) {
 
-        blockProvider.forEach(pattern::block);
+        pattern.getPattern();
+        // Get the pattern builder's internal structure
+        // Since BlockPattern doesn't expose its internal structure directly,
+        // we need to rebuild it from the pattern's data
 
-        return pattern;
+        // Create a 3D list to store block states
+        List<List<List<BlockState>>> structure = new ArrayList<>();
+
+        // The BlockPattern stores its data in a private field, but we can
+        // recreate the structure from the pattern's aisle strings
+        // We need to store the pattern data when building or extract it differently
+
+        // One approach: store the pattern data separately when building
+        // For now, we'll return an empty structure and you'll need to adapt
+        return structure;
     }
-
-    private static List<BlockState> getStatesForString(String s, Map<Character, Supplier<BlockState>> map) {
-        List<BlockState> toReturn = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-
-            if (c == ' ') {
-                toReturn.add(
-                        Blocks.AIR.defaultBlockState()
-                );
-            } else {
-                if (map.containsKey(c)) {
-                    toReturn.add(
-                            map.get(c).get()
-                    );
-                }
-            }
-        }
-
-        return toReturn;
-    }
-
 
     public static void init() {
-        if (INITIALIZED) {
-            VoidMiners.LOGGER.warn("MinerMultiblocks already initialized, skipping...");
-            return;
-        }
-
         VoidMiners.LOGGER.info("Initializing MinerMultiblocks...");
 
-        MANAGER.register("miner_rubetine", RUBETINE.build());
-        MANAGER.register("miner_aurantium", AURANTIUM.build());
-        MANAGER.register("miner_citrinetine", CITRINETINE.build());
-        MANAGER.register("miner_verdium", VERDIUM.build());
-        MANAGER.register("miner_azurine", AZURINE.build());
-        MANAGER.register("miner_caerium", CAERIUM.build());
-        MANAGER.register("miner_amethystine", AMETHYSTINE.build());
-        MANAGER.register("miner_rosarium", ROSARIUM.build());
-        MANAGER.register("miner_ultimate", ULTIMATE.build());
+        PATTERNS.put("miner_rubetine", new PatternPair(RUBETINE, RUBETINE));
+        PATTERNS.put("miner_aurantium", new PatternPair(AURANTIUM1, AURANTIUM2));
+        PATTERNS.put("miner_citrinetine", new PatternPair(CITRINETINE, CITRINETINE));
+        PATTERNS.put("miner_verdium", new PatternPair(VERDIUM1, VERDIUM2));
+        PATTERNS.put("miner_azurine", new PatternPair(AZURINE, AZURINE));
+        PATTERNS.put("miner_caerium", new PatternPair(CAERIUM1, CAERIUM2));
+        PATTERNS.put("miner_amethystine", new PatternPair(AMETHYSTINE, AMETHYSTINE));
+        PATTERNS.put("miner_rosarium", new PatternPair(ROSARIUM, ROSARIUM));
+        PATTERNS.put("miner_ultimate", new PatternPair(ULTIMATE, ULTIMATE));
 
-        INITIALIZED = true;
         VoidMiners.LOGGER.info("MinerMultiblocks initialized successfully!");
     }
 }
