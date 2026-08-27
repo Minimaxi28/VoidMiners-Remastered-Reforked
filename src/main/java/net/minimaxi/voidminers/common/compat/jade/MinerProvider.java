@@ -87,11 +87,9 @@ public enum MinerProvider implements IBlockComponentProvider, IServerDataProvide
             return;
         }
 
-        if (miner.getStructure() != null) {
-            Integer tier = MiscUtil.tierMap.get(miner.getStructure().getPath());
-            if (tier != null) {
-                tag.putInt("Tier", tier);
-            }
+        Integer tier = MiscUtil.tierMap.get(miner.getStructure().getPath());
+        if (tier != null) {
+            tag.putInt("Tier", tier);
         }
 
         tag.putInt("Energy", miner.getEnergyStorage().getEnergyStored());

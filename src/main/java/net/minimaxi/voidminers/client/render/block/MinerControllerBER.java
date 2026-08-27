@@ -44,20 +44,18 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE
 
         if (!pBlockEntity.showStructure) return;
 
-        if(pBlockEntity.getStructure() == null) return;
+        MiscUtil.PatternPair pair = MiscUtil.PATTERNS.get(pBlockEntity.getStructure().getPath());
+        if (pair == null) return;
 
-        String structure = pBlockEntity.getStructure().toString();
+        List<List<List<BlockState>>> blocks = pair.primary().previewBlocks();
+        if (blocks == null) return;
 
-        if (!MiscUtil.structureMap.containsKey(structure)) return;
-
-        int offset = MiscUtil.structureMap.get(structure).getFirst().size() / 2;
+        int xOffset = blocks.getFirst().size() / 2;
 
         pose.pushPose();
-        pose.translate(-offset, 1, -offset);
+        pose.translate(-xOffset, 1, -xOffset);
         pose.pushPose();
         pose.mulPose(Axis.ZN.rotationDegrees(90));
-
-        List<List<List<BlockState>>> blocks = MiscUtil.structureMap.get(structure);
 
         float blockScale = 0.5f;
 
@@ -77,9 +75,9 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE
                     pose.translate(-0.5f, -0.5f, -0.5f);
 
                     renderBlock(
-                        block,
-                        pose,
-                        pBuffer
+                            block,
+                            pose,
+                            pBuffer
                     );
 
                     pose.popPose();
@@ -98,13 +96,13 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE
 
         assert minecraft.level != null;
         blockRenderer.renderSingleBlock(
-            state,
-            pose,
-            buffer,
-            LightTexture.FULL_BRIGHT,
-            OverlayTexture.NO_OVERLAY,
-            blockRenderer.getBlockModel(state).getModelData(minecraft.level, new BlockPos(0, 0, 0), state, ModelData.EMPTY),
-            RenderType.translucent()
+                state,
+                pose,
+                buffer,
+                LightTexture.FULL_BRIGHT,
+                OverlayTexture.NO_OVERLAY,
+                blockRenderer.getBlockModel(state).getModelData(minecraft.level, new BlockPos(0, 0, 0), state, ModelData.EMPTY),
+                RenderType.translucent()
         );
     }
 
@@ -121,34 +119,34 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE
     }
 
     public void renderQuad(VertexConsumer vC, PoseStack pose, Vector3f pos, int color, float length, float width) {
-        
+
         vC.addVertex(pose.last().pose(), pos.x, pos.y, pos.z)
-            .setColor(color)
-            .setUv(0, 0)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(LightTexture.FULL_BRIGHT)
-            .setNormal(0, 0, 0);
+                .setColor(color)
+                .setUv(0, 0)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setNormal(0, 0, 0);
 
         vC.addVertex(pose.last().pose(), pos.x + width, pos.y, pos.z)
-            .setColor(color)
-            .setUv(1, 0)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(LightTexture.FULL_BRIGHT)
-            .setNormal(0, 0, 0);
+                .setColor(color)
+                .setUv(1, 0)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setNormal(0, 0, 0);
 
         vC.addVertex(pose.last().pose(), pos.x + width, pos.y - length, pos.z)
-            .setColor(color)
-            .setUv(1, 1)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(LightTexture.FULL_BRIGHT)
-            .setNormal(0, 0, 0);
+                .setColor(color)
+                .setUv(1, 1)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setNormal(0, 0, 0);
 
         vC.addVertex(pose.last().pose(), pos.x, pos.y - length, pos.z)
-            .setColor(color)
-            .setUv(0, 1)
-            .setOverlay(OverlayTexture.NO_OVERLAY)
-            .setLight(LightTexture.FULL_BRIGHT)
-            .setNormal(0, 0, 0);
+                .setColor(color)
+                .setUv(0, 1)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setNormal(0, 0, 0);
     }
 
     @Override

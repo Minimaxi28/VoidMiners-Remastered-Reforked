@@ -1,3 +1,5 @@
 JEI weight to %
 
 Fusion support
+
+Item Modifier change to allow small multipliers to still make more items (each cycle add the .xx of the multiplier and try to add it letting it void if inventory full) ?

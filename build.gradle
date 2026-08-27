@@ -86,8 +86,6 @@ dependencies {
     compileOnly("dev.latvian.mods:rhino:$rhino_version")
     implementation ("dev.latvian.mods:kubejs-neoforge:${kubejs_version}")
     
-    implementation "curse.maven:mangos-multiblock-library-revived-1406189:7342473"
-    
     implementation "curse.maven:jei-238222:8470023"
     implementation "curse.maven:athena-841890:8061947"
     implementation "curse.maven:jade-324717:7545219"

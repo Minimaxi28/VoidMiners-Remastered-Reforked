@@ -20,16 +20,12 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
-import org.mangorage.mangomultiblock.core.manager.MultiBlockManager;
-import org.mangorage.mangomultiblock.core.manager.RegisteredMultiBlockPattern;
-import org.mangorage.mangomultiblock.core.misc.MultiblockMatchResult;
 
 import java.util.*;
 
@@ -54,6 +50,9 @@ public class SolarControllerBE extends BlockEntity {
     private int checkStructureTTL = 0;
 
     private int tickAcceleratedTicks = 1;
+
+    private float cachedEfficiencyMod = 1f;
+    private float cachedWeatherResistanceMod = 0f;
 
     public SolarControllerBE(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.SOLAR_CONTROLLER_BE.get(), pPos, pBlockState);
@@ -103,7 +102,8 @@ public class SolarControllerBE extends BlockEntity {
 
                 tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.structure_not_found").withStyle(ChatFormatting.YELLOW));
 
-                MiscUtil.getNeededBlocks(MiscUtil.structureMap.get(structure.toString())).forEach((string, integer) -> {
+                MiscUtil.getNeededBlocks(MiscUtil.PATTERNS.get(structure.getPath()).primary().previewBlocks())
+                        .forEach((string, integer) -> {
                     tooltip.add(Component.literal("• ").withStyle(ChatFormatting.GRAY)
                             .append(Component.literal(string.contains("Null") ? "Modifier" : string).withStyle(ChatFormatting.WHITE))
                             .append(Component.literal(": ").withStyle(ChatFormatting.GRAY))
@@ -137,7 +137,7 @@ public class SolarControllerBE extends BlockEntity {
                         "%s §f%,d §7/ §f%,d RF", energyBar, energyHandler.getLongEnergyStored(), energyHandler.getLongMaxEnergyStored()))));
 
         tooltip.add(Component.translatable("tooltip.voidminers.controller.generation").withStyle(net.minecraft.ChatFormatting.GREEN)
-                .append(Component.literal(String.format("%,d RF/tick", getRFPerTick(getSolarEfficiency()))).withStyle(net.minecraft.ChatFormatting.WHITE)));
+                .append(Component.literal(String.format("%,d RF/tick §b(%.2f×)", getRFPerTick(getSolarEfficiency()), getEfficiencyModifierMultiplier())).withStyle(net.minecraft.ChatFormatting.WHITE)));
 
         tooltip.add(Component.translatable("tooltip.voidminers.controller.efficiency").withStyle(net.minecraft.ChatFormatting.YELLOW)
                 .append(Component.literal(String.format("%.2f%%", getSolarEfficiency() * 100)).withStyle(net.minecraft.ChatFormatting.WHITE)));
@@ -177,55 +177,6 @@ public class SolarControllerBE extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.saveAdditional(pTag, pRegistries);
-
-        CompoundTag data = new CompoundTag();
-        if (energyHandler != null) data.put("energy", energyHandler.serializeNBT(pRegistries));
-        if (name != null) data.putString("name", this.name);
-        if (structure != null) data.putString("structure", structure.toString());
-        data.putBoolean("showStructure", showStructure);
-        data.putBoolean("foundStructure", foundStructure);
-        data.putBoolean("canSeeSky", canSeeSky);
-
-        pTag.put(VoidMiners.MODID, data);
-    }
-
-    @Override
-    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
-        super.loadAdditional(pTag, pRegistries);
-        CompoundTag data = pTag.getCompound(VoidMiners.MODID);
-        if (data.isEmpty())
-            return;
-
-        if (data.contains("energy")) {
-            energyHandler.deserializeNBT(pRegistries, data.get("energy"));
-        }
-
-        if (data.contains("name")) {
-            name = data.getString("name");
-        }
-
-        if (data.contains("structure")) {
-            structure = ResourceLocation.parse(data.getString("structure"));
-        }
-
-        if (data.contains("showStructure")) {
-            showStructure = data.getBoolean("showStructure");
-        }
-
-        if (data.contains("foundStructure")) {
-            foundStructure = data.getBoolean("foundStructure");
-        }
-
-        if (data.contains("canSeeSky")) {
-            canSeeSky = data.getBoolean("canSeeSky");
-        }
-
-        sync();
-    }
-
-    @Override
     public void onLoad() {
         super.onLoad();
         setupEnergyStorage();
@@ -258,10 +209,6 @@ public class SolarControllerBE extends BlockEntity {
         if (this.lastProcessedGameTime == gameTime) {
             tickAcceleratedTicks++;
         } else {
-            if(getStructure() == null) {
-                setup(structure, name);
-            }
-
             if (checkStructureTTL <= 0) {
                 checkStructure(level, pPos);
                 sync();
@@ -351,10 +298,6 @@ public class SolarControllerBE extends BlockEntity {
         this.loadAdditional(tag, pRegistries);
     }
 
-    public SolarEnergyStorage getEnergyStorage() {
-        return energyHandler;
-    }
-
     private void sync() {
         if(level != null) {
             setChanged(level, getBlockPos(), getBlockState());
@@ -367,14 +310,7 @@ public class SolarControllerBE extends BlockEntity {
 
         long rfPerTick = cfg.SOLAR_CONFIGS.get(name).energyGenerationPerTick();
 
-        float efficiencyModifier = 1.0f;
-
-        for (Map.Entry<BlockInWorld, SolarConfigLoader.ModifierConfig> entry : modifierMap.entrySet()) {
-            efficiencyModifier *= entry.getValue().efficiency();
-        }
-
-        rfPerTick *= efficiencyModifier;
-
+        rfPerTick *= cachedEfficiencyMod;
         rfPerTick *= efficiency;
 
         return rfPerTick;
@@ -412,11 +348,9 @@ public class SolarControllerBE extends BlockEntity {
 
             if (level.isThundering()) weatherPenalty = 0.15f;
 
-            for (Map.Entry<BlockInWorld, SolarConfigLoader.ModifierConfig> entry : modifierMap.entrySet()) {
-                weatherPenalty += entry.getValue().weatherResistance() - 1;
-            }
+            weatherPenalty += cachedWeatherResistanceMod;
 
-            if(weatherPenalty > 1.0f) weatherPenalty = 1.0f;
+            if (weatherPenalty > 1.0f) weatherPenalty = 1.0f;
         }
 
         efficiency *= weatherPenalty;
@@ -431,28 +365,26 @@ public class SolarControllerBE extends BlockEntity {
     }
 
     public void checkStructure(Level pLevel, BlockPos pPos) {
-        RegisteredMultiBlockPattern pattern = MultiBlockManager.findAnyStructure(pLevel, pPos, Rotation.NONE);
+        MiscUtil.PatternPair pair = MiscUtil.PATTERNS.get(structure.getPath());
 
-        if (pattern == null) {
+        if (pair == null) {
             foundStructure = false;
             return;
         }
 
-        MultiblockMatchResult result = pattern.pattern().matchesWithResult(pLevel, pPos, Rotation.NONE);
+        List<BlockInWorld> result = pair.primary().matches(pLevel, pPos);
+        if (result == null) {
+            result = pair.alternate().matches(pLevel, pPos);
+        }
 
         if (result == null) {
             foundStructure = false;
             return;
         }
 
-        if (!pattern.ID().equals(structure)) {
-            foundStructure = false;
-            return;
-        }
-
         modifierMap.clear();
         foundStructure = true;
-        result.blocks().stream()
+        result.stream()
                 .filter(block -> block.getState().getBlock() instanceof ModifierBlock)
                 .forEach(block -> {
                     SolarConfigLoader.ModifierConfig modifier = SolarConfigLoader.getInstance().getModifierConfig(block.getState().getBlock());
@@ -460,6 +392,22 @@ public class SolarControllerBE extends BlockEntity {
                         modifierMap.put(block, modifier);
                     }
                 });
+
+        calculateCachedModifiers();
+    }
+
+    private void calculateCachedModifiers() {
+        float efficiencyMod = 1f, weatherResistanceMod = 0f;
+        for (SolarConfigLoader.ModifierConfig cfg : modifierMap.values()) {
+            efficiencyMod *= cfg.efficiency();
+            weatherResistanceMod += cfg.weatherResistance() - 1;
+        }
+        cachedEfficiencyMod = efficiencyMod;
+        cachedWeatherResistanceMod = weatherResistanceMod;
+    }
+
+    public SolarEnergyStorage getEnergyStorage() {
+        return energyHandler;
     }
 
     public ResourceLocation getStructure() {
@@ -468,5 +416,58 @@ public class SolarControllerBE extends BlockEntity {
 
     public HaltReason getHaltReason() {
         return haltReason;
+    }
+
+    public float getEfficiencyModifierMultiplier() {
+        return cachedEfficiencyMod;
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.saveAdditional(pTag, pRegistries);
+
+        CompoundTag data = new CompoundTag();
+        if (energyHandler != null) data.put("energy", energyHandler.serializeNBT(pRegistries));
+        if (name != null) data.putString("name", this.name);
+        if (structure != null) data.putString("structure", structure.toString());
+        data.putBoolean("showStructure", showStructure);
+        data.putBoolean("foundStructure", foundStructure);
+        data.putBoolean("canSeeSky", canSeeSky);
+
+        pTag.put(VoidMiners.MODID, data);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
+        CompoundTag data = pTag.getCompound(VoidMiners.MODID);
+        if (data.isEmpty())
+            return;
+
+        if (data.contains("energy")) {
+            energyHandler.deserializeNBT(pRegistries, data.get("energy"));
+        }
+
+        if (data.contains("name")) {
+            name = data.getString("name");
+        }
+
+        if (data.contains("structure")) {
+            structure = ResourceLocation.parse(data.getString("structure"));
+        }
+
+        if (data.contains("showStructure")) {
+            showStructure = data.getBoolean("showStructure");
+        }
+
+        if (data.contains("foundStructure")) {
+            foundStructure = data.getBoolean("foundStructure");
+        }
+
+        if (data.contains("canSeeSky")) {
+            canSeeSky = data.getBoolean("canSeeSky");
+        }
+
+        sync();
     }
 }
