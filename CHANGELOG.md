@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.21.1-1.6.10
+
+- Changes to JEI recipes
+  - press SHIFT to display percentages instead of weights
+  - press CTRL to display the full number when hovering over the recipe
+
 ## 1.21.1-1.6.9
 
 - Remove Mango Multiblock Library Revived dependency

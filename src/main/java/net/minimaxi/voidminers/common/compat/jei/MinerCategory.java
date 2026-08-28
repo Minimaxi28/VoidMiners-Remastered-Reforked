@@ -27,7 +27,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     public final ResourceLocation UID;
@@ -39,7 +42,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     private final IDrawable icon;
     public final int tier;
 
-    private final int recipeWidth = 140;
+    private final int recipeWidth = 152;
     private final int recipeHeight = 15;
 
     private final int recipeOutputX = 1;
@@ -48,11 +51,40 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     private final int blockUnderneathX = recipeOutputX + 16 + 1;
     private final int blockUnderneathY = -1;
 
-    private final int weightTextX = blockUnderneathX + 16 + 2;
-    private final int weightTextY = 4;
+    private final int textX = blockUnderneathX + 16 + 2;
+    private final int textY = 4;
 
     private final int dimensionImageX = recipeWidth - 16 - 1;
     private final int dimensionImageY = -1;
+
+    private Map<ResourceKey<Level>, Double> totalWeightByDimension = Map.of();
+    private Map<String, Double> totalWeightByBlockUnderneath = Map.of();
+    private Map<ResourceKey<Level>, Integer> countByDimension = Map.of();
+    private Map<String, Integer> countByBlockUnderneath = Map.of();
+
+    public void updateWeights(List<MinerRecipe> recipes) {
+        Map<ResourceKey<Level>, Double> dimensionTotals = new HashMap<>();
+        Map<String, Double> blockTotals = new HashMap<>();
+        Map<ResourceKey<Level>, Integer> dimensionCounts = new HashMap<>();
+        Map<String, Integer> blockCounts = new HashMap<>();
+
+        for (MinerRecipe recipe : recipes) {
+            BlockRequirement blockUnderneath = recipe.blockUnderneath();
+            if (blockUnderneath != null) {
+                String key = (blockUnderneath.isTag() ? "tag:" : "block:") + blockUnderneath.raw();
+                blockTotals.merge(key, (double) recipe.output().weight, Double::sum);
+                blockCounts.merge(key, 1, Integer::sum);
+            } else {
+                dimensionTotals.merge(recipe.dimension(), (double) recipe.output().weight, Double::sum);
+                dimensionCounts.merge(recipe.dimension(), 1, Integer::sum);
+            }
+        }
+
+        this.totalWeightByDimension = dimensionTotals;
+        this.totalWeightByBlockUnderneath = blockTotals;
+        this.countByDimension = dimensionCounts;
+        this.countByBlockUnderneath = blockCounts;
+    }
 
     public MinerCategory(IGuiHelper guiHelper, Block blockIcon, int tier) {
         UID = ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "miner/tier" + tier + "_miner");
@@ -118,10 +150,48 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
     @Override
     public void draw(MinerRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
-        Component weight = Component.translatable("gui.voidminers.weight", customFormat(recipe.output().weight));
         Font font = Minecraft.getInstance().font;
+        Component weightOrChance;
+        double percent;
+        boolean onlyRecipeInGroup;
 
-        guiGraphics.drawString(font, weight, weightTextX, weightTextY, 0xFFFFFFFF);
+        BlockRequirement blockUnderneath = recipe.blockUnderneath();
+        if (blockUnderneath != null) {
+            String key = (blockUnderneath.isTag() ? "tag:" : "block:") + blockUnderneath.raw();
+            double total = totalWeightByBlockUnderneath.getOrDefault(key, 0.0);
+            percent = total > 0.0 ? ((double) recipe.output().weight / total) * 100.0 : 0.0;
+            onlyRecipeInGroup = countByBlockUnderneath.getOrDefault(key, 0) == 1;
+        } else {
+            double total = totalWeightByDimension.getOrDefault(recipe.dimension(), 0.0);
+            percent = total > 0.0 ? ((double) recipe.output().weight / total) * 100.0 : 0.0;
+            onlyRecipeInGroup = countByDimension.getOrDefault(recipe.dimension(), 0) == 1;
+        }
+
+        if (Screen.hasShiftDown()) {
+            String percentText;
+            if (onlyRecipeInGroup) {
+                percentText = "100";
+            } else if (percent > 99.999) {
+                percentText = ">99.999";
+            } else if (percent < 0.0001) {
+                percentText = "<0.0001";
+            } else {
+                String formatted = String.format("%.4f", percent);
+                formatted = formatted.replaceAll("0+$", "");
+                formatted = formatted.replaceAll("[.,]$", "");
+                percentText = formatted;
+            }
+
+            weightOrChance = Component.translatable("gui.voidminers.chance", percentText);
+        } else {
+            if (onlyRecipeInGroup) {
+                weightOrChance = Component.translatable("gui.voidminers.only_one_recipe");
+            } else {
+                weightOrChance = Component.translatable("gui.voidminers.weight", customFormat(recipe.output().weight));
+            }
+        }
+
+        guiGraphics.drawString(font, weightOrChance, textX, textY, 0xFFFFFFFF);
 
         String dimensionName = recipe.dimension().location().toLanguageKey();
 
@@ -139,17 +209,19 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
                 16
         );
 
-        // todo JEI weight to %
-        /*
-        if (Screen.hasShiftDown()) {
-            guiGraphics.renderTooltip(font, Component.literal("test"), (int) mouseX, (int) mouseY + 10);
+        if (isHovering(mouseX, mouseY, 0, 0, recipeWidth, recipeHeight)) {
+            if( Screen.hasControlDown()) {
+                if(Screen.hasShiftDown()) {
+                    guiGraphics.renderTooltip(font, Component.translatable("gui.voidminers.chance",BigDecimal.valueOf(percent).toPlainString()), (int) mouseX, (int) mouseY + 10);
+                } else {
+                    guiGraphics.renderTooltip(font, Component.translatable("gui.voidminers.weight", BigDecimal.valueOf(recipe.output().weight).toPlainString()), (int) mouseX, (int) mouseY + 10);
+                }
+            }
         }
-         */
 
-        if (!isHovering(mouseX, mouseY, dimensionImageX, dimensionImageY, dimensionImageX + 16, dimensionImageY + 16)) {
-            return;
+        if (isHovering(mouseX, mouseY, dimensionImageX, dimensionImageY, dimensionImageX + 16, dimensionImageY + 16)) {
+            guiGraphics.renderTooltip(font, Component.translatable(dimensionName), (int) mouseX, (int) mouseY + 10);
         }
-        guiGraphics.renderTooltip(font, Component.translatable(dimensionName), (int) mouseX, (int) mouseY + 10);
     }
 
     public static boolean isHovering(double mouseX, double mouseY, int x1, int y1, int x2, int y2) {

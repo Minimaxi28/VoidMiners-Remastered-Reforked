@@ -158,6 +158,8 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("gui.voidminers.block_underneath", "Place this block at any Y level under the Miner Controller");
         this.add("gui.voidminers.accepts_any", "Accepts any: %s");
         this.add("gui.voidminers.weight", "Weight: %d");
+        this.add("gui.voidminers.chance", "Chance: %d%%");
+        this.add("gui.voidminers.only_one_recipe", "W: 1 (only recipe)");
     }
 
 
