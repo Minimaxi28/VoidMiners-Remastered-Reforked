@@ -4,8 +4,10 @@ import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.config.MinerConfigLoader;
 import net.minimaxi.voidminers.world.item.MaxStorageUpgradeItem;
 import net.minimaxi.voidminers.world.item.StructureBuilderItem;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 

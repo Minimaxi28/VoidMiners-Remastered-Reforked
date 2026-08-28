@@ -167,7 +167,7 @@
   "tooltip.voidminers.controller.halt_reason.structure_not_found": "Structure is not correct, sneak + right-click the Controller for a guide.\nTotal needed blocks: ",
   "tooltip.voidminers.controller.halt_reason.too_much_item_multiplier": "§eItem Multiplier too high, remove some of the blocks that add Item Multiplier.\nMax Item Multiplier: %d×",
   "tooltip.voidminers.controller.information": "Information : ",
-  "tooltip.voidminers.controller.information.auto_export": "The outputs will be sent to adjacent inventories or voided if non are found / all are full.",
+  "tooltip.voidminers.controller.information.auto_export": "The outputs will be sent to adjacent inventories or voided if none are found / all are full.",
   "tooltip.voidminers.controller.item_boost": "§d📦 ITEM BOOST: ",
   "tooltip.voidminers.controller.max_storage_upgrade_tip": "If a better one is available, you could also add a better Max Storage Upgrade",
   "tooltip.voidminers.controller.progress": "§e⏳ PROGRESS: ",

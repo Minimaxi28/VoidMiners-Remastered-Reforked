@@ -2,16 +2,13 @@ package net.minimaxi.voidminers.world.multiblock;
 
 import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.datagen.ModBlockTagGenerator;
-import net.minimaxi.voidminers.init.SolarSet;
 import net.minimaxi.voidminers.init.ModBlocks;
+import net.minimaxi.voidminers.init.SolarSet;
 import net.minimaxi.voidminers.util.MiscUtil;
-import net.minecraft.world.level.block.Blocks;
+
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
-import org.mangorage.mangomultiblock.core.SimpleMultiBlockAislePatternBuilder;
-import org.mangorage.mangomultiblock.core.manager.MultiBlockManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -19,13 +16,7 @@ import java.util.function.Supplier;
 
 public class SolarMultiblocks {
 
-    public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers_solars");
-
-    // IMPORTANT: variable to stop duplicate registration
-    private static boolean INITIALIZED = false;
-
-    public static final SimpleMultiBlockAislePatternBuilder RUBETINE = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_rubetine",
+    public static final MultiblockPattern RUBETINE = createAccessiblePattern(
             List.of(
                     List.of(
                             " FFF ",
@@ -67,8 +58,7 @@ public class SolarMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder AURANTIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_aurantium",
+    public static final MultiblockPattern AURANTIUM1 = createAccessiblePattern(
             List.of(
                     List.of(
                             " FFFFF ",
@@ -129,8 +119,68 @@ public class SolarMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder CITRINETINE = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_citrinetine",
+    public static final MultiblockPattern AURANTIUM2 = createAccessiblePattern(
+            List.of(
+                    List.of(
+                            " FFFFF ",
+                            "FPPPPPF",
+                            "FPPPPPF",
+                            "FMPPPMF",
+                            "FPPPPPF",
+                            "FPPPPPF",
+                            " FFFFF "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            "       ",
+                            "   F   ",
+                            "   F   ",
+                            " FF FF ",
+                            "   F   ",
+                            "   F   ",
+                            "       "
+                    ),
+                    List.of(
+                            "       ",
+                            "       ",
+                            "       ",
+                            "   *   ",
+                            "       ",
+                            "       ",
+                            "       "
+                    )
+            ),
+            Map.of(
+                    '*', a -> a.getState().is(SolarSet.AURANTIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.AURANTIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
+            ),
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', SolarSet.AURANTIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            )
+    );
+
+    public static final MultiblockPattern CITRINETINE = createAccessiblePattern(
             List.of(
                     List.of(
                             " FFFFF ",
@@ -200,8 +250,7 @@ public class SolarMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder VERDIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_verdium",
+    public static final MultiblockPattern VERDIUM1 = createAccessiblePattern(
             List.of(
                     List.of(
                             "  FFFFF  ",
@@ -283,8 +332,89 @@ public class SolarMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder AZURINE = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_azurine",
+    public static final MultiblockPattern VERDIUM2 = createAccessiblePattern(
+            List.of(
+                    List.of(
+                            "  FFFFF  ",
+                            " FPPPPPF ",
+                            "FMPPPPPMF",
+                            "FPPPPPPPF",
+                            "FMPPPPPMF",
+                            "FPPPPPPPF",
+                            "FMPPPPPMF",
+                            " FPPPPPF ",
+                            "  FFFFF  "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            " F     F ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "    F    ",
+                            "  FF FF  ",
+                            "    F    ",
+                            "    F    ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    *    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         "
+                    )
+            ),
+            Map.of(
+                    '*', a -> a.getState().is(SolarSet.VERDIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.VERDIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
+            ),
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', SolarSet.VERDIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            )
+    );
+
+    public static final MultiblockPattern AZURINE = createAccessiblePattern(
             List.of(
                     List.of(
                             "  FFFFF  ",
@@ -366,8 +496,7 @@ public class SolarMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder CAERIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_caerium",
+    public static final MultiblockPattern CAERIUM1 = createAccessiblePattern(
             List.of(
                     List.of(
                             "  FFFFF  ",
@@ -460,8 +589,100 @@ public class SolarMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder AMETHYSTINE = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_amethystine",
+    public static final MultiblockPattern CAERIUM2 = createAccessiblePattern(
+            List.of(
+                    List.of(
+                            "  FFFFF  ",
+                            " FPPPPPF ",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            " FPPPPPF ",
+                            "  FFFFF  "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            " F     F ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "  F   F  ",
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "   F F   ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    *    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         "
+                    )
+            ),
+            Map.of(
+                    '*', a -> a.getState().is(SolarSet.CAERIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(SolarSet.CAERIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.SOLAR_MODIFIERS)
+            ),
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', SolarSet.CAERIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            )
+    );
+
+    public static final MultiblockPattern AMETHYSTINE = createAccessiblePattern(
             List.of(
                     List.of(
                             "   FFF   ",
@@ -554,8 +775,7 @@ public class SolarMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder ROSARIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_rosarium",
+    public static final MultiblockPattern ROSARIUM = createAccessiblePattern(
             List.of(
                     List.of(
                             " FFFFF ",
@@ -643,8 +863,7 @@ public class SolarMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder ULTIMATE = createAccessiblePattern(
-            VoidMiners.MODID + ":solar_ultimate",
+    public static final MultiblockPattern ULTIMATE = createAccessiblePattern(
             List.of(
                     List.of(
                             " F       F ",
@@ -777,77 +996,32 @@ public class SolarMultiblocks {
             )
     );
 
-    public static SimpleMultiBlockAislePatternBuilder createAccessiblePattern(String structure, List<List<String>> stringPattern, Map<Character, Predicate<BlockInWorld>> lookup, Map<Character, Supplier<BlockState>> blockProvider) {
-        SimpleMultiBlockAislePatternBuilder pattern = SimpleMultiBlockAislePatternBuilder.start();
-        List<List<List<BlockState>>> blocks = new ArrayList<>();
+    public static MultiblockPattern createAccessiblePattern(List<List<String>> stringPattern, Map<Character, Predicate<BlockInWorld>> lookup, Map<Character, Supplier<BlockState>> blockProvider) {
+        MultiblockPatternBuilder pattern = MultiblockPatternBuilder.start();
 
         for (List<String> strings : stringPattern) {
             pattern.aisle(strings.toArray(new String[]{}));
-
-            List<List<BlockState>> blockForAisle = new ArrayList<>();
-
-            for (String s : strings) {
-                blockForAisle.add(
-                        getStatesForString(s, blockProvider)
-                );
-            }
-
-            blocks.add(blockForAisle);
         }
-
-        MiscUtil.structureMap.put(
-                structure,
-                blocks
-        );
 
         lookup.forEach(pattern::where);
-
         blockProvider.forEach(pattern::block);
 
-        return pattern;
+        return pattern.build();
     }
-
-    private static List<BlockState> getStatesForString(String s, Map<Character, Supplier<BlockState>> map) {
-        List<BlockState> toReturn = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-
-            if (c == ' ') {
-                toReturn.add(
-                        Blocks.AIR.defaultBlockState()
-                );
-            } else {
-                if (map.containsKey(c)) {
-                    toReturn.add(
-                            map.get(c).get()
-                    );
-                }
-            }
-        }
-
-        return toReturn;
-    }
-
 
     public static void init() {
-        if (INITIALIZED) {
-            VoidMiners.LOGGER.warn("SolarMultiblocks already initialized, skipping...");
-            return;
-        }
-
         VoidMiners.LOGGER.info("Initializing SolarMultiblocks...");
 
-        MANAGER.register("solar_rubetine", RUBETINE.build());
-        MANAGER.register("solar_aurantium", AURANTIUM.build());
-        MANAGER.register("solar_citrinetine", CITRINETINE.build());
-        MANAGER.register("solar_verdium", VERDIUM.build());
-        MANAGER.register("solar_azurine", AZURINE.build());
-        MANAGER.register("solar_caerium", CAERIUM.build());
-        MANAGER.register("solar_amethystine", AMETHYSTINE.build());
-        MANAGER.register("solar_rosarium", ROSARIUM.build());
-        MANAGER.register("solar_ultimate", ULTIMATE.build());
+        MiscUtil.PATTERNS.put("solar_rubetine", new MiscUtil.PatternPair(RUBETINE, RUBETINE));
+        MiscUtil.PATTERNS.put("solar_aurantium", new MiscUtil.PatternPair(AURANTIUM1, AURANTIUM2));
+        MiscUtil.PATTERNS.put("solar_citrinetine", new MiscUtil.PatternPair(CITRINETINE, CITRINETINE));
+        MiscUtil.PATTERNS.put("solar_verdium", new MiscUtil.PatternPair(VERDIUM1, VERDIUM2));
+        MiscUtil.PATTERNS.put("solar_azurine", new MiscUtil.PatternPair(AZURINE, AZURINE));
+        MiscUtil.PATTERNS.put("solar_caerium", new MiscUtil.PatternPair(CAERIUM1, CAERIUM2));
+        MiscUtil.PATTERNS.put("solar_amethystine", new MiscUtil.PatternPair(AMETHYSTINE, AMETHYSTINE));
+        MiscUtil.PATTERNS.put("solar_rosarium", new MiscUtil.PatternPair(ROSARIUM, ROSARIUM));
+        MiscUtil.PATTERNS.put("solar_ultimate", new MiscUtil.PatternPair(ULTIMATE, ULTIMATE));
 
-        INITIALIZED = true;
         VoidMiners.LOGGER.info("SolarMultiblocks initialized successfully!");
     }
 }

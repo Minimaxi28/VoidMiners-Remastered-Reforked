@@ -51,7 +51,7 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip.voidminers.controller.upgrade.no_upgrage", "No upgrades applied.");
         this.add("tooltip.voidminers.controller.upgrade.slots", " (+%d slots)");
         this.add("tooltip.voidminers.controller.information", "Information : ");
-        this.add("tooltip.voidminers.controller.information.auto_export", "The outputs will be sent to adjacent inventories or voided if non are found / all are full.");
+        this.add("tooltip.voidminers.controller.information.auto_export", "The outputs will be sent to adjacent inventories or voided if none are found / all are full.");
 
         this.add("tooltip.voidminers.controller.status.status", "⚠ STATUS: ");
 

@@ -46,9 +46,9 @@ public class StructureBuilderItem extends Item {
         BlockEntity entity = level.getBlockEntity(pos);
 
         if(entity instanceof MinerControllerBE minerController) {
-            buildMultiblock(level, pos, player, minerController.getStructure().toString(), true);
+            buildMultiblock(level, pos, player, minerController.getStructure().getPath(), true);
         } else if (entity instanceof SolarControllerBE solarController) {
-            buildMultiblock(level, pos, player, solarController.getStructure().toString(), false);
+            buildMultiblock(level, pos, player, solarController.getStructure().getPath(), false);
         } else {
             return InteractionResult.PASS;
         }
@@ -57,12 +57,14 @@ public class StructureBuilderItem extends Item {
     }
 
     private static void buildMultiblock(Level pLevel, BlockPos controllerPos, Player pPlayer, String structureKey, boolean isMiner) {
-        if (!MiscUtil.structureMap.containsKey(structureKey)) return;
+        MiscUtil.PatternPair pair = MiscUtil.PATTERNS.get(structureKey);
+        if (pair == null) return;
 
-        List<List<List<BlockState>>> blocks = MiscUtil.structureMap.get(structureKey);
+        List<List<List<BlockState>>> blocks = pair.primary().previewBlocks();
+        if (blocks == null) return;
 
-        int xOffset = MiscUtil.structureMap.get(structureKey).getFirst().size() / 2;
-        int yOffset = MiscUtil.structureMap.get(structureKey).size() - 1;
+        int xOffset = blocks.getFirst().size() / 2;
+        int yOffset = blocks.size() - 1;
 
         BlockPos origin = controllerPos.offset(-xOffset,  isMiner ? 0 : yOffset, -xOffset);
 

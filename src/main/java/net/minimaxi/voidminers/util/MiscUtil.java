@@ -4,6 +4,7 @@ import net.minimaxi.voidminers.init.CrystalSet;
 import net.minecraft.locale.Language;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minimaxi.voidminers.world.multiblock.MultiblockPattern;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,12 @@ public class MiscUtil {
     public static Map<String, Integer> tierMap = new HashMap<>();
     public static Map<String, Integer> colorMap = new HashMap<>();
 
-    public static Map<String, List<List<List<BlockState>>>> structureMap = new HashMap<>();
+    public record PatternPair(
+            MultiblockPattern primary,
+            MultiblockPattern alternate
+    ) {}
+
+    public static final Map<String, PatternPair> PATTERNS = new HashMap<>();
 
     static {
         for (int i = 0; i < CrystalSet.sets().size(); i++) {

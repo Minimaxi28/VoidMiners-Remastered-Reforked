@@ -44,22 +44,20 @@ public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBE
 
         if (!pBlockEntity.showStructure) return;
 
-        if(pBlockEntity.getStructure() == null) return;
+        MiscUtil.PatternPair pair = MiscUtil.PATTERNS.get(pBlockEntity.getStructure().getPath());
+        if (pair == null) return;
 
-        String structure = pBlockEntity.getStructure().toString();
+        List<List<List<BlockState>>> blocks = pair.primary().previewBlocks();
+        if (blocks == null) return;
 
-        if (!MiscUtil.structureMap.containsKey(structure)) return;
-
-        int xOffset = MiscUtil.structureMap.get(structure).getFirst().size() / 2;
+        int xOffset = blocks.getFirst().size() / 2;
         // yOffset otherwise it renders the multiblock structure under the controller as if it was a miner
-        int yOffset = MiscUtil.structureMap.get(structure).size();
+        int yOffset = blocks.size();
 
         pose.pushPose();
         pose.translate(-xOffset, yOffset, -xOffset);
         pose.pushPose();
         pose.mulPose(Axis.ZN.rotationDegrees(90));
-
-        List<List<List<BlockState>>> blocks = MiscUtil.structureMap.get(structure);
 
         float blockScale = 0.5f;
 

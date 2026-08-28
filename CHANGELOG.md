@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.21.1-1.6.9
+
+- Remove Mango Multiblock Library Revived dependency
+- Some optimization on the Solar Panels matching what was done on Miners
+
 ## 1.21.1-1.6.8
 
 - Fix Max Storage Upgrade T2 and T3 recipes

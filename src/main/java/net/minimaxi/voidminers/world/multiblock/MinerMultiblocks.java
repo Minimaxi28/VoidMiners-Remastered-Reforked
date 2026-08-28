@@ -5,13 +5,10 @@ import net.minimaxi.voidminers.datagen.ModBlockTagGenerator;
 import net.minimaxi.voidminers.init.ModBlocks;
 import net.minimaxi.voidminers.init.CrystalSet;
 import net.minimaxi.voidminers.util.MiscUtil;
-import net.minecraft.world.level.block.Blocks;
+
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
-import org.mangorage.mangomultiblock.core.SimpleMultiBlockAislePatternBuilder;
-import org.mangorage.mangomultiblock.core.manager.MultiBlockManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -19,13 +16,7 @@ import java.util.function.Supplier;
 
 public class MinerMultiblocks {
 
-    public static final MultiBlockManager MANAGER = MultiBlockManager.getOrCreate(VoidMiners.MODID, "voidminers_miners");
-
-    // IMPORTANT: variable to stop duplicate registration
-    private static boolean INITIALIZED = false;
-
-    public static final SimpleMultiBlockAislePatternBuilder RUBETINE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_rubetine",
+    public static final MultiblockPattern RUBETINE = createAccessiblePattern(
             List.of(
                     List.of(
                             "     ",
@@ -67,8 +58,7 @@ public class MinerMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder AURANTIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_aurantium",
+    public static final MultiblockPattern AURANTIUM1 = createAccessiblePattern(
             List.of(
                     List.of(
                             "       ",
@@ -129,8 +119,68 @@ public class MinerMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder CITRINETINE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_citrinetine",
+    public static final MultiblockPattern AURANTIUM2 = createAccessiblePattern(
+            List.of(
+                    List.of(
+                            "       ",
+                            "       ",
+                            "       ",
+                            "   *   ",
+                            "       ",
+                            "       ",
+                            "       "
+                    ),
+                    List.of(
+                            "       ",
+                            "   F   ",
+                            "   F   ",
+                            " FF FF ",
+                            "   F   ",
+                            "   F   ",
+                            "       "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            "   F   ",
+                            "       ",
+                            "       ",
+                            "F     F",
+                            "       ",
+                            "       ",
+                            "   F   "
+                    ),
+                    List.of(
+                            " FFFFF ",
+                            "FPPPPPF",
+                            "FPPPPPF",
+                            "FMPPPMF",
+                            "FPPPPPF",
+                            "FPPPPPF",
+                            " FFFFF "
+                    )
+            ),
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.AURANTIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.AURANTIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
+            ),
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.AURANTIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            )
+    );
+
+    public static final MultiblockPattern CITRINETINE = createAccessiblePattern(
             List.of(
                     List.of(
                             "       ",
@@ -200,8 +250,7 @@ public class MinerMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder VERDIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_verdium",
+    public static final MultiblockPattern VERDIUM1 = createAccessiblePattern(
             List.of(
                     List.of(
                             "         ",
@@ -283,8 +332,89 @@ public class MinerMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder AZURINE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_azurine",
+    public static final MultiblockPattern VERDIUM2 = createAccessiblePattern(
+            List.of(
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    *    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "    F    ",
+                            "  FF FF  ",
+                            "    F    ",
+                            "    F    ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            " F     F ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "  FFFFF  ",
+                            " FPPPPPF ",
+                            "FMPPPPPMF",
+                            "FPPPPPPPF",
+                            "FMPPPPPMF",
+                            "FPPPPPPPF",
+                            "FMPPPPPMF",
+                            " FPPPPPF ",
+                            "  FFFFF  "
+                    )
+            ),
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.VERDIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.VERDIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
+            ),
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.VERDIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            )
+    );
+
+    public static final MultiblockPattern AZURINE = createAccessiblePattern(
             List.of(
                     List.of(
                             "         ",
@@ -366,8 +496,7 @@ public class MinerMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder CAERIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_caerium",
+    public static final MultiblockPattern CAERIUM1 = createAccessiblePattern(
             List.of(
                     List.of(
                             "         ",
@@ -460,8 +589,100 @@ public class MinerMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder AMETHYSTINE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_amethystine",
+    public static final MultiblockPattern CAERIUM2 = createAccessiblePattern(
+            List.of(
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    *    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "   F F   ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "  F   F  ",
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         "
+                    ),
+                    List.of(
+                            "         ",
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            " F     F ",
+                            "         ",
+                            "         ",
+                            "    F    ",
+                            "         "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "    F    ",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "F       F",
+                            "         ",
+                            "         ",
+                            "         ",
+                            "    F    "
+                    ),
+                    List.of(
+                            "  FFFFF  ",
+                            " FPPPPPF ",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            "FMPPPPPMF",
+                            " FPPPPPF ",
+                            "  FFFFF  "
+                    )
+            ),
+            Map.of(
+                    '*', a -> a.getState().is(CrystalSet.CAERIUM.CONTROLLER.get()),
+                    'P', a -> a.getState().is(ModBlocks.GLASS_PANEL.get()),
+                    'F', a -> a.getState().is(CrystalSet.CAERIUM.FRAME.get()),
+                    'M', a -> a.getState().is(ModBlockTagGenerator.MINER_MODIFIERS)
+            ),
+            Map.of(
+                    'P', ModBlocks.GLASS_PANEL.get()::defaultBlockState,
+                    'F', CrystalSet.CAERIUM.FRAME.get()::defaultBlockState,
+                    'M', ModBlocks.NULL_MOD.get()::defaultBlockState
+            )
+    );
+
+    public static final MultiblockPattern AMETHYSTINE = createAccessiblePattern(
             List.of(
                     List.of(
                             "         ",
@@ -554,8 +775,7 @@ public class MinerMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder ROSARIUM = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_rosarium",
+    public static final MultiblockPattern ROSARIUM = createAccessiblePattern(
             List.of(
                     List.of(
                             "       ",
@@ -643,8 +863,7 @@ public class MinerMultiblocks {
             )
     );
 
-    public static final SimpleMultiBlockAislePatternBuilder ULTIMATE = createAccessiblePattern(
-            VoidMiners.MODID + ":miner_ultimate",
+    public static final MultiblockPattern ULTIMATE = createAccessiblePattern(
             List.of(
                     List.of(
                             "           ",
@@ -777,77 +996,32 @@ public class MinerMultiblocks {
             )
     );
 
-    public static SimpleMultiBlockAislePatternBuilder createAccessiblePattern(String structure, List<List<String>> stringPattern, Map<Character, Predicate<BlockInWorld>> lookup, Map<Character, Supplier<BlockState>> blockProvider) {
-        SimpleMultiBlockAislePatternBuilder pattern = SimpleMultiBlockAislePatternBuilder.start();
-        List<List<List<BlockState>>> blocks = new ArrayList<>();
+    public static MultiblockPattern createAccessiblePattern(List<List<String>> stringPattern, Map<Character, Predicate<BlockInWorld>> lookup, Map<Character, Supplier<BlockState>> blockProvider) {
+        MultiblockPatternBuilder pattern = MultiblockPatternBuilder.start();
 
         for (List<String> strings : stringPattern) {
             pattern.aisle(strings.toArray(new String[]{}));
-
-            List<List<BlockState>> blockForAisle = new ArrayList<>();
-
-            for (String s : strings) {
-                blockForAisle.add(
-                        getStatesForString(s, blockProvider)
-                );
-            }
-
-            blocks.add(blockForAisle);
         }
-
-        MiscUtil.structureMap.put(
-                structure,
-                blocks
-        );
 
         lookup.forEach(pattern::where);
-
         blockProvider.forEach(pattern::block);
 
-        return pattern;
+        return pattern.build();
     }
-
-    private static List<BlockState> getStatesForString(String s, Map<Character, Supplier<BlockState>> map) {
-        List<BlockState> toReturn = new ArrayList<>();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-
-            if (c == ' ') {
-                toReturn.add(
-                        Blocks.AIR.defaultBlockState()
-                );
-            } else {
-                if (map.containsKey(c)) {
-                    toReturn.add(
-                            map.get(c).get()
-                    );
-                }
-            }
-        }
-
-        return toReturn;
-    }
-
 
     public static void init() {
-        if (INITIALIZED) {
-            VoidMiners.LOGGER.warn("MinerMultiblocks already initialized, skipping...");
-            return;
-        }
-
         VoidMiners.LOGGER.info("Initializing MinerMultiblocks...");
 
-        MANAGER.register("miner_rubetine", RUBETINE.build());
-        MANAGER.register("miner_aurantium", AURANTIUM.build());
-        MANAGER.register("miner_citrinetine", CITRINETINE.build());
-        MANAGER.register("miner_verdium", VERDIUM.build());
-        MANAGER.register("miner_azurine", AZURINE.build());
-        MANAGER.register("miner_caerium", CAERIUM.build());
-        MANAGER.register("miner_amethystine", AMETHYSTINE.build());
-        MANAGER.register("miner_rosarium", ROSARIUM.build());
-        MANAGER.register("miner_ultimate", ULTIMATE.build());
+        MiscUtil.PATTERNS.put("miner_rubetine", new MiscUtil.PatternPair(RUBETINE, RUBETINE));
+        MiscUtil.PATTERNS.put("miner_aurantium", new MiscUtil.PatternPair(AURANTIUM1, AURANTIUM2));
+        MiscUtil.PATTERNS.put("miner_citrinetine", new MiscUtil.PatternPair(CITRINETINE, CITRINETINE));
+        MiscUtil.PATTERNS.put("miner_verdium", new MiscUtil.PatternPair(VERDIUM1, VERDIUM2));
+        MiscUtil.PATTERNS.put("miner_azurine", new MiscUtil.PatternPair(AZURINE, AZURINE));
+        MiscUtil.PATTERNS.put("miner_caerium", new MiscUtil.PatternPair(CAERIUM1, CAERIUM2));
+        MiscUtil.PATTERNS.put("miner_amethystine", new MiscUtil.PatternPair(AMETHYSTINE, AMETHYSTINE));
+        MiscUtil.PATTERNS.put("miner_rosarium", new MiscUtil.PatternPair(ROSARIUM, ROSARIUM));
+        MiscUtil.PATTERNS.put("miner_ultimate", new MiscUtil.PatternPair(ULTIMATE, ULTIMATE));
 
-        INITIALIZED = true;
         VoidMiners.LOGGER.info("MinerMultiblocks initialized successfully!");
     }
 }
