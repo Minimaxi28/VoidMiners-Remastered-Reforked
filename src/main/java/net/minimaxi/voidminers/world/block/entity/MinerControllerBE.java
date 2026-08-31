@@ -3,6 +3,7 @@ package net.minimaxi.voidminers.world.block.entity;
 import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.config.MinerConfigLoader;
 import net.minimaxi.voidminers.init.ModDataComponents;
+import net.minimaxi.voidminers.init.ModItems;
 import net.minimaxi.voidminers.util.CustomColorUtil;
 import net.minimaxi.voidminers.world.block.ModifierBlock;
 import net.minimaxi.voidminers.common.energy.MinerEnergyStorage;
@@ -50,6 +51,7 @@ public class MinerControllerBE extends BlockEntity {
     public static final int ENERGY_CAPACITY = Integer.MAX_VALUE;
     private static final int BASE_OUTPUT_SLOTS = 9;
     private Item upgradeItem = Items.AIR;
+    public boolean hasNoLaserUpgrade = false;
 
     private MinerEnergyStorage energyHandler = new MinerEnergyStorage(ENERGY_CAPACITY, ENERGY_CAPACITY, 0, 0);
     private ItemStackHandler itemHandler = new ItemStackHandler(BASE_OUTPUT_SLOTS);
@@ -83,13 +85,12 @@ public class MinerControllerBE extends BlockEntity {
     private float cachedSpeedMod = 1f;
     private float cachedItemMod = 1f;
 
-    @Nullable
     private BlockState blockUnderneathState = null;
 
     private void recalculateStorageFromUpgrades() {
-        if(this.upgradeItem == Items.AIR) return;
+        if(upgradeItem == Items.AIR) return;
 
-        int extraSlots = this.upgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
+        int extraSlots = upgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
 
         int desiredSlots = BASE_OUTPUT_SLOTS + extraSlots;
         if (desiredSlots != itemHandler.getSlots()) {
@@ -106,7 +107,7 @@ public class MinerControllerBE extends BlockEntity {
             newHandler.setStackInSlot(i, itemHandler.getStackInSlot(i));
         }
 
-        this.itemHandler = newHandler;
+        itemHandler = newHandler;
     }
 
     public MinerControllerBE(BlockPos pPos, BlockState pBlockState) {
@@ -288,14 +289,28 @@ public class MinerControllerBE extends BlockEntity {
     }
 
     private Component getUpgradeInfoText() {
-        if(this.upgradeItem == Items.AIR) {
-            return Component.translatable("tooltip.voidminers.controller.upgrade").withStyle(ChatFormatting.AQUA)
-                    .append(Component.translatable("tooltip.voidminers.controller.upgrade.no_upgrage").withStyle(ChatFormatting.WHITE));
-        }
+        MutableComponent base = Component.translatable("tooltip.voidminers.controller.upgrade").withStyle(ChatFormatting.AQUA);
+        boolean isAir = upgradeItem == Items.AIR;
 
-        return Component.translatable("tooltip.voidminers.controller.upgrade").withStyle(ChatFormatting.AQUA)
-                .append(Component.translatable(this.upgradeItem.getDescriptionId()).withStyle(ChatFormatting.WHITE))
-                .append(Component.translatable("tooltip.voidminers.controller.upgrade.slots", this.upgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get())).withStyle(ChatFormatting.GRAY));
+        if (isAir && !hasNoLaserUpgrade) {
+            // no upgrades
+            return base.append(Component.translatable("tooltip.voidminers.controller.upgrade.no_upgrade").withStyle(ChatFormatting.WHITE));
+        } else if (isAir) {
+            // no storage upgrade, yes No Laser Upgrade
+            return base.append(Component.translatable("tooltip.voidminers.controller.upgrade.no_laser_upgrade").withStyle(ChatFormatting.WHITE));
+        } else if (!hasNoLaserUpgrade) {
+            // yes storage upgrade, no No Laser Upgrade
+            return base.append(Component.translatable(upgradeItem.getDescriptionId()).withStyle(ChatFormatting.WHITE))
+                    .append(Component.translatable("tooltip.voidminers.controller.upgrade.slots",
+                            upgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get())).withStyle(ChatFormatting.WHITE));
+        } else {
+            // both upgrades
+            return base.append(Component.translatable(upgradeItem.getDescriptionId()).withStyle(ChatFormatting.WHITE))
+                    .append(Component.translatable("tooltip.voidminers.controller.upgrade.slots",
+                            upgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get())).withStyle(ChatFormatting.WHITE))
+                    .append(Component.literal(", ").withStyle(ChatFormatting.WHITE))
+                    .append(Component.translatable("tooltip.voidminers.controller.upgrade.no_laser_upgrade").withStyle(ChatFormatting.WHITE));
+        }
     }
 
     public void updateShowStructure() {
@@ -325,7 +340,7 @@ public class MinerControllerBE extends BlockEntity {
     @Override
     public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider pRegistries) {
         super.handleUpdateTag(tag, pRegistries);
-        this.loadAdditional(tag, pRegistries);
+        loadAdditional(tag, pRegistries);
     }
 
     public MinerEnergyStorage getEnergyStorage() {
@@ -347,7 +362,7 @@ public class MinerControllerBE extends BlockEntity {
 
         long gameTime = level.getGameTime();
 
-        if (!MinerConfigLoader.getInstance().ALLOW_TICK_ACCELERATION && this.lastProcessedGameTime == gameTime) {
+        if (!MinerConfigLoader.getInstance().ALLOW_TICK_ACCELERATION && lastProcessedGameTime == gameTime) {
             return;
         }
 
@@ -374,7 +389,7 @@ public class MinerControllerBE extends BlockEntity {
 
         // this will make it so when the block is tick accelerated, count how much it's tick accelerated then
         // on the real tick apply a multiplier based on the tick acceleration
-        if (this.lastProcessedGameTime == gameTime) {
+        if (lastProcessedGameTime == gameTime) {
             tickAcceleratedTicks++;
         } else {
             // only check the structure every 20 real ticks
@@ -499,7 +514,7 @@ public class MinerControllerBE extends BlockEntity {
 
     private void beforeReturn() {
         assert level != null;
-        this.lastProcessedGameTime = level.getGameTime();
+        lastProcessedGameTime = level.getGameTime();
         tickAcceleratedTicks = 1;
     }
 
@@ -630,7 +645,7 @@ public class MinerControllerBE extends BlockEntity {
                         return recipe.minTier() == MiscUtil.tierMap.get(structure.getPath());
                     }
                 })
-                .filter(recipe -> recipe.dimension().equals(this.level.dimension()));
+                .filter(recipe -> recipe.dimension().equals(level.dimension()));
     }
 
     private boolean hasRecipeRequiring(BlockState state) {
@@ -649,7 +664,11 @@ public class MinerControllerBE extends BlockEntity {
             container.addItem(itemHandler.getStackInSlot(i));
         }
 
-        container.addItem(new ItemStack(this.upgradeItem));
+        container.addItem(new ItemStack(upgradeItem));
+
+        if(hasNoLaserUpgrade) {
+            container.addItem(new ItemStack(ModItems.NO_LASER_UPGRADE.get()));
+        }
 
         assert level != null;
         Containers.dropContents(level, worldPosition, container);
@@ -697,10 +716,14 @@ public class MinerControllerBE extends BlockEntity {
         cachedItemMod = itemMod;
     }
 
-    public void setAppliedUpgradeItem(Item item) {
-        this.upgradeItem = item;
+    public void setUpgradeItem(Item item) {
+        upgradeItem = item;
         recalculateStorageFromUpgrades();
         sync();
+    }
+
+    public Item getUpgradeItem() {
+        return upgradeItem;
     }
 
     public long getRFPerTick() {
@@ -747,10 +770,6 @@ public class MinerControllerBE extends BlockEntity {
         return structure;
     }
 
-    public Item getUpgradeItem() {
-        return upgradeItem;
-    }
-
     public HaltReason getHaltReason() {
         return haltReason;
     }
@@ -762,14 +781,15 @@ public class MinerControllerBE extends BlockEntity {
         CompoundTag data = new CompoundTag();
         if (energyHandler != null) data.put("energy", energyHandler.serializeNBT(pRegistries));
         data.put("items", itemHandler.serializeNBT(pRegistries));
-        data.putString("upgradeItem", this.upgradeItem.toString());
-        data.putInt("progress", this.progress);
-        if (name != null) data.putString("name", this.name);
+        data.putString("upgradeItem", upgradeItem.toString());
+        data.putInt("progress", progress);
+        if (name != null) data.putString("name", name);
         if (structure != null) data.putString("structure", structure.toString());
         data.putBoolean("showStructure", showStructure);
         data.putBoolean("canSeeBedrockOrVoid", canSeeBedrockOrVoid);
         data.putBoolean("foundStructure", foundStructure);
         data.putBoolean("enoughPower", enoughPower);
+        data.putBoolean("hasNoLaserUpgrade", hasNoLaserUpgrade);
 
         pTag.put(VoidMiners.MODID, data);
     }
@@ -792,9 +812,9 @@ public class MinerControllerBE extends BlockEntity {
         if (data.contains("upgradeItem")) {
             ResourceLocation itemId = ResourceLocation.tryParse(data.getString("upgradeItem"));
             if (itemId != null) {
-                this.upgradeItem = BuiltInRegistries.ITEM.get(itemId);
+                upgradeItem = BuiltInRegistries.ITEM.get(itemId);
             } else {
-                this.upgradeItem = Items.AIR;
+                upgradeItem = Items.AIR;
             }
         }
 
@@ -824,6 +844,10 @@ public class MinerControllerBE extends BlockEntity {
 
         if (data.contains("enoughRF")) {
             enoughPower = data.getBoolean("enoughRF");
+        }
+
+        if (data.contains("hasNoLaserUpgrade")) {
+            hasNoLaserUpgrade = data.getBoolean("hasNoLaserUpgrade");
         }
 
         recalculateStorageFromUpgrades();

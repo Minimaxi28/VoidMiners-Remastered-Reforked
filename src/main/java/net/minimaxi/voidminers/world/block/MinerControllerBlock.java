@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.TooltipFlag;
 import net.minimaxi.voidminers.config.MinerConfigLoader;
 import net.minimaxi.voidminers.init.ModDataComponents;
+import net.minimaxi.voidminers.init.ModItems;
 import net.minimaxi.voidminers.util.CustomColorUtil;
 import net.minimaxi.voidminers.world.block.entity.MinerControllerBE;
 import net.minecraft.core.BlockPos;
@@ -95,6 +96,22 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
             return ItemInteractionResult.CONSUME;
         }
 
+        if(pStack.getItem() == ModItems.NO_LASER_UPGRADE.get()) {
+            assert blockEntity != null;
+            if (blockEntity.hasNoLaserUpgrade) {
+                pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.upgrades.upgrade_already_applied"), true);
+            } else {
+                blockEntity.hasNoLaserUpgrade = true;
+            }
+
+            if (!pPlayer.getAbilities().instabuild) {
+                pStack.shrink(1);
+                pPlayer.setItemInHand(pHand, pStack);
+            }
+
+            return ItemInteractionResult.CONSUME;
+        }
+
         return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
     }
 
@@ -103,7 +120,7 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
         Item newUpgradeItem = pStack.getItem();
 
         if (currentUpgradeItem == newUpgradeItem) {
-            pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied"), true);
+            pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.upgrades.upgrade_already_applied"), true);
             return;
         }
 
@@ -119,12 +136,12 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
             int currentAddedSlots = currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
 
             if (currentAddedSlots > newAddedSlots) {
-                pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier"), true);
+                pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.upgrades.max_storage.upgrade_already_applied_is_higher_tier"), true);
                 return;
             }
         }
 
-        blockEntity.setAppliedUpgradeItem(newUpgradeItem);
+        blockEntity.setUpgradeItem(newUpgradeItem);
 
         if (!pPlayer.getAbilities().instabuild) {
             pStack.shrink(1);
@@ -143,7 +160,7 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
             blockEntity.getLevel().sendBlockUpdated(pPos, pState, pState, 3);
         }
 
-        pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.max_storage_upgrades.upgrade_applied", newAddedSlots), true);
+        pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.upgrades.max_storage.upgrade_applied", newAddedSlots), true);
     }
 
     @Override

@@ -28,7 +28,7 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE
 
     @Override
     public void render(MinerControllerBE pBlockEntity, float pPartialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        if (pBlockEntity.canSeeBedrockOrVoid && pBlockEntity.foundStructure) {
+        if (pBlockEntity.foundStructure && pBlockEntity.canSeeBedrockOrVoid && !pBlockEntity.hasNoLaserUpgrade) {
             long gameTime = pBlockEntity.getLevel().getGameTime();
             float f = (float) Math.floorMod(gameTime, 40) + pPartialTick;
 

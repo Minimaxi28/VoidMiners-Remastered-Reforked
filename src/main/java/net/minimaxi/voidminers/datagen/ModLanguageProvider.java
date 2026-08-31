@@ -25,7 +25,10 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add(ModItems.MAX_STORAGE_UPGRADE_T2.get(), "Max Storage Upgrade T2");
         this.add(ModItems.MAX_STORAGE_UPGRADE_T3.get(), "Max Storage Upgrade T3");
 
-        this.add("tooltip.voidminers.max_storage_upgrades", "Right-click a miner with this upgrade to apply it.\nIncreases the miner's output inventory by +%s slots.\nOnly the highest installed tier is applied\nNon-cumulative.\nConsumed on use.");
+        this.add(ModItems.NO_LASER_UPGRADE.get(), "No Laser Upgrade");
+
+        this.add("tooltip.voidminers.max_storage_upgrades", "Right-click a Miner Controller with this upgrade to apply it.\nIncreases the miner's output inventory by +%s slots.\nOnly the highest installed tier is applied\nNon-cumulative.\nConsumed on use.");
+        this.add("tooltip.voidminers.no_laser_upgrade", "Right-click a Miner or a Solar Controller with this upgrade to apply it.\nRemoves the Laser Beam emitted from the Controller.\nNon-cumulative.\nConsumed on use.");
 
         this.add("gui.voidminers.miner", "Tier %d Miner");
         this.add("gui.voidminers.miners", "Miners");
@@ -47,8 +50,9 @@ public class ModLanguageProvider extends LanguageProvider {
 
         this.add("tooltip.voidminers.controller.generation", "⚡ GENERATION: ");
         this.add("tooltip.voidminers.controller.efficiency", "☀ EFFICIENCY: ");
-        this.add("tooltip.voidminers.controller.upgrade", "⚙ UPGRADE: ");
-        this.add("tooltip.voidminers.controller.upgrade.no_upgrage", "No upgrades applied.");
+        this.add("tooltip.voidminers.controller.upgrade", "⚙ UPGRADES: ");
+        this.add("tooltip.voidminers.controller.upgrade.no_upgrade", "No upgrades applied.");
+        this.add("tooltip.voidminers.controller.upgrade.no_laser_upgrade", "No Laser");
         this.add("tooltip.voidminers.controller.upgrade.slots", " (+%d slots)");
         this.add("tooltip.voidminers.controller.information", "Information : ");
         this.add("tooltip.voidminers.controller.information.auto_export", "The outputs will be sent to adjacent inventories or voided if none are found / all are full.");
@@ -147,9 +151,9 @@ public class ModLanguageProvider extends LanguageProvider {
 
         this.add("jade.voidminers.progress", "Progress: %s%%");
 
-        this.add("client_message.voidminers.max_storage_upgrades.upgrade_already_applied", "Same Upgrade already applied");
-        this.add("client_message.voidminers.max_storage_upgrades.upgrade_already_applied_is_higher_tier", "Cannot apply an upgrade with less slots then the current upgrade.");
-        this.add("client_message.voidminers.max_storage_upgrades.upgrade_applied", "Upgrade applied, added slots : %d");
+        this.add("client_message.voidminers.upgrades.upgrade_already_applied", "Same Upgrade already applied");
+        this.add("client_message.voidminers.upgrades.max_storage.upgrade_already_applied_is_higher_tier", "Cannot apply an upgrade with less slots then the current upgrade.");
+        this.add("client_message.voidminers.upgrades.max_storage.upgrade_applied", "Upgrade applied, added slots : %d");
 
         this.add("tooltip.voidminers.structure_builder.unable_to_place_multiblock.1", "Unable to place the multiblock because other blocks are in the way.");
         this.add("tooltip.voidminers.structure_builder.unable_to_place_multiblock.2", "Please clear the area where the multiblock will be made, you can sneak + right-click the Controller for a guide.");

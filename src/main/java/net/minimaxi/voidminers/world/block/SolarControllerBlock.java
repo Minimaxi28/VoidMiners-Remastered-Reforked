@@ -1,9 +1,12 @@
 package net.minimaxi.voidminers.world.block;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minimaxi.voidminers.config.SolarConfigLoader;
+import net.minimaxi.voidminers.init.ModItems;
 import net.minimaxi.voidminers.util.CustomColorUtil;
 import net.minimaxi.voidminers.world.block.entity.SolarControllerBE;
 import net.minecraft.core.BlockPos;
@@ -35,10 +38,49 @@ public class SolarControllerBlock extends ColoredBlock implements EntityBlock {
         this.name = name;
     }
 
+    @Override
+    protected void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMoving) {
+        if (pState.getBlock() != pNewState.getBlock()) {
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof SolarControllerBE controllerBE) {
+                controllerBE.drops();
+            }
+        }
+
+        super.onRemove(pState, pLevel, pPos, pNewState, pMoving);
+    }
+
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         return new SolarControllerBE(blockPos, blockState);
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack pStack, BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHitResult) {
+        SolarControllerBE blockEntity = (SolarControllerBE) pLevel.getBlockEntity(pPos);
+
+        if (pLevel.isClientSide) {
+            return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
+        }
+
+        if(pStack.getItem() == ModItems.NO_LASER_UPGRADE.get()) {
+            assert blockEntity != null;
+            if (blockEntity.hasNoLaserUpgrade) {
+                pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.upgrades.upgrade_already_applied"), true);
+            } else {
+                blockEntity.hasNoLaserUpgrade = true;
+            }
+
+            if (!pPlayer.getAbilities().instabuild) {
+                pStack.shrink(1);
+                pPlayer.setItemInHand(pHand, pStack);
+            }
+
+            return ItemInteractionResult.CONSUME;
+        }
+
+        return super.useItemOn(pStack, pState, pLevel, pPos, pPlayer, pHand, pHitResult);
     }
 
     @Override

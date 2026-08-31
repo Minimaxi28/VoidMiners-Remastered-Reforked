@@ -604,5 +604,18 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy("hasItem", has(ModItems.MAX_STORAGE_UPGRADE_T2.get()))
                 .save(pWriter);
 
+        ShapedRecipeBuilder.shaped(
+                        RecipeCategory.MISC,
+                        ModItems.NO_LASER_UPGRADE.get(),
+                        1
+                )
+                .pattern("RRR")
+                .pattern("ROR")
+                .pattern("RRR")
+                .define('R', CrystalSet.RUBETINE.CRYSTAL.get())
+                .define('O', Items.OBSIDIAN)
+                .unlockedBy("hasItem", has(CrystalSet.RUBETINE.CRYSTAL.get()))
+                .save(pWriter);
+
     }
 }

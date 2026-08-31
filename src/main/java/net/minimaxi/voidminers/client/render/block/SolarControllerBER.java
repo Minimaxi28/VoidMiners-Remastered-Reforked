@@ -28,7 +28,7 @@ public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBE
 
     @Override
     public void render(SolarControllerBE pBlockEntity, float pPartialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-        if (pBlockEntity.foundStructure && pBlockEntity.canSeeSky) {
+        if (pBlockEntity.foundStructure && pBlockEntity.canSeeSky && !pBlockEntity.hasNoLaserUpgrade) {
             long gameTime = pBlockEntity.getLevel().getGameTime();
             float f = (float) Math.floorMod(gameTime, 40) + pPartialTick;
 

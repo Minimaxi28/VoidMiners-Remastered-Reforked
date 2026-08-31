@@ -25,6 +25,8 @@ public class ModItemModelProvider extends ItemModelProvider {
         simpleItem(ModItems.MAX_STORAGE_UPGRADE_T2);
         simpleItem(ModItems.MAX_STORAGE_UPGRADE_T3);
 
+        simpleItem(ModItems.NO_LASER_UPGRADE);
+
         for (CrystalSet set : CrystalSet.sets()) {
             if (set.CRYSTAL != null) {
                 simpleItem(set.CRYSTAL);

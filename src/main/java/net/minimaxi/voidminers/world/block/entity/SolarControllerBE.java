@@ -1,8 +1,11 @@
 package net.minimaxi.voidminers.world.block.entity;
 
+import net.minecraft.world.Containers;
+import net.minecraft.world.SimpleContainer;
 import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.common.energy.SolarEnergyStorage;
 import net.minimaxi.voidminers.config.SolarConfigLoader;
+import net.minimaxi.voidminers.init.ModItems;
 import net.minimaxi.voidminers.util.CustomColorUtil;
 import net.minimaxi.voidminers.world.block.ModifierBlock;
 import net.minimaxi.voidminers.init.ModBlockEntities;
@@ -35,6 +38,8 @@ public class SolarControllerBE extends BlockEntity {
     public boolean foundStructure = false;
 
     public boolean showStructure = false;
+
+    public boolean hasNoLaserUpgrade = false;
 
     private final Map<BlockInWorld, SolarConfigLoader.ModifierConfig> modifierMap = new HashMap<>();
 
@@ -152,6 +157,18 @@ public class SolarControllerBE extends BlockEntity {
                 tooltip.add(Component.translatable("tooltip.voidminers.controller.efficiency_limited_by_time_of_day").withStyle(net.minecraft.ChatFormatting.YELLOW));
             }
         }
+
+        MutableComponent base = Component.translatable("tooltip.voidminers.controller.upgrade").withStyle(ChatFormatting.AQUA);
+
+        if (hasNoLaserUpgrade) {
+            // yes No Laser Upgrade
+            base.append(Component.translatable("tooltip.voidminers.controller.upgrade.no_laser_upgrade").withStyle(ChatFormatting.WHITE));
+        } else {
+            // no No Laser Upgrade
+            base.append(Component.translatable("tooltip.voidminers.controller.upgrade.no_upgrade").withStyle(ChatFormatting.WHITE));
+        }
+
+        tooltip.add(base);
     }
 
     private String getEnergyBar(long current, long max) {
@@ -259,6 +276,15 @@ public class SolarControllerBE extends BlockEntity {
         assert level != null;
         this.lastProcessedGameTime = level.getGameTime();
         tickAcceleratedTicks = 1;
+    }
+
+    public void drops() {
+        if(hasNoLaserUpgrade) {
+            SimpleContainer container = new SimpleContainer(ModItems.NO_LASER_UPGRADE.toStack());
+
+            assert level != null;
+            Containers.dropContents(level, worldPosition, container);
+        }
     }
 
     private void pushEnergyToNeighbors() {
@@ -433,6 +459,7 @@ public class SolarControllerBE extends BlockEntity {
         data.putBoolean("showStructure", showStructure);
         data.putBoolean("foundStructure", foundStructure);
         data.putBoolean("canSeeSky", canSeeSky);
+        data.putBoolean("hasNoLaserUpgrade", hasNoLaserUpgrade);
 
         pTag.put(VoidMiners.MODID, data);
     }
@@ -466,6 +493,10 @@ public class SolarControllerBE extends BlockEntity {
 
         if (data.contains("canSeeSky")) {
             canSeeSky = data.getBoolean("canSeeSky");
+        }
+
+        if (data.contains("hasNoLaserUpgrade")) {
+            hasNoLaserUpgrade = data.getBoolean("hasNoLaserUpgrade");
         }
 
         sync();

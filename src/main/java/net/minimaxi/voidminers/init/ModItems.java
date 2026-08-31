@@ -3,6 +3,7 @@ package net.minimaxi.voidminers.init;
 import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.config.MinerConfigLoader;
 import net.minimaxi.voidminers.world.item.MaxStorageUpgradeItem;
+import net.minimaxi.voidminers.world.item.NoLaserUpgradeItem;
 import net.minimaxi.voidminers.world.item.StructureBuilderItem;
 
 import net.minecraft.world.item.Item;
@@ -26,4 +27,7 @@ public class ModItems {
             () -> new MaxStorageUpgradeItem(MinerConfigLoader.getInstance().UPGRADE_T2_SLOTS, new Item.Properties().rarity(Rarity.RARE)));
     public static final DeferredItem<Item> MAX_STORAGE_UPGRADE_T3 = ITEMS.register("max_storage_upgrade_t3",
             () -> new MaxStorageUpgradeItem(MinerConfigLoader.getInstance().UPGRADE_T3_SLOTS, new Item.Properties().rarity(Rarity.EPIC)));
+
+    public static final DeferredItem<Item> NO_LASER_UPGRADE = ITEMS.register("no_laser_upgrade",
+            () -> new NoLaserUpgradeItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
 }
