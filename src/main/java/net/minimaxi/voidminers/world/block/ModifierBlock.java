@@ -3,7 +3,7 @@ package net.minimaxi.voidminers.world.block;
 import net.minimaxi.voidminers.config.MinerConfigLoader;
 import net.minimaxi.voidminers.config.SolarConfigLoader;
 import net.minimaxi.voidminers.init.ModifierType;
-import net.minimaxi.voidminers.util.CustomColorUtil;
+import net.minimaxi.voidminers.util.ColorUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -16,7 +16,7 @@ public class ModifierBlock extends ColoredBlock {
     public String name;
     private final ModifierType type;
 
-    public ModifierBlock(Properties pProperties, String name, CustomColorUtil color, ModifierType type) {
+    public ModifierBlock(Properties pProperties, String name, ColorUtil color, ModifierType type) {
         super(pProperties, color);
         this.name = name;
         this.type = type;

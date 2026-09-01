@@ -3,8 +3,11 @@
 ## 1.21.1-1.6.10
 
 - Changes to JEI recipes
-  - press SHIFT to display percentages instead of weights
-  - press CTRL to display the full number when hovering over the recipe
+  - Press SHIFT to display percentages instead of weights
+  - Press CTRL to display the full number when hovering over the recipe
+- No Laser Upgrade
+  - Right-click a Miner or Solar Controller to remove the laser beam
+- Miner laser beam will now stop at the block it hits / the void
 
 ## 1.21.1-1.6.9
 

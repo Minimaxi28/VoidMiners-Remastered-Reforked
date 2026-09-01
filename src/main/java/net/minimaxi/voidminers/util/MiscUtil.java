@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class MiscUtil {
     public static Map<String, Integer> tierMap = new HashMap<>();
-    public static Map<String, Integer> colorMap = new HashMap<>();
 
     public record PatternPair(
             MultiblockPattern primary,
@@ -30,16 +29,6 @@ public class MiscUtil {
                     i + 1
             );
         }
-
-        colorMap.put("rubetine", 0xFFFF0000);
-        colorMap.put("aurantium", 0xFFFFAA00);
-        colorMap.put("citrinetine", 0xFFFFFF00);
-        colorMap.put("verdium", 0xFF00FF00);
-        colorMap.put("azurine", 0xFF00FFFF);
-        colorMap.put("caerium", 0xFF0000FF);
-        colorMap.put("amethystine", 0xFFAA00FF);
-        colorMap.put("rosarium", 0xFFFF00FF);
-        colorMap.put("ultimate", 0xFFD700FF);
     }
 
     public static Map<String, Integer> getNeededBlocks(List<List<List<BlockState>>> structure) {

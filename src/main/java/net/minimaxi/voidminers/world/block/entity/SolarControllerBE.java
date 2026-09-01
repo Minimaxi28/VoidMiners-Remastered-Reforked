@@ -6,7 +6,7 @@ import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.common.energy.SolarEnergyStorage;
 import net.minimaxi.voidminers.config.SolarConfigLoader;
 import net.minimaxi.voidminers.init.ModItems;
-import net.minimaxi.voidminers.util.CustomColorUtil;
+import net.minimaxi.voidminers.util.ColorUtil;
 import net.minimaxi.voidminers.world.block.ModifierBlock;
 import net.minimaxi.voidminers.init.ModBlockEntities;
 import net.minimaxi.voidminers.util.MiscUtil;
@@ -82,13 +82,13 @@ public class SolarControllerBE extends BlockEntity {
     }
 
     public int getBeamColor() {
-        return MiscUtil.colorMap.getOrDefault(name, 0xFFFFFFFF);
+        return ColorUtil.getARGBForCrystal(name);
     }
 
     public List<Component> getInteractionTooltip() {
         List<Component> tooltip = new ArrayList<>();
         tooltip.add(Component.literal("═══ ").withStyle(ChatFormatting.GRAY)
-                .append(Component.literal(name.replace("solar_", "").toUpperCase() + " SOLAR PANEL").withColor(Integer.parseInt(CustomColorUtil.getColorForCrystal(name.replace("solar_", "")).getHexColor().substring(1), 16))
+                .append(Component.literal(name.replace("solar_", "").toUpperCase() + " SOLAR PANEL").withColor(Integer.parseInt(ColorUtil.getColorForCrystal(name.replace("solar_", "")).getHexColor().substring(1), 16))
                         .append(Component.literal(" ═══").withStyle(ChatFormatting.GRAY))));
 
         MutableComponent status = Component.translatable("tooltip.voidminers.controller.status.status").withStyle(ChatFormatting.GOLD);

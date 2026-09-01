@@ -1,7 +1,7 @@
 package net.minimaxi.voidminers.init;
 
 import net.minimaxi.voidminers.VoidMiners;
-import net.minimaxi.voidminers.util.CustomColorUtil;
+import net.minimaxi.voidminers.util.ColorUtil;
 import net.minimaxi.voidminers.world.block.ModifierBlock;
 import net.minimaxi.voidminers.world.item.ColoredBlockItem;
 import net.minecraft.world.item.BlockItem;
@@ -64,7 +64,7 @@ public class ModBlocks {
         return toReturn;
     }
 
-    public static <T extends Block> DeferredHolder<Block, T> registerColoredBlock(String name, Supplier<T> block, Rarity rarity, CustomColorUtil color) {
+    public static <T extends Block> DeferredHolder<Block, T> registerColoredBlock(String name, Supplier<T> block, Rarity rarity, ColorUtil color) {
         DeferredHolder<Block, T> toReturn = BLOCKS.register(name, block);
         registerColoredBlockItem(name, toReturn, rarity, color);
         return toReturn;
@@ -74,7 +74,7 @@ public class ModBlocks {
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
     }
 
-    private static <T extends Block> DeferredHolder<Item, BlockItem> registerColoredBlockItem(String name, DeferredHolder<Block, T> block, Rarity rarity, CustomColorUtil color) {
+    private static <T extends Block> DeferredHolder<Item, BlockItem> registerColoredBlockItem(String name, DeferredHolder<Block, T> block, Rarity rarity, ColorUtil color) {
         return ModItems.ITEMS.register(name, () -> new ColoredBlockItem(block.get(), new Item.Properties().rarity(rarity), color));
     }
 }

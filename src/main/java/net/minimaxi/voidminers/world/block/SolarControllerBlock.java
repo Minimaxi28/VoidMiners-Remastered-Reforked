@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minimaxi.voidminers.config.SolarConfigLoader;
 import net.minimaxi.voidminers.init.ModItems;
-import net.minimaxi.voidminers.util.CustomColorUtil;
+import net.minimaxi.voidminers.util.ColorUtil;
 import net.minimaxi.voidminers.world.block.entity.SolarControllerBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -32,7 +32,7 @@ public class SolarControllerBlock extends ColoredBlock implements EntityBlock {
     final ResourceLocation structure;
     final String name;
 
-    public SolarControllerBlock(Properties pProperties, ResourceLocation structure, String name, CustomColorUtil color) {
+    public SolarControllerBlock(Properties pProperties, ResourceLocation structure, String name, ColorUtil color) {
         super(pProperties, color);
         this.structure = structure;
         this.name = name;

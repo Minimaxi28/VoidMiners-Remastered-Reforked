@@ -36,7 +36,7 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE
             pose.translate(0.5f, 0, 0.5f);
             pose.mulPose(Axis.YP.rotationDegrees(f * 2.25f - 45f));
 
-            renderBeam(pBuffer.getBuffer(RenderType.gui()), pose, new Vector3f(0f, 0f, 0f), pBlockEntity.getBeamColor(), 320, 0.3f);
+            renderBeam(pBuffer.getBuffer(RenderType.gui()), pose, new Vector3f(0f, 0f, 0f), pBlockEntity.getBeamColor(), pBlockEntity.beamLength, 0.3f);
 
             pose.popPose();
             return;
@@ -116,6 +116,37 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE
             pose.popPose();
             pose.popPose();
         }
+
+        pose.pushPose();
+        pose.translate(-width / 2, -length, -width / 2);
+        renderCap(vC, pose, color, width);
+        pose.popPose();
+    }
+
+    public void renderCap(VertexConsumer vC, PoseStack pose, int color, float size) {
+        vC.addVertex(pose.last().pose(), 0, 0, 0)
+                .setColor(color).setUv(0, 0)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setNormal(0, -1, 0);
+
+        vC.addVertex(pose.last().pose(), size, 0, 0)
+                .setColor(color).setUv(1, 0)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setNormal(0, -1, 0);
+
+        vC.addVertex(pose.last().pose(), size, 0, size)
+                .setColor(color).setUv(1, 1)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setNormal(0, -1, 0);
+
+        vC.addVertex(pose.last().pose(), 0, 0, size)
+                .setColor(color).setUv(0, 1)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(LightTexture.FULL_BRIGHT)
+                .setNormal(0, -1, 0);
     }
 
     public void renderQuad(VertexConsumer vC, PoseStack pose, Vector3f pos, int color, float length, float width) {

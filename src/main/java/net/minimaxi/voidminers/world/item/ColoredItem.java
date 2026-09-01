@@ -1,15 +1,15 @@
 package net.minimaxi.voidminers.world.item;
 
-import net.minimaxi.voidminers.util.CustomColorUtil;
+import net.minimaxi.voidminers.util.ColorUtil;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 
 public class ColoredItem extends Item {
-    private final CustomColorUtil color;
+    private final ColorUtil color;
 
-    public ColoredItem(Properties properties, CustomColorUtil color) {
+    public ColoredItem(Properties properties, ColorUtil color) {
         super(properties);
         this.color = color;
     }

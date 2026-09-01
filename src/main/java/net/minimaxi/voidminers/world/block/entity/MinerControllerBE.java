@@ -4,7 +4,7 @@ import net.minimaxi.voidminers.VoidMiners;
 import net.minimaxi.voidminers.config.MinerConfigLoader;
 import net.minimaxi.voidminers.init.ModDataComponents;
 import net.minimaxi.voidminers.init.ModItems;
-import net.minimaxi.voidminers.util.CustomColorUtil;
+import net.minimaxi.voidminers.util.ColorUtil;
 import net.minimaxi.voidminers.world.block.ModifierBlock;
 import net.minimaxi.voidminers.common.energy.MinerEnergyStorage;
 import net.minimaxi.voidminers.init.ModBlockEntities;
@@ -86,6 +86,7 @@ public class MinerControllerBE extends BlockEntity {
     private float cachedItemMod = 1f;
 
     private BlockState blockUnderneathState = null;
+    public int beamLength = 0;
 
     private void recalculateStorageFromUpgrades() {
         if(upgradeItem == Items.AIR) return;
@@ -138,13 +139,13 @@ public class MinerControllerBE extends BlockEntity {
     }
 
     public int getBeamColor() {
-        return MiscUtil.colorMap.getOrDefault(name, 0xFFFFFFFF);
+        return ColorUtil.getARGBForCrystal(name);
     }
 
     public List<Component> getInteractionTooltip() {
         List<Component> tooltip = new ArrayList<>();
         tooltip.add(Component.literal("═══ ").withStyle(ChatFormatting.GRAY)
-                .append(Component.literal(name.toUpperCase() + " MINER").withColor(Integer.parseInt(CustomColorUtil.getColorForCrystal(name).getHexColor().substring(1), 16))
+                .append(Component.literal(name.toUpperCase() + " MINER").withColor(Integer.parseInt(ColorUtil.getColorForCrystal(name).getHexColor().substring(1), 16))
                         .append(Component.literal(" ═══").withStyle(ChatFormatting.GRAY))));
 
         MutableComponent status = Component.translatable("tooltip.voidminers.controller.status.status").withStyle(ChatFormatting.GOLD);
@@ -585,15 +586,24 @@ public class MinerControllerBE extends BlockEntity {
         assert level != null;
         blockUnderneathState = null;
 
-        for (int i = 0; i < 320; i++) {
+        for (int i = 0; i < level.getMaxBuildHeight(); i++) {
             BlockPos check = pos.below(i + 1);
             BlockState state = level.getBlockState(check);
 
-            if (state.is(Blocks.BEDROCK)) return true;
+            if (state.is(Blocks.BEDROCK)) {
+                beamLength = pos.below().getY() - check.getY();
+                return true;
+            }
+
+            if(check.getY() < level.getMinBuildHeight()) {
+                beamLength = pos.below().getY() - check.getY();
+                return true;
+            }
 
             if (state.propagatesSkylightDown(level, check) || level.isFluidAtPosition(check, (fluidState -> !fluidState.isEmpty()))) continue;
 
             blockUnderneathState = state;
+            beamLength = pos.below().getY() - check.getY();
 
             return hasRecipeRequiring(state);
         }
@@ -790,6 +800,7 @@ public class MinerControllerBE extends BlockEntity {
         data.putBoolean("foundStructure", foundStructure);
         data.putBoolean("enoughPower", enoughPower);
         data.putBoolean("hasNoLaserUpgrade", hasNoLaserUpgrade);
+        data.putInt("beamLength", beamLength);
 
         pTag.put(VoidMiners.MODID, data);
     }
@@ -848,6 +859,10 @@ public class MinerControllerBE extends BlockEntity {
 
         if (data.contains("hasNoLaserUpgrade")) {
             hasNoLaserUpgrade = data.getBoolean("hasNoLaserUpgrade");
+        }
+
+        if (data.contains("beamLength")) {
+            beamLength = data.getInt("beamLength");
         }
 
         recalculateStorageFromUpgrades();
