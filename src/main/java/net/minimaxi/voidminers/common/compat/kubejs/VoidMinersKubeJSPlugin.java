@@ -10,7 +10,7 @@ public class VoidMinersKubeJSPlugin implements KubeJSPlugin {
     
     @Override
     public void registerClasses(ClassFilter filter) {
-        filter.allow("net.nadiendev.voidminers.common.compat.kubejs");
+        filter.allow("net.minimaxi.voidminers.common.compat.kubejs");
     }
     
     @Override
