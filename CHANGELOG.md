@@ -2,12 +2,15 @@
 
 ## 1.21.1-1.6.10
 
-- Changes to JEI recipes
+- Changes to JEI tab
   - Press SHIFT to display percentages instead of weights
-  - Press CTRL to display the full number when hovering over the recipe
-- No Laser Upgrade
+  - Press CTRL to display the full number when hovering over the recipe instead of the E notation one
+- Added the No Laser Upgrade
   - Right-click a Miner or Solar Controller to remove the laser beam
-- Miner laser beam will now stop at the block it hits / the void
+- Miner laser beam will now stop at the block it hits if it has a recipe / the void / bedrock
+- Remove CTM compat from the mod
+  - [CTM](https://www.curseforge.com/minecraft/mc-mods/ctm) compat is now in a dedicated Resource Pack, [Voidminers Remastered Reforged CTM Compat](https://www.curseforge.com/minecraft/texture-packs/voidminers-remastered-reforked-ctm-compat)
+- [Fusion](https://www.curseforge.com/minecraft/mc-mods/fusion-connected-textures) compat, in a dedicated Resource Pack, [Voidminers Remastered Reforged Fusion Compat](https://www.curseforge.com/minecraft/texture-packs/voidminers-remastered-reforked-fusion-compat)
 
 ## 1.21.1-1.6.9
 
