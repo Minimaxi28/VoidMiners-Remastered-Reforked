@@ -20,10 +20,10 @@ public class GameBusEvent {
 
     @SubscribeEvent
     public static void onReload(LevelTickEvent.Post event) {
-        if(!(event.getLevel() instanceof ServerLevel sLevel)) return;
+        if (!(event.getLevel() instanceof ServerLevel sLevel)) return;
 
         int ticks = sLevel.getServer().getTickCount();
-        if(ticks % 100 != 0) return;
+        if (ticks % 100 != 0) return;
 
         ModNetwork.sendToAllPlayers(
             new SyncConfigS2CPacket(

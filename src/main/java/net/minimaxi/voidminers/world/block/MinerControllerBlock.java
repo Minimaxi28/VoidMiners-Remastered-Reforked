@@ -90,13 +90,13 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
             return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
         }
 
-        if(pStack.getItem().components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
+        if (pStack.getItem().components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
             assert blockEntity != null;
             handleUpgrade(blockEntity, pPlayer, pStack, pHand, pLevel, pState, pPos);
             return ItemInteractionResult.CONSUME;
         }
 
-        if(pStack.getItem() == ModItems.NO_LASER_UPGRADE.get()) {
+        if (pStack.getItem() == ModItems.NO_LASER_UPGRADE.get()) {
             assert blockEntity != null;
             if (blockEntity.hasNoLaserUpgrade) {
                 pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.upgrades.upgrade_already_applied"), true);
@@ -126,13 +126,13 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
 
         int newAddedSlots = 0;
 
-        if(newUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
+        if (newUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get()) != null) {
             newAddedSlots = newUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
         } else {
             return;
         }
 
-        if(currentUpgradeItem != Items.AIR) {
+        if (currentUpgradeItem != Items.AIR) {
             int currentAddedSlots = currentUpgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
 
             if (currentAddedSlots > newAddedSlots) {

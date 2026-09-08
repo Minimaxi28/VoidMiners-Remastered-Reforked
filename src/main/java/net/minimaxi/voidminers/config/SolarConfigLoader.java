@@ -126,7 +126,7 @@ public class SolarConfigLoader {
 
     private void saveDefaultConfig(File file, Gson gson) {
         try (FileWriter writer = new FileWriter(file)) {
-            if(INSTANCE == null) INSTANCE = new SolarConfigLoader();
+            if (INSTANCE == null) INSTANCE = new SolarConfigLoader();
 
             gson.toJson(INSTANCE, SolarConfigLoader.class, writer);
             VoidMiners.LOGGER.info("Default configuration file created successfully.");
@@ -196,7 +196,7 @@ public class SolarConfigLoader {
     public ModifierConfig getModifierConfig(String modifierTierName, String type) {
         if (modifierTierName.equals("null")) return new ModifierConfig(1, 1);
 
-        if(type.equals("weather")) type = "weather_resistance";
+        if (type.equals("weather")) type = "weather_resistance";
 
         return getControllerConfig(modifierTierName).modifiers.getOrDefault(type, new ModifierConfig(100, 1));
     }

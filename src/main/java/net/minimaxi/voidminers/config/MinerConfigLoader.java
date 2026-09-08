@@ -140,7 +140,7 @@ public class MinerConfigLoader {
 
     private void saveDefaultConfig(File file, Gson gson) {
         try (FileWriter writer = new FileWriter(file)) {
-            if(INSTANCE == null) INSTANCE = new MinerConfigLoader();
+            if (INSTANCE == null) INSTANCE = new MinerConfigLoader();
 
             gson.toJson(INSTANCE, MinerConfigLoader.class, writer);
             VoidMiners.LOGGER.info("Default configuration file created successfully.");

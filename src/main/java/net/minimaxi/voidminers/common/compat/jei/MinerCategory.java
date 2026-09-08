@@ -210,8 +210,8 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
         );
 
         if (isHovering(mouseX, mouseY, 0, 0, recipeWidth, recipeHeight)) {
-            if( Screen.hasControlDown()) {
-                if(Screen.hasShiftDown()) {
+            if ( Screen.hasControlDown()) {
+                if (Screen.hasShiftDown()) {
                     guiGraphics.renderTooltip(font, Component.translatable("gui.voidminers.chance",BigDecimal.valueOf(percent).toPlainString()), (int) mouseX, (int) mouseY + 10);
                 } else {
                     guiGraphics.renderTooltip(font, Component.translatable("gui.voidminers.weight", BigDecimal.valueOf(recipe.output().weight).toPlainString()), (int) mouseX, (int) mouseY + 10);

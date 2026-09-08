@@ -33,7 +33,7 @@ public class StructureBuilderItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
-        if(pContext.getPlayer() == null) return InteractionResult.PASS;
+        if (pContext.getPlayer() == null) return InteractionResult.PASS;
 
         BlockPos pos = pContext.getClickedPos();
         Level level = pContext.getLevel();
@@ -45,7 +45,7 @@ public class StructureBuilderItem extends Item {
 
         BlockEntity entity = level.getBlockEntity(pos);
 
-        if(entity instanceof MinerControllerBE minerController) {
+        if (entity instanceof MinerControllerBE minerController) {
             buildMultiblock(level, pos, player, minerController.getStructure().getPath(), true);
         } else if (entity instanceof SolarControllerBE solarController) {
             buildMultiblock(level, pos, player, solarController.getStructure().getPath(), false);
@@ -85,19 +85,19 @@ public class StructureBuilderItem extends Item {
                         BlockPos targetPos = origin.offset(y, -x, z);
 
                         // if player in creative, build and skip
-                        if(pPlayer.getAbilities().instabuild) {
+                        if (pPlayer.getAbilities().instabuild) {
                             pLevel.setBlock(targetPos, block, 3);
                             continue;
                         }
 
                         // if same block already placed in world, skip
-                        if(block == pLevel.getBlockState(targetPos)) {
+                        if (block == pLevel.getBlockState(targetPos)) {
                             continue;
                         }
 
                         // if another block already placed in world (NULL_MOD gets special treatment), skip
-                        if(pLevel.getBlockState(targetPos).getBlock() != Blocks.AIR) {
-                            if(targetBlock == ModBlocks.NULL_MOD.get() &&
+                        if (pLevel.getBlockState(targetPos).getBlock() != Blocks.AIR) {
+                            if (targetBlock == ModBlocks.NULL_MOD.get() &&
                                     pLevel.getBlockState(targetPos).getBlock().builtInRegistryHolder().is(isMiner ? ModBlockTagGenerator.MINER_MODIFIERS : ModBlockTagGenerator.SOLAR_MODIFIERS)) {
                                 continue;
                             }
@@ -106,7 +106,7 @@ public class StructureBuilderItem extends Item {
                         }
 
                         // check the player's inventory for blocks that can replace NULL_MOD
-                        if(targetBlock == ModBlocks.NULL_MOD.get()) {
+                        if (targetBlock == ModBlocks.NULL_MOD.get()) {
                             boolean foundMatchingItem = false;
                             for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
                                 ItemStack stack = pPlayer.getInventory().getItem(slot);
@@ -128,21 +128,21 @@ public class StructureBuilderItem extends Item {
 
                                 boolean blockAlreadyInArray = false;
                                 for (ItemStack stack : missingBlocks) {
-                                    if(stack.getItem() == targetBlock.asItem()) {
+                                    if (stack.getItem() == targetBlock.asItem()) {
                                         blockAlreadyInArray = true;
                                         stack.setCount(stack.getCount() + 1);
                                         break;
                                     }
                                 }
 
-                                if(!blockAlreadyInArray) {
+                                if (!blockAlreadyInArray) {
                                     missingBlocks.add(new ItemStack(targetBlock));
                                 }
                             }
                             continue;
                         }
 
-                        if(pPlayer.getInventory().contains(new ItemStack(targetBlock))) {
+                        if (pPlayer.getInventory().contains(new ItemStack(targetBlock))) {
                             int slot = pPlayer.getInventory().findSlotMatchingItem(new ItemStack(targetBlock));
                             pPlayer.getSlot(slot).get().setCount(pPlayer.getSlot(slot).get().getCount() - 1);
                             pLevel.setBlock(targetPos, block, 3);
@@ -151,14 +151,14 @@ public class StructureBuilderItem extends Item {
 
                             boolean blockAlreadyInArray = false;
                             for (ItemStack stack : missingBlocks) {
-                                if(stack.getItem() == targetBlock.asItem()) {
+                                if (stack.getItem() == targetBlock.asItem()) {
                                     blockAlreadyInArray = true;
                                     stack.setCount(stack.getCount() + 1);
                                     break;
                                 }
                             }
 
-                            if(!blockAlreadyInArray) {
+                            if (!blockAlreadyInArray) {
                                 missingBlocks.add(new ItemStack(targetBlock));
                             }
                         }
@@ -166,7 +166,7 @@ public class StructureBuilderItem extends Item {
                 }
             }
         }
-        if(missingBlocksInInventory) {
+        if (missingBlocksInInventory) {
             generateTooltip(pPlayer, false, true, missingBlocks);
         }
     }
@@ -174,17 +174,17 @@ public class StructureBuilderItem extends Item {
     private static void generateTooltip(Player pPlayer, boolean blocksInTheWay, boolean missingBlocksInInventory, List<ItemStack> missingBlocks) {
         List<Component> tooltip = new ArrayList<>();
 
-        if(blocksInTheWay) {
+        if (blocksInTheWay) {
             tooltip.add(Component.translatable("tooltip.voidminers.structure_builder.unable_to_place_multiblock.1").withStyle(ChatFormatting.RED));
             tooltip.add(Component.translatable("tooltip.voidminers.structure_builder.unable_to_place_multiblock.2").withStyle(ChatFormatting.YELLOW));
         }
 
-        if(missingBlocksInInventory) {
+        if (missingBlocksInInventory) {
             tooltip.add(Component.translatable("tooltip.voidminers.structure_builder.missing_block_in_inventory").withStyle(ChatFormatting.RED));
 
             for (ItemStack stack : missingBlocks) {
                 String blockName = Language.getInstance().getOrDefault(stack.getDescriptionId());
-                if(blockName.contains("Null")) blockName = "Modifier";
+                if (blockName.contains("Null")) blockName = "Modifier";
                 tooltip.add(Component.literal(stack.getCount() + "x " + blockName).withStyle(ChatFormatting.YELLOW));
             }
         }

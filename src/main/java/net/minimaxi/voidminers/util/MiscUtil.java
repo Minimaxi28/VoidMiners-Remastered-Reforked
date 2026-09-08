@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MiscUtil {
-    public static Map<String, Integer> tierMap = new HashMap<>();
+    public static final Map<String, Integer> TIER_MAP = new HashMap<>();
 
     public record PatternPair(
             MultiblockPattern primary,
@@ -20,15 +20,24 @@ public class MiscUtil {
 
     public static final Map<String, PatternPair> PATTERNS = new HashMap<>();
 
+    public static final Map<String, Integer> GLASS_HEIGHT = new HashMap<>();
+
     static {
         for (int i = 0; i < CrystalSet.sets().size(); i++) {
             CrystalSet set = CrystalSet.sets().get(i);
 
-            tierMap.put(
-                    "miner_" + set.name,
-                    i + 1
-            );
+            TIER_MAP.put("miner_" + set.name, i + 1);
         }
+
+        GLASS_HEIGHT.put("miner_rubetine", 2);
+        GLASS_HEIGHT.put("miner_aurantium", 3);
+        GLASS_HEIGHT.put("miner_citrinetine", 4);
+        GLASS_HEIGHT.put("miner_verdium", 4);
+        GLASS_HEIGHT.put("miner_azurine", 4);
+        GLASS_HEIGHT.put("miner_caerium", 5);
+        GLASS_HEIGHT.put("miner_amethystine", 5);
+        GLASS_HEIGHT.put("miner_rosarium", 6);
+        GLASS_HEIGHT.put("miner_ultimate", 6);
     }
 
     public static Map<String, Integer> getNeededBlocks(List<List<List<BlockState>>> structure) {

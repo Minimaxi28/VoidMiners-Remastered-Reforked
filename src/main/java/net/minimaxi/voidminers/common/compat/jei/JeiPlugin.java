@@ -71,7 +71,7 @@ public class JeiPlugin implements IModPlugin {
 
         List<MinerRecipe> foundRecipes = recipes.stream().filter(
                         recipe -> {
-                            if(recipe.allowHigherTiers()){
+                            if (recipe.allowHigherTiers()){
                                 return recipe.minTier() <= tier + 1;
                             } else {
                                 return recipe.minTier() == tier + 1;

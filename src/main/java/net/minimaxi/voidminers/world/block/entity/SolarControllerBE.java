@@ -147,9 +147,9 @@ public class SolarControllerBE extends BlockEntity {
         tooltip.add(Component.translatable("tooltip.voidminers.controller.efficiency").withStyle(net.minecraft.ChatFormatting.YELLOW)
                 .append(Component.literal(String.format("%.2f%%", getSolarEfficiency() * 100)).withStyle(net.minecraft.ChatFormatting.WHITE)));
 
-        if(getSolarEfficiency() != 1.0f) {
+        if (getSolarEfficiency() != 1.0f) {
             assert level != null;
-            if(level.isRaining() && level.isThundering()) {
+            if (level.isRaining() && level.isThundering()) {
                 tooltip.add(Component.translatable("tooltip.voidminers.controller.efficiency_limited_by_thunder").withStyle(net.minecraft.ChatFormatting.YELLOW));
             } else if (level.isRaining()) {
                 tooltip.add(Component.translatable("tooltip.voidminers.controller.efficiency_limited_by_rain").withStyle(net.minecraft.ChatFormatting.YELLOW));
@@ -246,7 +246,7 @@ public class SolarControllerBE extends BlockEntity {
 
             canSeeSky = level.canSeeSky(pPos.above());
 
-            if(!canSeeSky) {
+            if (!canSeeSky) {
                 haltReason = HaltReason.NO_SKY_VIEW;
                 beforeReturn();
                 return;
@@ -279,7 +279,7 @@ public class SolarControllerBE extends BlockEntity {
     }
 
     public void drops() {
-        if(hasNoLaserUpgrade) {
+        if (hasNoLaserUpgrade) {
             SimpleContainer container = new SimpleContainer(ModItems.NO_LASER_UPGRADE.toStack());
 
             assert level != null;
@@ -325,7 +325,7 @@ public class SolarControllerBE extends BlockEntity {
     }
 
     private void sync() {
-        if(level != null) {
+        if (level != null) {
             setChanged(level, getBlockPos(), getBlockState());
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
         }

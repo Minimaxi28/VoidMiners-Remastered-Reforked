@@ -36,6 +36,7 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("tooltip.voidminers.controller.halt_reason.dimension_not_ok", "§eThis miner doesn't have any recipes available for this dimension : %s§d)§e.\nCheck JEI for available recipes / dimensions.");
         this.add("tooltip.voidminers.controller.halt_reason.structure_not_found", "Structure is not correct, sneak + right-click the Controller for a guide.\nTotal needed blocks: ");
         this.add("tooltip.voidminers.controller.halt_reason.too_much_item_multiplier", "§eItem Multiplier too high, remove some of the blocks that add Item Multiplier.\nMax Item Multiplier: %d×");
+        this.add("tooltip.voidminers.controller.halt_reason.block_before_glass", "There is a block between the Miner Controller and the Glass Panels, remove it for the Miner to work.");
         this.add("tooltip.voidminers.controller.halt_reason.not_enough_empty_slots", "All slots are full, the miner can't mine until it has been emptied.");
         this.add("tooltip.voidminers.controller.halt_reason.no_bedrock_or_void_view", "Make sure that the miner can see the void / bedrock!\nThe distance does NOT matter, only that the center block can see void / bedrock.");
 
@@ -143,6 +144,7 @@ public class ModLanguageProvider extends LanguageProvider {
         this.add("jade.voidminers.halt_reason.no_recipes_in_dimension", "Reason: No recipes in dimension");
         this.add("jade.voidminers.halt_reason.structure_not_found", "Reason: Structure not found");
         this.add("jade.voidminers.halt_reason.too_much_item_multiplier", "Reason: Item Multiplier too high");
+        this.add("jade.voidminers.halt_reason.block_before_glass", "Reason: Block between Controller and Glass");
         this.add("jade.voidminers.halt_reason.not_enough_empty_slots", "Reason: Not enough empty slots");
         this.add("jade.voidminers.halt_reason.no_bedrock_or_void_view", "Reason: Can't see Bedrock or Void");
 

@@ -14,11 +14,6 @@ public class ColoredBlock extends Block {
         this.color = color;
     }
 
-    public ColoredBlock(Properties properties) {
-        super(properties);
-        this.color = ColorUtil.NULL_COLOR;
-    }
-
     @Override
     public MutableComponent getName() {
         return Component.literal(super.getName().getString())

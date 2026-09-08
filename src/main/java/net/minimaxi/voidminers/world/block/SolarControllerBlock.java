@@ -64,7 +64,7 @@ public class SolarControllerBlock extends ColoredBlock implements EntityBlock {
             return ItemInteractionResult.sidedSuccess(pLevel.isClientSide());
         }
 
-        if(pStack.getItem() == ModItems.NO_LASER_UPGRADE.get()) {
+        if (pStack.getItem() == ModItems.NO_LASER_UPGRADE.get()) {
             assert blockEntity != null;
             if (blockEntity.hasNoLaserUpgrade) {
                 pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.upgrades.upgrade_already_applied"), true);

@@ -54,6 +54,7 @@ public class ModBlocks {
                             .strength(5, 6)
                             .requiresCorrectToolForDrops(),
                     "null",
+                    ColorUtil.NULL_COLOR,
                     ModifierType.NULL
             )
     );

@@ -67,6 +67,7 @@ public class MinerControllerBE extends BlockEntity {
     private String name;
 
     public boolean canSeeBedrockOrVoid = false;
+    public boolean blockBeforeGlass = false;
     public boolean enoughPower = false;
 
     public boolean enoughPowerForNextOperation = false;
@@ -77,6 +78,7 @@ public class MinerControllerBE extends BlockEntity {
 
     private int checkStructureTTL = 0;
     private int bedrockCheckTTL = 0;
+    private int blockBeforeGlassTTL = 0;
     private int recipeCheckTTL = 0;
 
     private int tickAcceleratedTicks = 1;
@@ -89,7 +91,7 @@ public class MinerControllerBE extends BlockEntity {
     public int beamLength = 0;
 
     private void recalculateStorageFromUpgrades() {
-        if(upgradeItem == Items.AIR) return;
+        if (upgradeItem == Items.AIR) return;
 
         int extraSlots = upgradeItem.components().get(ModDataComponents.MAX_STORAGE_UPGRADE_SLOTS.get());
 
@@ -152,7 +154,7 @@ public class MinerControllerBE extends BlockEntity {
 
         switch (haltReason) {
             case NONE:
-                if(enoughPowerForNextOperation) {
+                if (enoughPowerForNextOperation) {
                     status.append(Component.translatable("tooltip.voidminers.controller.status.working").withStyle(ChatFormatting.GREEN));
                     tooltip.add(status);
                 } else {
@@ -204,6 +206,13 @@ public class MinerControllerBE extends BlockEntity {
 
                 addMinerInfo(tooltip);
                 break;
+            case BLOCK_BEFORE_GLASS:
+                status.append(Component.translatable("tooltip.voidminers.controller.status.mining_stopped").withStyle(ChatFormatting.RED));
+                tooltip.add(status);
+                tooltip.add(Component.translatable("tooltip.voidminers.controller.halt_reason.block_before_glass").withStyle(ChatFormatting.YELLOW));
+
+                addMinerInfo(tooltip);
+                break;
             case NO_BEDROCK_OR_VOID_VIEW:
                 status.append(Component.translatable("tooltip.voidminers.controller.status.mining_stopped").withStyle(ChatFormatting.RED));
                 tooltip.add(status);
@@ -250,7 +259,7 @@ public class MinerControllerBE extends BlockEntity {
 
         tooltip.add(getUpgradeInfoText());
 
-        if(MinerConfigLoader.getInstance().MINERS_AUTO_EXPORT_INSTEAD_OF_FILLING_THEIR_OWN_INVENTORY) {
+        if (MinerConfigLoader.getInstance().MINERS_AUTO_EXPORT_INSTEAD_OF_FILLING_THEIR_OWN_INVENTORY) {
             tooltip.add(Component.translatable("tooltip.voidminers.controller.information").withStyle(ChatFormatting.GOLD)
                     .append(Component.translatable("tooltip.voidminers.controller.information.auto_export")));
         }
@@ -410,6 +419,20 @@ public class MinerControllerBE extends BlockEntity {
 
             if (showStructure) {
                 updateShowStructure();
+            }
+
+            if (blockBeforeGlassTTL <= 0) {
+                blockBeforeGlass = hasBlockBeforeGlass(pPos);
+                blockBeforeGlassTTL = 20;
+            } else {
+                blockBeforeGlassTTL--;
+            }
+
+            if (blockBeforeGlass) {
+                haltReason = HaltReason.BLOCK_BEFORE_GLASS;
+                canSeeBedrockOrVoid = false;
+                beforeReturn();
+                return;
             }
 
             // only check void / bedrock view every 20 ticks
@@ -576,10 +599,28 @@ public class MinerControllerBE extends BlockEntity {
     }
 
     private void sync() {
-        if(level != null) {
+        if (level != null) {
             setChanged(level, getBlockPos(), getBlockState());
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
         }
+    }
+
+    private boolean hasBlockBeforeGlass(BlockPos pos) {
+        assert level != null;
+
+        int glassHeight = MiscUtil.GLASS_HEIGHT.get(structure.getPath());
+        boolean blockFound = false;
+
+        for (int i = 0; i < glassHeight; i++) {
+            BlockPos check = pos.below(i + 1);
+            BlockState state = level.getBlockState(check);
+
+            if (state.propagatesSkylightDown(level, check) || level.isFluidAtPosition(check, (fluidState -> !fluidState.isEmpty()))) continue;
+
+            blockFound = true;
+        }
+
+        return blockFound;
     }
 
     private boolean hasViewOnBedrockOrVoid(BlockPos pos) {
@@ -595,7 +636,7 @@ public class MinerControllerBE extends BlockEntity {
                 return true;
             }
 
-            if(check.getY() < level.getMinBuildHeight()) {
+            if (check.getY() < level.getMinBuildHeight()) {
                 beamLength = pos.below().getY() - check.getY();
                 return true;
             }
@@ -612,7 +653,7 @@ public class MinerControllerBE extends BlockEntity {
     }
 
     private boolean isItemHandlerFull() {
-        if(itemHandler.getStackInSlot(itemHandler.getSlots() - 1).getCount() == 0) return false;
+        if (itemHandler.getStackInSlot(itemHandler.getSlots() - 1).getCount() == 0) return false;
 
         for (int i = 0; i < itemHandler.getSlots(); i++) {
             if (itemHandler.getStackInSlot(i).getCount() < itemHandler.getStackInSlot(i).getMaxStackSize()) {
@@ -650,9 +691,9 @@ public class MinerControllerBE extends BlockEntity {
                 .map(RecipeHolder::value)
                 .filter(recipe -> {
                     if (recipe.allowHigherTiers()) {
-                        return recipe.minTier() <= MiscUtil.tierMap.get(structure.getPath());
+                        return recipe.minTier() <= MiscUtil.TIER_MAP.get(structure.getPath());
                     } else {
-                        return recipe.minTier() == MiscUtil.tierMap.get(structure.getPath());
+                        return recipe.minTier() == MiscUtil.TIER_MAP.get(structure.getPath());
                     }
                 })
                 .filter(recipe -> recipe.dimension().equals(level.dimension()));
@@ -676,7 +717,7 @@ public class MinerControllerBE extends BlockEntity {
 
         container.addItem(new ItemStack(upgradeItem));
 
-        if(hasNoLaserUpgrade) {
+        if (hasNoLaserUpgrade) {
             container.addItem(new ItemStack(ModItems.NO_LASER_UPGRADE.get()));
         }
 
