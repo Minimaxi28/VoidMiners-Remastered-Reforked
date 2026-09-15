@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     public final ResourceLocation UID;
-    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "textures/gui/jei_background.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "textures/gui/jei_background.png");
 
     public RecipeType<MinerRecipe> RECIPE_TYPE;
 
@@ -87,7 +87,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
     }
 
     public MinerCategory(IGuiHelper guiHelper, Block blockIcon, int tier) {
-        UID = ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "miner/tier" + tier + "_miner");
+        UID = ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "miner/tier" + tier + "_miner");
         RECIPE_TYPE = new RecipeType<>(UID, MinerRecipe.class);
         this.background = guiHelper.createDrawable(TEXTURE, 0, 0, recipeWidth, recipeHeight);
         this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, blockIcon.asItem().getDefaultInstance());
@@ -195,7 +195,7 @@ public class MinerCategory implements IRecipeCategory<MinerRecipe> {
 
         String dimensionName = recipe.dimension().location().toLanguageKey();
 
-        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "textures/gui/icon/" + getDimensionIcon(recipe.dimension()) + ".png");
+        ResourceLocation texture = ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "textures/gui/icon/" + getDimensionIcon(recipe.dimension()) + ".png");
 
         guiGraphics.blit(
                 texture,

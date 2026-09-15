@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ModItemModelProvider extends ItemModelProvider {
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, VoidMiners.MODID, existingFileHelper);
+        super(output, VoidMiners.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -47,12 +47,12 @@ public class ModItemModelProvider extends ItemModelProvider {
     private void simpleItem(String name) {
         withExistingParent(name,
             ResourceLocation.parse("item/generated")).texture("layer0",
-            ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "item/" + name));
+            ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "item/" + name));
     }
 
     private void simpleItemWithTexture(DeferredHolder<Item, ? extends Item> item, String textureName) {
         withExistingParent(item.getId().getPath(),
                 ResourceLocation.parse("item/generated")).texture("layer0",
-                ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "item/" + textureName));
+                ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "item/" + textureName));
     }
 }

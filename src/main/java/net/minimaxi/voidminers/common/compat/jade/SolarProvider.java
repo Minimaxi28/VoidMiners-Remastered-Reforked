@@ -78,6 +78,6 @@ public enum SolarProvider implements IBlockComponentProvider, IServerDataProvide
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "solars");
+        return ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "solars");
     }
 }

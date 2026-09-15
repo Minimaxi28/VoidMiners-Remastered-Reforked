@@ -106,6 +106,6 @@ public enum MinerProvider implements IBlockComponentProvider, IServerDataProvide
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "miners");
+        return ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "miners");
     }
 }

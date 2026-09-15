@@ -5,7 +5,6 @@ import net.minimaxi.voidminers.init.ModBlocks;
 import net.minimaxi.voidminers.init.CrystalSet;
 import net.minimaxi.voidminers.init.SolarSet;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -16,12 +15,11 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class ModBlockTagGenerator extends BlockTagsProvider {
     public ModBlockTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, VoidMiners.MODID, existingFileHelper);
+        super(output, lookupProvider, VoidMiners.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -42,8 +40,7 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                         ModBlocks.NULL_MOD.get()
                 );
 
-        List<CrystalSet> allCrystalSets = CrystalSet.sets();
-        for (CrystalSet set : allCrystalSets) {
+        for (CrystalSet set : CrystalSet.sets()) {
             this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .add(
                             set.CONTROLLER.get(),
@@ -70,10 +67,13 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                             set.SPEED_MOD.get(),
                             set.ITEM_MOD.get()
                     );
+
+            if (set.CRYSTAL != null) {
+                this.tag(common("storage_blocks/" + set.name + "_block")).add(set.CRYSTAL_BLOCK.get());
+            }
         }
 
-        List<SolarSet> allSolarSets = SolarSet.sets();
-        for (SolarSet set : allSolarSets) {
+        for (SolarSet set : SolarSet.sets()) {
             this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                     .add(
                             set.CONTROLLER.get(),
@@ -97,6 +97,10 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
                             set.EFFICIENCY_MOD.get(),
                             set.WEATHER_MOD.get()
                     );
+
+            if (set.CRYSTAL != null) {
+                this.tag(common("storage_blocks/" + "solar_" + set.name + "_block")).add(set.CRYSTAL_BLOCK.get());
+            }
         }
 
         this.tag(MINER_MODIFIERS).add(ModBlocks.NULL_MOD.get());
@@ -104,10 +108,18 @@ public class ModBlockTagGenerator extends BlockTagsProvider {
         this.tag(SOLAR_MODIFIERS).add(ModBlocks.NULL_MOD.get());
     }
 
-    public static final TagKey<Block> MINER_MODIFIERS = create("miner_modifiers");
-    public static final TagKey<Block> SOLAR_MODIFIERS = create("solar_modifiers");
+    public static final TagKey<Block> MINER_MODIFIERS = voidminers("miner_modifiers");
+    public static final TagKey<Block> SOLAR_MODIFIERS = voidminers("solar_modifiers");
 
-    private static TagKey<Block> create(String pName) {
-        return TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, pName));
+    private static TagKey<Block> common(String path) {
+        return tag("c", path);
+    }
+
+    private static TagKey<Block> voidminers(String path) {
+        return tag(VoidMiners.MOD_ID, path);
+    }
+
+    private static TagKey<Block> tag(String namespace, String name) {
+        return BlockTags.create(ResourceLocation.fromNamespaceAndPath(namespace, name));
     }
 }

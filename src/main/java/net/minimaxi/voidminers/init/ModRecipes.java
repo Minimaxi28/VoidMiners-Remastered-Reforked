@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ModRecipes {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS = 
-        DeferredRegister.create(Registries.RECIPE_SERIALIZER, VoidMiners.MODID);
+        DeferredRegister.create(Registries.RECIPE_SERIALIZER, VoidMiners.MOD_ID);
 
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MinerRecipe>> MINER_RECIPE_SERIALIZER =
         SERIALIZERS.register("miner", () -> MinerRecipe.Serializer.INSTANCE);

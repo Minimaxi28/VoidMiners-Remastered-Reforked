@@ -11,7 +11,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
-@EventBusSubscriber(modid = VoidMiners.MODID)
+@EventBusSubscriber(modid = VoidMiners.MOD_ID)
 public class GameBusEvent {
     @SubscribeEvent
     public static void addReloadListeners(AddReloadListenerEvent event) {

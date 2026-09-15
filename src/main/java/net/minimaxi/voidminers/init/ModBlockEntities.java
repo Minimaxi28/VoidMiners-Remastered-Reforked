@@ -10,7 +10,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = 
-        DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, VoidMiners.MODID);
+        DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, VoidMiners.MOD_ID);
 
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MinerControllerBE>> MINER_CONTROLLER_BE =

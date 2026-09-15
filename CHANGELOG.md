@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.21.1-1.6.11
+
+- Miners now require the block to be underneath the bottom Glass Panel
+- Item Multipliers now take the decimal value into consideration (multipliers like 1.5 will make 2 items ~1 out of 2 times)
+- Added tag c:storage_blocks/(solar_){crystal_name}_block to the compressed 3x3 blocks
+- Added tag c:gems/(solar_){crystal_name} to the gems
+
 ## 1.21.1-1.6.10
 
 - Changes to JEI tab

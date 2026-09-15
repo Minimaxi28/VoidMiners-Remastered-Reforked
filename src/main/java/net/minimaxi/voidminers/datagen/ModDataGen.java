@@ -11,7 +11,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 import java.util.concurrent.CompletableFuture;
 
-@EventBusSubscriber(modid = VoidMiners.MODID)
+@EventBusSubscriber(modid = VoidMiners.MOD_ID)
 public class ModDataGen {
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
@@ -26,7 +26,9 @@ public class ModDataGen {
 
         generator.addProvider(event.includeServer(), ModLootTableProvider.create(packOutput, provider));
 
-        generator.addProvider(event.includeServer(), new ModBlockTagGenerator(packOutput, provider, existingFileHelper));
+        ModBlockTagGenerator blockTags = new ModBlockTagGenerator(packOutput, provider, existingFileHelper);
+        generator.addProvider(event.includeServer(), blockTags);
+        generator.addProvider(event.includeServer(), new ModItemTagGenerator(packOutput, provider, blockTags, existingFileHelper));
 
         generator.addProvider(event.includeClient(), new ModLanguageProvider(packOutput, "en_us"));
     }

@@ -15,6 +15,6 @@ public class VoidMinersKubeJSPlugin implements KubeJSPlugin {
     
     @Override
     public void registerRecipeSchemas(RecipeSchemaRegistry event) {
-        event.register(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "miner"), VoidMinerRecipeSchema.SCHEMA);
+        event.register(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "miner"), VoidMinerRecipeSchema.SCHEMA);
     }
 }

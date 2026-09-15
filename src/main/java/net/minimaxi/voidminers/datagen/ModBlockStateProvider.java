@@ -19,7 +19,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     ExistingFileHelper existingFileHelper;
 
     public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, VoidMiners.MODID, exFileHelper);
+        super(output, VoidMiners.MOD_ID, exFileHelper);
         this.existingFileHelper = exFileHelper;
     }
 
@@ -42,7 +42,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             tripleLayerBlockWithItem(set.FRAME, "voidminers:block/" + set.name + "/frame", "voidminers:block/_core/frame", "voidminers:block/_core/cover");
 
             simpleBlockWithItem(set.CONTROLLER.get(),
-                    new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + set.name + "/miner")));
+                    new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/" + set.name + "/miner")));
 
             quadLayerBlockWithItem(set.ENERGY_MOD, "voidminers:block/_core/energy", "voidminers:block/_core/modifier", "voidminers:block/_core/cover", "voidminers:block/" + set.name + "/core");
 
@@ -60,7 +60,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             tripleLayerBlockWithItem(set.FRAME, "voidminers:block/" + set.name + "/frame", "voidminers:block/_core/frame", "voidminers:block/_core/cover");
 
             simpleBlockWithItem(set.CONTROLLER.get(),
-                    new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + set.name + "/solar_panel")));
+                    new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/" + set.name + "/solar_panel")));
 
             quadLayerBlockWithItem(set.EFFICIENCY_MOD, "voidminers:block/_core/energy", "voidminers:block/_core/modifier", "voidminers:block/_core/cover", "voidminers:block/" + set.name + "/core");
 
@@ -69,19 +69,19 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void simpleBlockWithItem(DeferredHolder<Block, ? extends Block> block) {
-        simpleBlockWithItem(block.get(), new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + block.getId().getPath())));
+        simpleBlockWithItem(block.get(), new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/" + block.getId().getPath())));
     }
 
     private void simpleBlockWithItem(DeferredHolder<Block, ? extends Block> block, String name) {
-        simpleBlockWithItem(block.get(), new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + name)));
+        simpleBlockWithItem(block.get(), new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/" + name)));
     }
 
     private void simpleBlockItem(DeferredHolder<Block, ? extends Block> block) {
-        simpleBlockItem(block.get(), new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + block.getId().getPath())));
+        simpleBlockItem(block.get(), new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/" + block.getId().getPath())));
     }
 
     private void dualLayerBlockWithItem(DeferredHolder<Block, ? extends Block> block, String layer0, String layer1) {
-        ModelFile.UncheckedModelFile parent = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/_template/dual_layer"));
+        ModelFile.UncheckedModelFile parent = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/_template/dual_layer"));
 
         BlockModelBuilder model = models().getBuilder(block.getId().getPath())
             .parent(parent)
@@ -92,7 +92,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void tripleLayerBlockWithItem(DeferredHolder<Block, ? extends Block> block, String layer0, String layer1, String layer2) {
-        ModelFile.UncheckedModelFile parent = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/_template/triple_layer"));
+        ModelFile.UncheckedModelFile parent = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/_template/triple_layer"));
 
         BlockModelBuilder model = models().getBuilder(block.getId().getPath())
             .parent(parent)
@@ -104,7 +104,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void quadLayerBlockWithItem(DeferredHolder<Block, ? extends Block> block, String layer0, String layer1, String layer2, String layer3) {
-        ModelFile.UncheckedModelFile parent = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/_template/quad_layer"));
+        ModelFile.UncheckedModelFile parent = new ModelFile.UncheckedModelFile(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/_template/quad_layer"));
 
         BlockModelBuilder model = models().getBuilder(block.getId().getPath())
             .parent(parent)
@@ -117,7 +117,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
     }
 
     private void simpleAllCubeWithItem(DeferredHolder<Block, Block> block, String name) {
-        simpleBlockWithItem(block.get(), models().cubeAll(name(block.get()), ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "block/" + name + "/block")));
+        simpleBlockWithItem(block.get(), models().cubeAll(name(block.get()), ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "block/" + name + "/block")));
     }
 
     private String name(Block block) {

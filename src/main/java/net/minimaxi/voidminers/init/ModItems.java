@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(VoidMiners.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(VoidMiners.MOD_ID);
 
     public static final DeferredItem<Item> STRUCTURE_BUILDER = ITEMS.register("structure_builder",
         () -> new StructureBuilderItem(new Item.Properties().stacksTo(1)));

@@ -16,7 +16,7 @@ import java.util.Map;
 public record SyncConfigS2CPacket(Map<String, MinerConfigLoader.ControllerConfig> minerConfigs) implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<SyncConfigS2CPacket> TYPE = 
-        new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "sync_config"));
+        new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "sync_config"));
 
     public static final StreamCodec<ByteBuf, SyncConfigS2CPacket> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.map(

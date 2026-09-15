@@ -240,7 +240,7 @@ public class MinerRecipe implements Recipe<RecipeInput> {
         public static Builder builder(WeightedStack output, int minTier, boolean allowHigherTiers, ResourceKey<Level> dimension) {
             ResourceLocation itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(output.stack.getItem());
             ResourceLocation recipeId = ResourceLocation.fromNamespaceAndPath(
-                    VoidMiners.MODID,
+                    VoidMiners.MOD_ID,
                     dimension.location().getPath() + "/tier" + minTier + "_miner/" + itemId.getPath()
             );
             return new Builder(output, minTier, allowHigherTiers, recipeId, dimension);

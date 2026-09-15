@@ -11,7 +11,7 @@ public class ModNetwork {
 
     
     public static void register(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar(VoidMiners.MODID)
+        PayloadRegistrar registrar = event.registrar(VoidMiners.MOD_ID)
             .versioned("1.0.0")
             .optional();
 

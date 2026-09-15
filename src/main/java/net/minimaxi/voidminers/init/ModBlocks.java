@@ -17,7 +17,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import java.util.function.Supplier;
 
 public class ModBlocks {
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.createBlocks(VoidMiners.MODID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.createBlocks(VoidMiners.MOD_ID);
 
     public static final DeferredHolder<Block, Block> FRAME_BASE = registerBlock("frame_base",
             () -> new Block(

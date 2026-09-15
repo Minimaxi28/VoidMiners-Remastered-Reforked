@@ -15,9 +15,9 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.slf4j.Logger;
 
-@Mod(VoidMiners.MODID)
+@Mod(VoidMiners.MOD_ID)
 public class VoidMiners {
-    public static final String MODID = "voidminers";
+    public static final String MOD_ID = "voidminers";
     public static final Logger LOGGER = LogUtils.getLogger();
     
     public VoidMiners(IEventBus modEventBus) {

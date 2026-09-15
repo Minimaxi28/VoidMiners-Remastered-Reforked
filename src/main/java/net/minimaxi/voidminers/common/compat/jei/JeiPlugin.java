@@ -22,7 +22,7 @@ public class JeiPlugin implements IModPlugin {
 
     @Override
     public ResourceLocation getPluginUid() {
-        return ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "jei_plugin");
+        return ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "jei_plugin");
     }
 
     @Override

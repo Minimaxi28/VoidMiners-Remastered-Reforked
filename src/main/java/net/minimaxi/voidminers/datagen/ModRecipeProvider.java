@@ -209,7 +209,7 @@ public class ModRecipeProvider extends RecipeProvider {
                     )
                     .requires(set.CRYSTAL_BLOCK.get())
                     .unlockedBy("hasItem", has(set.CRYSTAL_BLOCK.get()))
-                    .save(pWriter, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, set.name + "_crystal_from_block"));
+                    .save(pWriter, ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, set.name + "_crystal_from_block"));
         }
 
         // Custom ultimate recipes (no standalone crystal item available)
@@ -404,7 +404,7 @@ public class ModRecipeProvider extends RecipeProvider {
                     )
                     .requires(set.CRYSTAL_BLOCK.get())
                     .unlockedBy("hasItem", has(set.CRYSTAL_BLOCK.get()))
-                    .save(pWriter, ResourceLocation.fromNamespaceAndPath(VoidMiners.MODID, "solar_" + set.name + "_crystal_from_block"));
+                    .save(pWriter, ResourceLocation.fromNamespaceAndPath(VoidMiners.MOD_ID, "solar_" + set.name + "_crystal_from_block"));
         }
 
         ShapedRecipeBuilder.shaped(

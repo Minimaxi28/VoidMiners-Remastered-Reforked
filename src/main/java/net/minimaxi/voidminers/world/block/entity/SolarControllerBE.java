@@ -461,13 +461,13 @@ public class SolarControllerBE extends BlockEntity {
         data.putBoolean("canSeeSky", canSeeSky);
         data.putBoolean("hasNoLaserUpgrade", hasNoLaserUpgrade);
 
-        pTag.put(VoidMiners.MODID, data);
+        pTag.put(VoidMiners.MOD_ID, data);
     }
 
     @Override
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
-        CompoundTag data = pTag.getCompound(VoidMiners.MODID);
+        CompoundTag data = pTag.getCompound(VoidMiners.MOD_ID);
         if (data.isEmpty())
             return;
 

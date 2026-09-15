@@ -506,7 +506,7 @@ public class MinerControllerBE extends BlockEntity {
             List<ItemStack> outputs = new ArrayList<>();
 
             while (progress >= maxProgress) {
-                outputs.add(getBoostedStack(getWeightedItem(allOutputs, level.random)));
+                outputs.add(getBoostedStack(getWeightedItem(allOutputs, level.random), level.random));
                 progress -= maxProgress;
             }
 
@@ -812,8 +812,18 @@ public class MinerControllerBE extends BlockEntity {
         return ItemStack.EMPTY;
     }
 
-    public ItemStack getBoostedStack(ItemStack base) {
-        base.setCount(base.getCount() * (int) getItemModifierMultiplier());
+    public ItemStack getBoostedStack(ItemStack base, RandomSource random) {
+        float multiplier = getItemModifierMultiplier();
+        int wholeMultiplier = (int) multiplier;
+        float fractionalMultiplier = multiplier - wholeMultiplier;
+
+        int count = base.getCount() * wholeMultiplier;
+
+        if (fractionalMultiplier > 0f && random.nextFloat() < fractionalMultiplier) {
+            count += base.getCount();
+        }
+
+        base.setCount(count);
         return base;
     }
 
@@ -843,13 +853,13 @@ public class MinerControllerBE extends BlockEntity {
         data.putBoolean("hasNoLaserUpgrade", hasNoLaserUpgrade);
         data.putInt("beamLength", beamLength);
 
-        pTag.put(VoidMiners.MODID, data);
+        pTag.put(VoidMiners.MOD_ID, data);
     }
 
     @Override
     protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
         super.loadAdditional(pTag, pRegistries);
-        CompoundTag data = pTag.getCompound(VoidMiners.MODID);
+        CompoundTag data = pTag.getCompound(VoidMiners.MOD_ID);
         if (data.isEmpty())
             return;
 

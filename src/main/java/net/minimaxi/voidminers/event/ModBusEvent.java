@@ -7,7 +7,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 
-@EventBusSubscriber(modid = VoidMiners.MODID)
+@EventBusSubscriber(modid = VoidMiners.MOD_ID)
 public class ModBusEvent {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {

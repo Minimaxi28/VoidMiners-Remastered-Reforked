@@ -11,7 +11,7 @@ import net.neoforged.neoforge.common.data.LanguageProvider;
 public class ModLanguageProvider extends LanguageProvider {
 
     public ModLanguageProvider(PackOutput output, String locale) {
-        super(output, VoidMiners.MODID, locale);
+        super(output, VoidMiners.MOD_ID, locale);
     }
 
     @Override
