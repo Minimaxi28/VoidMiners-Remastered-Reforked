@@ -13,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -53,7 +52,9 @@ public class SolarControllerBlock extends ColoredBlock implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
-        return new SolarControllerBE(blockPos, blockState);
+        SolarControllerBE be = new SolarControllerBE(blockPos, blockState);
+        be.setup(structure, name);
+        return be;
     }
 
     @Override
@@ -105,20 +106,6 @@ public class SolarControllerBlock extends ColoredBlock implements EntityBlock {
         }
 
         return InteractionResult.CONSUME;
-    }
-
-    @Override
-    public void setPlacedBy(@NotNull Level pLevel, @NotNull BlockPos pPos, @NotNull BlockState pState, @Nullable LivingEntity pPlacer, @NotNull ItemStack pStack) {
-        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-
-        SolarControllerBE controller = ((SolarControllerBE) pLevel.getBlockEntity(pPos));
-        if (controller == null) {
-            controller = ((SolarControllerBE) this.newBlockEntity(pPos, pState));
-        }
-
-        if (controller != null) {
-            controller.setup(structure, name);
-        }
     }
 
     @Nullable

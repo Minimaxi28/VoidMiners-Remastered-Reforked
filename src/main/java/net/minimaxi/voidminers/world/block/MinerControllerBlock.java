@@ -13,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -55,7 +54,11 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new MinerControllerBE(blockPos, blockState);
+        MinerControllerBE be = new MinerControllerBE(blockPos, blockState);
+
+        be.setup(structure, name);
+
+        return be;
     }
 
     @Override
@@ -161,20 +164,6 @@ public class MinerControllerBlock extends ColoredBlock implements EntityBlock {
         }
 
         pPlayer.displayClientMessage(Component.translatable("client_message.voidminers.upgrades.max_storage.upgrade_applied", newAddedSlots), true);
-    }
-
-    @Override
-    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-        super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-
-        MinerControllerBE controller = ((MinerControllerBE) pLevel.getBlockEntity(pPos));
-        if (controller == null) {
-            controller = ((MinerControllerBE) this.newBlockEntity(pPos, pState));
-        }
-
-        if (controller != null) {
-            controller.setup(structure, name);
-        }
     }
 
     @Nullable
