@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.21.1-1.6.12
+
+- Fix crash when it isn't the player that places the Controllers
+
 ## 1.21.1-1.6.11
 
 - Miners now require the block to be underneath the bottom Glass Panel
