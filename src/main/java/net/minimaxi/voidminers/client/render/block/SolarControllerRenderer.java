@@ -21,9 +21,9 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class SolarControllerBER implements BlockEntityRenderer<SolarControllerBE> {
+public class SolarControllerRenderer implements BlockEntityRenderer<SolarControllerBE> {
 
-    public SolarControllerBER(BlockEntityRendererProvider.Context context) {
+    public SolarControllerRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override

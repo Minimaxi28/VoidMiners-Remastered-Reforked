@@ -21,9 +21,9 @@ import org.joml.Vector3f;
 
 import java.util.List;
 
-public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE> {
+public class MinerControllerRenderer implements BlockEntityRenderer<MinerControllerBE> {
 
-    public MinerControllerBER(BlockEntityRendererProvider.Context context) {
+    public MinerControllerRenderer(BlockEntityRendererProvider.Context context) {
     }
 
     @Override
@@ -125,25 +125,29 @@ public class MinerControllerBER implements BlockEntityRenderer<MinerControllerBE
 
     public void renderCap(VertexConsumer vC, PoseStack pose, int color, float size) {
         vC.addVertex(pose.last().pose(), 0, 0, 0)
-                .setColor(color).setUv(0, 0)
+                .setColor(color)
+                .setUv(0, 0)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setLight(LightTexture.FULL_BRIGHT)
                 .setNormal(0, -1, 0);
 
         vC.addVertex(pose.last().pose(), size, 0, 0)
-                .setColor(color).setUv(1, 0)
+                .setColor(color)
+                .setUv(1, 0)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setLight(LightTexture.FULL_BRIGHT)
                 .setNormal(0, -1, 0);
 
         vC.addVertex(pose.last().pose(), size, 0, size)
-                .setColor(color).setUv(1, 1)
+                .setColor(color)
+                .setUv(1, 1)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setLight(LightTexture.FULL_BRIGHT)
                 .setNormal(0, -1, 0);
 
         vC.addVertex(pose.last().pose(), 0, 0, size)
-                .setColor(color).setUv(0, 1)
+                .setColor(color)
+                .setUv(0, 1)
                 .setOverlay(OverlayTexture.NO_OVERLAY)
                 .setLight(LightTexture.FULL_BRIGHT)
                 .setNormal(0, -1, 0);
